@@ -161,11 +161,21 @@ export interface TaskLaneHandoff {
   responseSummary?: string;
 }
 
+/**
+ * Task type determines the pipeline behavior.
+ * - "code": full 6-lane pipeline with worktree isolation (default, backward compatible)
+ * - "analysis": lightweight pipeline, no worktree, focuses on reading/producing findings
+ * - "document": lightweight pipeline, no worktree, focuses on producing structured documents
+ */
+export type TaskType = "code" | "analysis" | "document";
+
 export interface Task {
   id: string;
   title: string;
   objective: string;
   comment?: string;
+  /** Task type that controls pipeline behavior. Defaults to "code". */
+  taskType?: TaskType;
   scope?: string;
   acceptanceCriteria?: string[];
   verificationCommands?: string[];
@@ -218,6 +228,7 @@ export function createTask(params: {
   title: string;
   objective: string;
   comment?: string;
+  taskType?: TaskType;
   workspaceId: string;
   triggerSessionId?: string;
   sessionId?: string;
@@ -255,6 +266,7 @@ export function createTask(params: {
     title: params.title,
     objective: params.objective,
     comment: params.comment,
+    taskType: params.taskType,
     scope: params.scope,
     acceptanceCriteria: params.acceptanceCriteria,
     verificationCommands: params.verificationCommands,

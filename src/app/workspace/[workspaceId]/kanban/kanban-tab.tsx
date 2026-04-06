@@ -1139,6 +1139,13 @@ export function KanbanTab({
   async function createTaskCard() {
     await ensureBoardAutoProviderPersisted();
     const effectiveCodebaseIds = draft.codebaseIds.length > 0 ? draft.codebaseIds : allCodebaseIds;
+    // Filter draft fields by task type so hidden fields don't leak stale data into the API.
+    // - code:     testCases, scope, acceptanceCriteria, verificationCommands
+    // - analysis: scope, acceptanceCriteria
+    // - document: acceptanceCriteria
+    const effectiveTaskType = draft.taskType || "code";
+    const isCode = effectiveTaskType === "code";
+    const isAnalysis = effectiveTaskType === "analysis";
     const response = await fetch("/api/tasks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1147,10 +1154,11 @@ export function KanbanTab({
         boardId: selectedBoardId ?? defaultBoardId,
         title: draft.title,
         objective: draft.objectiveHtml.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim(),
-        testCases: draft.testCases.split("\n").map((item) => item.trim()).filter(Boolean),
-        scope: draft.scope.trim() || undefined,
+        testCases: isCode ? draft.testCases.split("\n").map((item) => item.trim()).filter(Boolean) : [],
+        taskType: effectiveTaskType,
+        scope: (isCode || isAnalysis) ? (draft.scope.trim() || undefined) : undefined,
         acceptanceCriteria: draft.acceptanceCriteria.split("\n").map((item) => item.trim()).filter(Boolean) || undefined,
-        verificationCommands: draft.verificationCommands.split("\n").map((item) => item.trim()).filter(Boolean) || undefined,
+        verificationCommands: isCode ? (draft.verificationCommands.split("\n").map((item) => item.trim()).filter(Boolean) || undefined) : undefined,
         priority: draft.priority,
         labels: draft.labels.split(",").map((label) => label.trim()).filter(Boolean),
         createGitHubIssue: draft.createGitHubIssue,

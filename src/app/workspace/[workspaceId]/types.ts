@@ -116,6 +116,7 @@ export interface TaskInfo {
   title: string;
   objective?: string;
   comment?: string;
+  taskType?: "code" | "analysis" | "document";
   scope?: string;
   acceptanceCriteria?: string[];
   verificationCommands?: string[];

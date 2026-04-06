@@ -1016,6 +1016,10 @@ export const zhExtended: ExtendedTranslationDictionarySections = {
   kanbanCreate: {
     manualTask: "手动创建任务",
     taskTitle: "任务标题",
+    taskType: "任务类型",
+    taskTypeCode: "代码实现",
+    taskTypeAnalysis: "分析调研",
+    taskTypeDocument: "文档生成",
     description: "描述",
     testCases: "测试用例",
     testCasesPlaceholder: "每行一个测试用例\n示例：用户可以成功提交表单",

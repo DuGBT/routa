@@ -248,7 +248,9 @@ export function buildTaskPrompt(
       ]
     : [];
 
-  const devVerificationSection = currentColumnId === "dev"
+  const isCodeTask = (task.taskType ?? "code") === "code";
+
+  const devVerificationSection = currentColumnId === "dev" && isCodeTask
     ? [
         "## Dev Verification Safety",
         "",
@@ -359,6 +361,16 @@ export function buildTaskPrompt(
           ...summaryContext.knowledgeContext.map(
             (entry) => `- **${entry.title}** (${entry.slug}): ${entry.summary}`,
           ),
+          "",
+        ]
+      : []),
+    ...(task.taskType && task.taskType !== "code"
+      ? [
+          "## Task Type: " + task.taskType.toUpperCase(),
+          "",
+          task.taskType === "analysis"
+            ? "Focus on reading source files, analyzing patterns, and producing structured findings. Use `provide_artifact` with type 'document' to deliver your analysis report."
+            : "Focus on producing a well-structured document. Use `provide_artifact` with type 'document' to deliver the final document.",
           "",
         ]
       : []),

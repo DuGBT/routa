@@ -111,6 +111,7 @@ export async function POST(request: NextRequest) {
     objective,
     workspaceId,
     sessionId,
+    taskType,
     scope,
     acceptanceCriteria,
     verificationCommands,
@@ -143,6 +144,10 @@ export async function POST(request: NextRequest) {
   const normalizedObjective = typeof objective === "string" ? objective : "";
   const normalizedWorkspaceId = requireWorkspaceId(workspaceId);
   const normalizedSessionId = typeof sessionId === "string" ? sessionId : undefined;
+  const normalizedTaskType: "code" | "analysis" | "document" | undefined =
+    taskType === "code" || taskType === "analysis" || taskType === "document"
+      ? taskType
+      : undefined;
   const normalizedScope = typeof scope === "string" ? scope : undefined;
   const normalizedAcceptanceCriteria = Array.isArray(acceptanceCriteria)
     ? acceptanceCriteria.filter((item): item is string => typeof item === "string")
@@ -272,6 +277,7 @@ export async function POST(request: NextRequest) {
     objective: normalizedObjective,
     workspaceId: normalizedWorkspaceId,
     sessionId: normalizedSessionId,
+    taskType: normalizedTaskType,
     scope: normalizedScope,
     acceptanceCriteria: normalizedAcceptanceCriteria,
     verificationCommands: normalizedVerificationCommands,

@@ -10,6 +10,7 @@ import { useTranslation } from "@/i18n";
 export type TaskDraft = {
   title: string;
   objectiveHtml: string;
+  taskType: string;
   testCases: string;
   scope: string;
   acceptanceCriteria: string;
@@ -23,6 +24,7 @@ export type TaskDraft = {
 export const EMPTY_DRAFT: TaskDraft = {
   title: "",
   objectiveHtml: "",
+  taskType: "code",
   testCases: "",
   scope: "",
   acceptanceCriteria: "",
@@ -132,6 +134,7 @@ export function KanbanCreateModal({
   allCodebaseIds: _allCodebaseIds,
 }: KanbanCreateModalProps) {
   const { t } = useTranslation();
+  const isCodeTask = draft.taskType === "code";
   const canCreate = Boolean(draft.title.trim()) && Boolean(draft.objectiveHtml.replace(/<[^>]*>/g, "").trim());
 
   return (
@@ -153,6 +156,19 @@ export function KanbanCreateModal({
           />
 
           <div>
+            <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.taskType}</div>
+            <select
+              value={draft.taskType}
+              onChange={(e) => setDraft((d) => ({ ...d, taskType: e.target.value }))}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+            >
+              <option value="code">{t.kanbanCreate.taskTypeCode}</option>
+              <option value="analysis">{t.kanbanCreate.taskTypeAnalysis}</option>
+              <option value="document">{t.kanbanCreate.taskTypeDocument}</option>
+            </select>
+          </div>
+
+          <div>
             <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.description}</div>
             <TipTapObjectiveEditor
               value={draft.objectiveHtml}
@@ -160,6 +176,7 @@ export function KanbanCreateModal({
             />
           </div>
 
+          {isCodeTask && (
           <div>
             <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.testCases}</div>
             <textarea
@@ -173,7 +190,9 @@ export function KanbanCreateModal({
               {t.kanbanCreate.testCasesHint}
             </div>
           </div>
+          )}
 
+          {(isCodeTask || draft.taskType === "analysis") && (
           <div>
             <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.scope}</div>
             <textarea
@@ -184,6 +203,7 @@ export function KanbanCreateModal({
               className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
             />
           </div>
+          )}
 
           <div>
             <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.acceptanceCriteria}</div>
@@ -196,6 +216,7 @@ export function KanbanCreateModal({
             />
           </div>
 
+          {isCodeTask && (
           <div>
             <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.verificationCommands}</div>
             <textarea
@@ -206,6 +227,7 @@ export function KanbanCreateModal({
               className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
             />
           </div>
+          )}
 
           <div className="grid grid-cols-2 gap-3">
             <select

@@ -160,7 +160,7 @@ async function startKanbanTaskSession(
 
   let worktreeCwd = preferredCodebase?.repoPath ?? process.cwd();
   let worktreeBranch = preferredCodebase?.branch;
-  if (params.expectedColumnId === "dev" && preferredCodebase && !nextTask.worktreeId) {
+  if (params.expectedColumnId === "dev" && preferredCodebase && !nextTask.worktreeId && (nextTask.taskType ?? "code") === "code") {
     try {
       const worktreeService = new GitWorktreeService(
         system.worktreeStore,

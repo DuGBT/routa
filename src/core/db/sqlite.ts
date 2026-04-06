@@ -134,6 +134,7 @@ function initializeSqliteTables(db: SqliteDatabase): void {
       title TEXT NOT NULL,
       objective TEXT NOT NULL,
       comment TEXT,
+      task_type TEXT NOT NULL DEFAULT 'code',
       scope TEXT,
       acceptance_criteria TEXT,
       verification_commands TEXT,
@@ -201,6 +202,7 @@ function initializeSqliteTables(db: SqliteDatabase): void {
   runAddColumn(sql`ALTER TABLE tasks ADD COLUMN session_ids TEXT DEFAULT '[]'`);
   runAddColumn(sql`ALTER TABLE tasks ADD COLUMN lane_sessions TEXT DEFAULT '[]'`);
   runAddColumn(sql`ALTER TABLE tasks ADD COLUMN lane_handoffs TEXT DEFAULT '[]'`);
+  runAddColumn(sql`ALTER TABLE tasks ADD COLUMN task_type TEXT NOT NULL DEFAULT 'code'`);
 
   db.run(sql`
     CREATE TABLE IF NOT EXISTS notes (

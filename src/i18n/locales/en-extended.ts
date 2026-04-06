@@ -1016,6 +1016,10 @@ export const enExtended: ExtendedTranslationDictionarySections = {
   kanbanCreate: {
     manualTask: "Manual Task",
     taskTitle: "Task title",
+    taskType: "Task type",
+    taskTypeCode: "Code implementation",
+    taskTypeAnalysis: "Analysis / Research",
+    taskTypeDocument: "Document generation",
     description: "Description",
     testCases: "Test Cases",
     testCasesPlaceholder: "One test case per line\nExample: User can submit the form successfully",

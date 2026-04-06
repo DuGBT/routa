@@ -1028,6 +1028,10 @@ export interface ExtendedTranslationDictionarySections extends TailTranslationDi
   kanbanCreate: {
     manualTask: string;
     taskTitle: string;
+    taskType: string;
+    taskTypeCode: string;
+    taskTypeAnalysis: string;
+    taskTypeDocument: string;
     description: string;
     testCases: string;
     testCasesPlaceholder: string;
