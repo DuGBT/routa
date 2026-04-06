@@ -552,7 +552,7 @@ export const specialists = pgTable("specialists", {
 
 export const artifacts = pgTable("artifacts", {
   id: text("id").primaryKey(),
-  /** Type: screenshot | test_results | code_diff | logs */
+  /** Type: screenshot | test_results | code_diff | logs | document */
   type: text("type").notNull(),
   /** Task this artifact is associated with */
   taskId: text("task_id").notNull(),

@@ -503,7 +503,7 @@ export function KanbanCardDetail({
               description={compactMode ? undefined : t.kanbanDetail.storyReadinessHint}
               compact={compactMode}
             >
-              <StoryReadinessPanel task={task} compact={compactMode} />
+              <StoryReadinessPanel task={task} compact={compactMode} onPatchTask={onPatchTask} onRefresh={onRefresh} />
             </DetailSection>
           )}
 
@@ -631,9 +631,13 @@ function SummaryGridItem({
 function StoryReadinessPanel({
   task,
   compact = false,
+  onPatchTask,
+  onRefresh,
 }: {
   task: TaskInfo;
   compact?: boolean;
+  onPatchTask: (taskId: string, payload: Record<string, unknown>) => Promise<TaskInfo>;
+  onRefresh: () => void;
 }) {
   const { t } = useTranslation();
   const readiness = task.storyReadiness;
@@ -642,6 +646,10 @@ function StoryReadinessPanel({
   const investChecks = investValidation?.checks;
   const requiredLabels = readiness?.requiredTaskFields.map((field) => formatReadinessFieldLabel(field, t)) ?? [];
   const missingLabels = readiness?.missing.map((field) => formatReadinessFieldLabel(field, t)) ?? [];
+
+  const [editScope, setEditScope] = useState<string | null>(null);
+  const [editAcceptanceCriteria, setEditAcceptanceCriteria] = useState<string | null>(null);
+  const [editVerificationCommands, setEditVerificationCommands] = useState<string | null>(null);
 
   return (
     <div className="space-y-3">
@@ -705,6 +713,79 @@ function StoryReadinessPanel({
           />
         </div>
       )}
+
+      <div className="space-y-2 border-t border-slate-200/70 pt-3 dark:border-slate-700/70">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
+          {t.kanbanDetail.editFields}
+        </div>
+
+        <div>
+          <label className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase">{t.kanbanDetail.scope}</label>
+          <textarea
+            value={editScope ?? (task.scope ?? "")}
+            onFocus={() => setEditScope(task.scope ?? "")}
+            onChange={(e) => setEditScope(e.target.value)}
+            onBlur={async () => {
+              if (editScope !== null && editScope !== (task.scope ?? "")) {
+                await onPatchTask(task.id, { scope: editScope.trim() || null });
+                onRefresh();
+              }
+              setEditScope(null);
+            }}
+            placeholder={t.kanbanCreate.scopePlaceholder}
+            rows={2}
+            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+          />
+        </div>
+
+        <div>
+          <label className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase">{t.kanbanDetail.acceptanceCriteria}</label>
+          <textarea
+            value={editAcceptanceCriteria ?? (task.acceptanceCriteria ?? []).join("\n")}
+            onFocus={() => setEditAcceptanceCriteria((task.acceptanceCriteria ?? []).join("\n"))}
+            onChange={(e) => setEditAcceptanceCriteria(e.target.value)}
+            onBlur={async () => {
+              if (editAcceptanceCriteria !== null) {
+                const normalized = (task.acceptanceCriteria ?? []).join("\n");
+                if (editAcceptanceCriteria !== normalized) {
+                  await onPatchTask(task.id, {
+                    acceptanceCriteria: editAcceptanceCriteria.split("\n").map((i) => i.trim()).filter(Boolean) || null,
+                  });
+                  onRefresh();
+                }
+              }
+              setEditAcceptanceCriteria(null);
+            }}
+            placeholder={t.kanbanCreate.acceptanceCriteriaPlaceholder}
+            rows={3}
+            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+          />
+        </div>
+
+        <div>
+          <label className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase">{t.kanbanDetail.verificationCommands}</label>
+          <textarea
+            value={editVerificationCommands ?? (task.verificationCommands ?? []).join("\n")}
+            onFocus={() => setEditVerificationCommands((task.verificationCommands ?? []).join("\n"))}
+            onChange={(e) => setEditVerificationCommands(e.target.value)}
+            onBlur={async () => {
+              if (editVerificationCommands !== null) {
+                const normalized = (task.verificationCommands ?? []).join("\n");
+                if (editVerificationCommands !== normalized) {
+                  await onPatchTask(task.id, {
+                    verificationCommands: editVerificationCommands.split("\n").map((i) => i.trim()).filter(Boolean) || null,
+                  });
+                  onRefresh();
+                }
+              }
+              setEditVerificationCommands(null);
+            }}
+            placeholder={t.kanbanCreate.verificationCommandsPlaceholder}
+            rows={3}
+            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+          />
+        </div>
+      </div>
 
       {investValidation && investChecks && (
         <div className="space-y-2 border-t border-slate-200/70 pt-2 dark:border-slate-700/70">

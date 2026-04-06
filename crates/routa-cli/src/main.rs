@@ -33,7 +33,7 @@ pub struct Cli {
     workspace_id: String,
 
     /// ACP provider for agent sessions (used with -p prompt mode)
-    #[arg(long, default_value = "opencode")]
+    #[arg(long, default_value = "claude")]
     provider: String,
 
     #[command(subcommand)]
@@ -152,8 +152,8 @@ enum Commands {
         /// Workspace ID
         #[arg(long, default_value = "default")]
         workspace_id: String,
-        /// ACP provider to use (e.g. "opencode")
-        #[arg(long, default_value = "opencode")]
+        /// ACP provider to use (e.g. "claude")
+        #[arg(long, default_value = "claude")]
         provider: String,
         /// Agent role: ROUTA, CRAFTER, GATE, or DEVELOPER
         #[arg(long, default_value = "DEVELOPER")]
@@ -423,7 +423,7 @@ enum SessionAction {
         #[arg(long)]
         workspace_id: Option<String>,
         /// ACP provider fallback if the session has no provider
-        #[arg(long, default_value = "opencode")]
+        #[arg(long, default_value = "claude")]
         provider: String,
         /// Agent role fallback if the session has no role
         #[arg(long, default_value = "DEVELOPER")]
@@ -663,7 +663,7 @@ enum TeamAction {
         #[arg(long, short = 'w', default_value = "default")]
         workspace_id: String,
         /// ACP provider for all team members
-        #[arg(long, default_value = "opencode")]
+        #[arg(long, default_value = "claude")]
         provider: String,
         /// Enter interactive mode after initial delegation
         #[arg(long, short = 'i', default_value_t = true)]

@@ -11,6 +11,9 @@ export type TaskDraft = {
   title: string;
   objectiveHtml: string;
   testCases: string;
+  scope: string;
+  acceptanceCriteria: string;
+  verificationCommands: string;
   priority: string;
   labels: string;
   createGitHubIssue: boolean;
@@ -21,6 +24,9 @@ export const EMPTY_DRAFT: TaskDraft = {
   title: "",
   objectiveHtml: "",
   testCases: "",
+  scope: "",
+  acceptanceCriteria: "",
+  verificationCommands: "",
   priority: "medium",
   labels: "",
   createGitHubIssue: false,
@@ -166,6 +172,39 @@ export function KanbanCreateModal({
             <div className="mt-1 text-xs text-slate-400 dark:text-slate-500">
               {t.kanbanCreate.testCasesHint}
             </div>
+          </div>
+
+          <div>
+            <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.scope}</div>
+            <textarea
+              value={draft.scope}
+              onChange={(e) => setDraft((d) => ({ ...d, scope: e.target.value }))}
+              placeholder={t.kanbanCreate.scopePlaceholder}
+              rows={2}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+            />
+          </div>
+
+          <div>
+            <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.acceptanceCriteria}</div>
+            <textarea
+              value={draft.acceptanceCriteria}
+              onChange={(e) => setDraft((d) => ({ ...d, acceptanceCriteria: e.target.value }))}
+              placeholder={t.kanbanCreate.acceptanceCriteriaPlaceholder}
+              rows={3}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+            />
+          </div>
+
+          <div>
+            <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.verificationCommands}</div>
+            <textarea
+              value={draft.verificationCommands}
+              onChange={(e) => setDraft((d) => ({ ...d, verificationCommands: e.target.value }))}
+              placeholder={t.kanbanCreate.verificationCommandsPlaceholder}
+              rows={3}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-3">

@@ -354,7 +354,7 @@ pub async fn provide_artifact(
 fn parse_artifact_type(value: &str) -> Result<ArtifactType, RpcError> {
     ArtifactType::from_str(value).ok_or_else(|| {
         RpcError::BadRequest(format!(
-            "Invalid artifact type: {}. Expected one of: screenshot, test_results, code_diff, logs",
+            "Invalid artifact type: {}. Expected one of: screenshot, test_results, code_diff, logs, document",
             value
         ))
     })

@@ -73,7 +73,7 @@ export interface KanbanDevSessionSupervisionInfo {
 
 export interface ArtifactInfo {
   id: string;
-  type: "screenshot" | "test_results" | "code_diff" | "logs";
+  type: "screenshot" | "test_results" | "code_diff" | "logs" | "document";
   taskId: string;
   providedByAgentId?: string;
   requestedByAgentId?: string;
@@ -276,7 +276,7 @@ export interface KanbanColumnAutomationInfo {
   skillId?: string;
   authConfigId?: string;
   transitionType?: "entry" | "exit" | "both";
-  requiredArtifacts?: ("screenshot" | "test_results" | "code_diff")[];
+  requiredArtifacts?: ("screenshot" | "test_results" | "code_diff" | "document")[];
   requiredTaskFields?: KanbanRequiredTaskField[];
   autoAdvanceOnSuccess?: boolean;
 }

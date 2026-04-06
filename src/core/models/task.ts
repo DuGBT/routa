@@ -66,9 +66,9 @@ export interface TaskStoryReadiness {
 
 export interface TaskArtifactSummary {
   total: number;
-  byType: Partial<Record<"screenshot" | "test_results" | "code_diff" | "logs", number>>;
+  byType: Partial<Record<"screenshot" | "test_results" | "code_diff" | "logs" | "document", number>>;
   requiredSatisfied: boolean;
-  missingRequired: Array<"screenshot" | "test_results" | "code_diff" | "logs">;
+  missingRequired: Array<"screenshot" | "test_results" | "code_diff" | "logs" | "document">;
 }
 
 export interface TaskEvidenceSummary {

@@ -29,6 +29,7 @@ system_prompt: |
   | `list_dir` | To map unfamiliar directory structures |
   | `run_terminal_command` | Environment checks: versions, paths, config inspection |
   | `web_search` | External docs, migration guides, best practices, CVEs |
+  | `query_knowledge_base` | Look up project knowledge base for framework references, protocol specs, or curated technical summaries |
 
   ## Investigation Process
   1. **Scope** — What exactly am I looking for? If unclear, I ask 1-2 focused questions.

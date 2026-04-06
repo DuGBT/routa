@@ -9,7 +9,7 @@
  * - Logs (for debugging)
  */
 
-export type ArtifactType = "screenshot" | "test_results" | "code_diff" | "logs";
+export type ArtifactType = "screenshot" | "test_results" | "code_diff" | "logs" | "document";
 
 export type ArtifactStatus = "pending" | "provided" | "expired";
 

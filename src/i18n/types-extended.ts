@@ -530,6 +530,7 @@ export interface ExtendedTranslationDictionarySections extends TailTranslationDi
     testResultsType: string;
     codeDiffType: string;
     logsType: string;
+    documentType: string;
     byAgent: string;
     failedToLoadArtifacts: string;
     // Card activity (residual hardcoded strings)
@@ -697,6 +698,7 @@ export interface ExtendedTranslationDictionarySections extends TailTranslationDi
     readyForDev: string;
     blockedForDev: string;
     missingFields: string;
+    editFields: string;
     repo: string;
     allRequiredFields: string;
     present: string;
@@ -1030,6 +1032,12 @@ export interface ExtendedTranslationDictionarySections extends TailTranslationDi
     testCases: string;
     testCasesPlaceholder: string;
     testCasesHint: string;
+    scope: string;
+    scopePlaceholder: string;
+    acceptanceCriteria: string;
+    acceptanceCriteriaPlaceholder: string;
+    verificationCommands: string;
+    verificationCommandsPlaceholder: string;
     createLinkedGithubIssue: string;
     noGithubLinked: string;
     linkRepositories: string;

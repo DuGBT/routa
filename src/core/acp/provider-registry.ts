@@ -57,10 +57,10 @@ export interface ParsedModelId {
  *
  * Examples:
  * - "claude:opus-4.6" → { providerId: "claude", modelId: "opus-4.6" }
- * - "opus-4.6" → { providerId: "opencode", modelId: "opus-4.6" }
- * - "sonnet-4.5" → { providerId: "opencode", modelId: "sonnet-4.5" }
+ * - "opus-4.6" → { providerId: "claude", modelId: "opus-4.6" }
+ * - "sonnet-4.5" → { providerId: "claude", modelId: "sonnet-4.5" }
  */
-export function parseCompoundModelId(compoundModelId: string, defaultProviderId = "opencode"): ParsedModelId {
+export function parseCompoundModelId(compoundModelId: string, defaultProviderId = "claude"): ParsedModelId {
   if (compoundModelId.includes(":")) {
     const [providerId, ...modelParts] = compoundModelId.split(":");
     return { providerId, modelId: modelParts.join(":") };
@@ -101,7 +101,7 @@ export function getModelForProvider(providerId: string, tier: ModelTierType): st
  * Get the default provider ID.
  */
 export function getDefaultProviderId(): string {
-  return "opencode";
+  return "claude";
 }
 
 // ─── Provider Registry ─────────────────────────────────────────────────────

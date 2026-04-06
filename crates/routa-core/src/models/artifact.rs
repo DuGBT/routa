@@ -12,6 +12,8 @@ pub enum ArtifactType {
     CodeDiff,
     #[serde(rename = "logs")]
     Logs,
+    #[serde(rename = "document")]
+    Document,
 }
 
 impl ArtifactType {
@@ -21,6 +23,7 @@ impl ArtifactType {
             Self::TestResults => "test_results",
             Self::CodeDiff => "code_diff",
             Self::Logs => "logs",
+            Self::Document => "document",
         }
     }
 
@@ -31,6 +34,7 @@ impl ArtifactType {
             "test_results" => Some(Self::TestResults),
             "code_diff" => Some(Self::CodeDiff),
             "logs" => Some(Self::Logs),
+            "document" => Some(Self::Document),
             _ => None,
         }
     }

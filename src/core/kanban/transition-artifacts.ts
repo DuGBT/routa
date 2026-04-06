@@ -15,6 +15,7 @@ const ARTIFACT_LABELS: Record<string, string> = {
   test_results: "Test Results",
   code_diff: "Code Diff",
   logs: "Logs",
+  document: "Document",
 };
 
 export function formatArtifactLabel(artifact: string): string {

@@ -315,7 +315,7 @@ export async function POST(request: NextRequest) {
 
       if (method === "session/new") {
         const provider = ((params ?? {}) as Record<string, unknown>).provider as string | undefined;
-        const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "opencode";
+        const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "claude";
         const effectiveProvider = provider ?? defaultProvider;
         if (runnerUrl && shouldUseRunnerForProvider(effectiveProvider)) {
           const forwardedResponse = await proxyRequestToRunner(request, {
@@ -416,7 +416,7 @@ export async function POST(request: NextRequest) {
     // ── session/new ────────────────────────────────────────────────────
     // Spawn an ACP agent process and create a session.
     // Optional `provider` param selects the agent.
-    // Default provider: claude-code-sdk in serverless (Vercel), opencode otherwise.
+    // Default provider: claude-code-sdk in serverless (Vercel), claude otherwise.
     // For `claude` provider: spawns Claude Code with stream-json + MCP.
     // Supports idempotencyKey to prevent duplicate session creation.
     if (method === "session/new") {

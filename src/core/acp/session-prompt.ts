@@ -229,7 +229,7 @@ async function ensurePromptSessionExists(args: {
   const storedSession = store.getSession(sessionId);
   const persistedSession = storedSession ? null : await loadSessionFromLocalStorage(sessionId);
   const cwd = storedSession?.cwd ?? persistedSession?.cwd ?? (params.cwd as string | undefined) ?? process.cwd();
-  const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "opencode";
+  const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "claude";
   const provider = (params.provider as string | undefined) ?? storedSession?.provider ?? persistedSession?.provider ?? defaultProvider;
   const workspaceId = requireWorkspaceId(params.workspaceId) ?? storedSession?.workspaceId ?? persistedSession?.workspaceId;
   if (!workspaceId) {

@@ -163,10 +163,10 @@ export async function handleSessionNew({
   const specialist = await loadSpecialistConfig(specialistId, specialistLocale);
   const customSystemPrompt = (p.systemPrompt as string | undefined)?.trim() || undefined;
 
-  const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "opencode";
+  const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "claude";
   const requestedProvider = (p.provider as string | undefined);
   const provider = specialistId === "team-agent-lead" &&
-    (requestedProvider ?? specialist?.defaultProvider ?? defaultProvider) === "opencode" &&
+    (requestedProvider ?? specialist?.defaultProvider ?? defaultProvider) === "claude" &&
     isClaudeCodeSdkConfigured()
     ? "claude-code-sdk"
     : requestedProvider ?? specialist?.defaultProvider ?? defaultProvider;

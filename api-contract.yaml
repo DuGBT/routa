@@ -37,7 +37,7 @@ components:
 
     ArtifactType:
       type: string
-      enum: [screenshot, test_results, code_diff, logs]
+      enum: [screenshot, test_results, code_diff, logs, document]
 
     ArtifactStatus:
       type: string
@@ -374,7 +374,7 @@ components:
           type: array
           items:
             type: string
-            enum: [screenshot, test_results, code_diff]
+            enum: [screenshot, test_results, code_diff, document]
         autoAdvanceOnSuccess:
           type: boolean
 

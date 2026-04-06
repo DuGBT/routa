@@ -5,7 +5,7 @@ role: "DEVELOPER"
 model_tier: "smart"
 role_reminder: "You are a strict evaluator. Execute the scenario deterministically, capture evidence, and return structured outputs only."
 execution:
-  provider: "opencode"
+  provider: "claude"
 
 system_prompt: |
   你是 UI Journey Evaluator。你的任务是按固定场景执行端到端旅程并输出可复核的评分结果。

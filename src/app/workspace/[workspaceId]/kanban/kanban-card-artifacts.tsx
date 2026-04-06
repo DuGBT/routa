@@ -7,6 +7,7 @@ import type { ArtifactType } from "@/core/models/artifact";
 import { useTranslation } from "@/i18n";
 import type { TranslationDictionary } from "@/i18n";
 import type { ArtifactInfo } from "../types";
+import { MarkdownViewer } from "@/client/components/markdown/markdown-viewer";
 
 interface KanbanCardArtifactsProps {
   taskId: string;
@@ -21,6 +22,7 @@ function getArtifactLabels(t: TranslationDictionary): Record<ArtifactType, strin
     test_results: t.kanban.testResultsType,
     code_diff: t.kanban.codeDiffType,
     logs: t.kanban.logsType,
+    document: t.kanban.documentType,
   };
 }
 
@@ -312,6 +314,10 @@ export function KanbanCardArtifacts({
                           />
                         </details>
                       ))}
+                    </div>
+                  ) : artifact.type === "document" && artifact.content ? (
+                    <div className="mt-3 overflow-x-auto border border-slate-200 px-3 py-2 dark:border-slate-700">
+                      <MarkdownViewer content={artifact.content} className="text-xs leading-5 text-slate-700 dark:text-slate-300" />
                     </div>
                   ) : artifact.content ? (
                     <pre className="mt-3 overflow-x-auto border border-slate-200 px-3 py-2 text-xs leading-5 text-slate-700 dark:border-slate-700 dark:text-slate-300">

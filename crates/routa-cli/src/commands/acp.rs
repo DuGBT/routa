@@ -24,8 +24,8 @@ pub enum AcpAction {
         /// Workspace ID
         #[arg(long, default_value = "default")]
         workspace_id: String,
-        /// Default ACP provider for child agents (e.g. "opencode", "claude")
-        #[arg(long, default_value = "opencode")]
+        /// Default ACP provider for child agents (e.g. "claude", "opencode")
+        #[arg(long, default_value = "claude")]
         provider: String,
     },
     /// Install an ACP agent (downloads runtime if needed).

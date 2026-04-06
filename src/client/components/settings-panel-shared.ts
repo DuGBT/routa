@@ -122,7 +122,10 @@ export function loadModelDefinitions(): ModelDefinition[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(MODEL_DEFINITIONS_KEY);
-    return raw ? (JSON.parse(raw) as ModelDefinition[]) : [];
+    if (raw) return JSON.parse(raw) as ModelDefinition[];
+    // First load — seed with wcc defaults
+    saveModelDefinitions(DEFAULT_MODEL_DEFINITIONS);
+    return [...DEFAULT_MODEL_DEFINITIONS];
   } catch {
     return [];
   }
@@ -184,6 +187,34 @@ export const BASE_URL_SUGGESTIONS = [
   "https://api.openai.com/v1",
   "https://api.anthropic.com/v1",
   "https://generativelanguage.googleapis.com/v1beta/openai",
+];
+
+/** Default model definitions pre-populated from wcc presets (first-load only) */
+export const DEFAULT_MODEL_DEFINITIONS: ModelDefinition[] = [
+  {
+    alias: "GLM-5 (智谱)",
+    modelName: "glm-5-turbo",
+    baseUrl: "https://open.bigmodel.cn/api/anthropic",
+    apiKey: "fd1bfd6ca8824eb2aaa05cbfce9a6c4c.5McSAWyvlCEdwf5W",
+  },
+  {
+    alias: "GLM-5.1 (智谱)",
+    modelName: "glm-5.1",
+    baseUrl: "https://open.bigmodel.cn/api/anthropic",
+    apiKey: "fd1bfd6ca8824eb2aaa05cbfce9a6c4c.5McSAWyvlCEdwf5W",
+  },
+  {
+    alias: "GLM-5V (智谱)",
+    modelName: "glm-5v-turbo",
+    baseUrl: "https://open.bigmodel.cn/api/anthropic",
+    apiKey: "fd1bfd6ca8824eb2aaa05cbfce9a6c4c.5McSAWyvlCEdwf5W",
+  },
+  {
+    alias: "MiniMax-M2.7",
+    modelName: "MiniMax-M2.7-highspeed",
+    baseUrl: "https://api.minimaxi.com/anthropic",
+    apiKey: "sk-cp-a-yX2ewtwObr0ojhAZ9jmFbj8cbE0YhHKXu0797rM33DSD9uCgXciw_Yrkw2noIiXJgkaHOlcGSn4XJsAIA9B_Ln39J74DmNobcEawxTr66dDOmimbi3674",
+  },
 ];
 
 export const EMPTY_MODEL_FORM: ModelDefinition = { alias: "", modelName: "", baseUrl: "", apiKey: "" };
