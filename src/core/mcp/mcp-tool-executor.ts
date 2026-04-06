@@ -573,9 +573,14 @@ export async function executeMcpTool(
 
     // ── Knowledge base tools ─────────────────────────────────────────
     case "query_knowledge_base": {
-      const { loadKbIndex, queryKb } = await import("@/core/knowledge");
-      const repoRoot = process.cwd();
-      const index = loadKbIndex(repoRoot);
+      const { buildHybridKbIndex, queryKb } = await import("@/core/knowledge");
+      const { getRoutaSystem } = await import("../routa-system");
+      const system = getRoutaSystem();
+      const index = await buildHybridKbIndex({
+        workspaceId: workspace,
+        noteStore: system.noteStore,
+        repoRoot: process.cwd(),
+      });
       const kbQuery = args.query as string | undefined;
       if (!kbQuery) {
         return formatResult({ success: false, error: "query is required" });
@@ -586,9 +591,18 @@ export async function executeMcpTool(
       return formatResult({ success: true, data: result });
     }
     case "kb_health_check": {
-      const { loadWikiEntries, checkLinkHealth } = await import("@/core/knowledge");
-      const wikiDir = path.join(process.cwd(), "docs", "references", "wiki");
-      const entries = loadWikiEntries(wikiDir);
+      const { loadWikiEntries, loadNoteKbEntries, checkLinkHealth, getWikiDir } =
+        await import("@/core/knowledge");
+      const { getRoutaSystem } = await import("../routa-system");
+      const system = getRoutaSystem();
+      const fsEntries = loadWikiEntries(getWikiDir(process.cwd()));
+      const noteEntries = await loadNoteKbEntries(system.noteStore, workspace);
+      // Workspace-wins dedup: notes override fs entries with the same slug
+      const bySlug = new Map<string, (typeof fsEntries)[number]>();
+      for (const e of fsEntries) bySlug.set(e.slug, e);
+      for (const e of noteEntries) bySlug.set(e.slug, e);
+      const entries = [...bySlug.values()];
+
       const slugFilter = args.slugs as string[] | undefined;
       const filtered = slugFilter
         ? entries.filter((e) => slugFilter.includes(e.slug))

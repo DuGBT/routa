@@ -11,7 +11,14 @@ export type KbEntryHealth = "good" | "stale" | "broken" | "unknown";
 /** Status of source URL health checks */
 export type KbLinkStatus = "ok" | "broken" | "unverified";
 
-/** A single wiki entry's frontmatter metadata */
+/** Where a KB entry came from */
+export type KbEntryOrigin =
+  /** Repo-level fs file at docs/references/wiki/{slug}.md (shared across all workspaces) */
+  | "fs"
+  /** Workspace-scoped note with wikiFrontmatter */
+  | "note";
+
+/** A single wiki entry's frontmatter metadata, plus enough to render search results inline */
 export interface KbEntryMeta {
   title: string;
   slug: string;
@@ -20,12 +27,16 @@ export interface KbEntryMeta {
   compiled_by: string;
   health: KbEntryHealth;
   tags: string[];
+  /** Short summary used in query results (no fs round-trip needed) */
+  summary: string;
+  /** Where this entry came from */
+  origin: KbEntryOrigin;
+  /** For origin=fs: absolute file path. For origin=note: `${workspaceId}/${noteId}` */
+  sourceRef: string;
 }
 
 /** A full wiki entry with content sections */
 export interface KbEntry extends KbEntryMeta {
-  summary: string;
-  path: string;
   /** Map of section heading → section body text */
   sections: Record<string, string>;
   /** Slugs of related wiki entries (from cross-references) */

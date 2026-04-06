@@ -221,10 +221,11 @@ async function startKanbanTaskSession(
     evidenceSummary: await buildTaskEvidenceSummary(taskForSession, system),
     storyReadiness: await buildTaskStoryReadiness(taskForSession, system),
     investValidation: buildTaskInvestValidation(taskForSession),
-    knowledgeContext: buildKnowledgeContext(
+    knowledgeContext: await buildKnowledgeContext(
       nextTask.labels ?? [],
-      3,
+      nextTask.workspaceId,
       nextTask.scope,
+      3,
     ),
   };
 

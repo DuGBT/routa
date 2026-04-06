@@ -1,14 +1,22 @@
 /**
  * KB Index Builder
  *
- * Builds a search index from wiki/*.md entries.
- * Uses simple inverted-index approach (no vector DB needed for <1000 entries).
+ * Builds a search index from KB entries (sourced from fs wiki and/or workspace
+ * notes with wikiFrontmatter). Uses a simple inverted-index approach
+ * (no vector DB needed for <1000 entries).
+ *
+ * Two layers:
+ *   1. `buildKbIndexFromEntries(entries)` — pure builder, source-agnostic
+ *   2. `buildKbIndex(wikiDir)`            — fs-only convenience
+ *      `buildHybridKbIndex({...})`        — workspace notes ∪ fs (workspace wins on slug clash)
  */
 
 import fs from "fs";
 import path from "path";
-import type { KbIndex, KbEntryMeta, KbQueryResult } from "./types";
-import { loadWikiEntries, parseWikiEntry } from "./kb-frontmatter";
+import type { KbIndex, KbEntry, KbEntryMeta, KbQueryResult } from "./types";
+import { loadWikiEntries } from "./kb-frontmatter";
+import { loadNoteKbEntries } from "./note-kb-source";
+import type { NoteStore } from "../store/note-store";
 
 const KB_INDEX_FILENAME = ".kb-index.json";
 
@@ -37,36 +45,35 @@ function tokenize(text: string): string[] {
     .filter((token) => token.length > 1 && !STOP_WORDS.has(token));
 }
 
-/** Extract entry metadata from a full KbEntry */
-function entryToMeta(entry: { title: string; slug: string; source_urls: string[]; last_compiled: string; compiled_by: string; health: string; tags: string[] }): KbEntryMeta {
+function entryToMeta(entry: KbEntry): KbEntryMeta {
   return {
     title: entry.title,
     slug: entry.slug,
     source_urls: entry.source_urls,
     last_compiled: entry.last_compiled,
     compiled_by: entry.compiled_by,
-    health: entry.health as KbEntryMeta["health"],
+    health: entry.health,
     tags: entry.tags,
+    summary: entry.summary,
+    origin: entry.origin,
+    sourceRef: entry.sourceRef,
   };
 }
 
 /**
- * Build a KbIndex from all wiki entries in a directory.
+ * Build a KbIndex from an arbitrary list of entries.
+ * Source-agnostic — works for fs entries, note entries, or any union.
  */
-export function buildKbIndex(wikiDir: string): KbIndex {
-  const entries = loadWikiEntries(wikiDir);
-
+export function buildKbIndexFromEntries(entries: KbEntry[]): KbIndex {
   const tagIndex: Record<string, string[]> = {};
   const searchIndex: Record<string, string[]> = {};
 
   for (const entry of entries) {
-    // Tag index
     for (const tag of entry.tags) {
       const normalized = tag.toLowerCase();
       tagIndex[normalized] = [...(tagIndex[normalized] ?? []), entry.slug];
     }
 
-    // Search index — tokenize title, summary, and tags
     const searchText = [entry.title, entry.summary, entry.tags.join(" ")].join(" ");
     const tokens = tokenize(searchText);
     for (const token of tokens) {
@@ -84,14 +91,47 @@ export function buildKbIndex(wikiDir: string): KbIndex {
 }
 
 /**
- * Load or rebuild the KB index from disk.
- * If the index file doesn't exist or is stale, rebuilds from wiki/ files.
+ * Build a KbIndex from all wiki entries in a directory (fs-only).
+ */
+export function buildKbIndex(wikiDir: string): KbIndex {
+  return buildKbIndexFromEntries(loadWikiEntries(wikiDir));
+}
+
+/**
+ * Build a workspace-aware hybrid KbIndex by merging:
+ *   - workspace notes that carry wikiFrontmatter (primary)
+ *   - repo-level fs wiki entries at docs/references/wiki/*.md (fallback baseline)
+ *
+ * Slug collisions are resolved with workspace-wins semantics: a workspace note
+ * overrides any fs entry with the same slug.
+ */
+export async function buildHybridKbIndex(opts: {
+  workspaceId: string;
+  noteStore: NoteStore;
+  repoRoot: string;
+}): Promise<KbIndex> {
+  const fsEntries = loadWikiEntries(getWikiDir(opts.repoRoot));
+  const noteEntries = await loadNoteKbEntries(opts.noteStore, opts.workspaceId);
+
+  const bySlug = new Map<string, KbEntry>();
+  for (const entry of fsEntries) {
+    bySlug.set(entry.slug, entry);
+  }
+  for (const entry of noteEntries) {
+    bySlug.set(entry.slug, entry); // workspace overrides fs
+  }
+
+  return buildKbIndexFromEntries([...bySlug.values()]);
+}
+
+/**
+ * Load or rebuild the fs-only KB index from disk.
+ * Used as a fallback when no workspace context is available.
  */
 export function loadKbIndex(repoRoot: string): KbIndex {
   const indexPath = path.join(repoRoot, "docs", "references", KB_INDEX_FILENAME);
   const wikiDir = path.join(repoRoot, "docs", "references", "wiki");
 
-  // Try loading existing index
   if (fs.existsSync(indexPath)) {
     try {
       const cached: KbIndex = JSON.parse(fs.readFileSync(indexPath, "utf-8"));
@@ -103,10 +143,8 @@ export function loadKbIndex(repoRoot: string): KbIndex {
     }
   }
 
-  // Build fresh index
   const index = buildKbIndex(wikiDir);
 
-  // Persist to disk
   try {
     fs.writeFileSync(indexPath, JSON.stringify(index, null, 2), "utf-8");
   } catch {
@@ -117,16 +155,15 @@ export function loadKbIndex(repoRoot: string): KbIndex {
 }
 
 /**
- * Query the knowledge base index for entries matching a query string.
+ * Query a KbIndex for entries matching a query string.
+ * Pure: relies on inline summary in the index, no fs round-trips.
  */
 export function queryKb(index: KbIndex, query: string, tags?: string[], limit = 5): KbQueryResult {
   const queryTokens = tokenize(query);
   const tagSet = new Set((tags ?? []).map((t) => t.toLowerCase()));
 
-  // Score each entry by how many query tokens match
   const scores = new Map<string, number>();
 
-  // Token-based scoring
   for (const token of queryTokens) {
     const matching = index.searchIndex[token] ?? [];
     for (const slug of matching) {
@@ -134,7 +171,6 @@ export function queryKb(index: KbIndex, query: string, tags?: string[], limit = 
     }
   }
 
-  // Tag-based scoring (higher weight)
   for (const tag of tagSet) {
     const matching = index.tagIndex[tag] ?? [];
     for (const slug of matching) {
@@ -142,7 +178,7 @@ export function queryKb(index: KbIndex, query: string, tags?: string[], limit = 
     }
   }
 
-  // If no scores, try fuzzy matching against tags
+  // Fuzzy fallback: tag substring matching
   if (scores.size === 0) {
     for (const token of queryTokens) {
       for (const [tag, slugs] of Object.entries(index.tagIndex)) {
@@ -155,7 +191,6 @@ export function queryKb(index: KbIndex, query: string, tags?: string[], limit = 
     }
   }
 
-  // Sort by score descending
   const ranked = [...scores.entries()]
     .sort((a, b) => b[1] - a[1])
     .slice(0, limit);
@@ -166,11 +201,10 @@ export function queryKb(index: KbIndex, query: string, tags?: string[], limit = 
     .map(([slug, score]) => {
       const meta = metaMap.get(slug);
       if (!meta) return null;
-      const entry = loadSingleEntrySummary(slug);
       return {
         slug,
         title: meta.title,
-        summary: entry?.summary ?? "",
+        summary: meta.summary,
         tags: meta.tags,
         health: meta.health,
         score,
@@ -182,7 +216,7 @@ export function queryKb(index: KbIndex, query: string, tags?: string[], limit = 
 }
 
 /**
- * Rebuild and persist the KB index to disk.
+ * Rebuild and persist the fs-only KB index to disk.
  */
 export function rebuildKbIndex(repoRoot: string): KbIndex {
   const indexPath = path.join(repoRoot, "docs", "references", KB_INDEX_FILENAME);
@@ -199,38 +233,12 @@ export function rebuildKbIndex(repoRoot: string): KbIndex {
   return index;
 }
 
-/**
- * Get the full path to the wiki directory.
- */
+/** Path to the fs wiki directory */
 export function getWikiDir(repoRoot: string): string {
   return path.join(repoRoot, "docs", "references", "wiki");
 }
 
-/**
- * Get the full path to the raw directory.
- */
+/** Path to the raw references directory */
 export function getRawDir(repoRoot: string): string {
   return path.join(repoRoot, "docs", "references", "raw");
-}
-
-/** Load a single wiki entry summary by slug for query results */
-function loadSingleEntrySummary(slug: string): { summary: string } | null {
-  const wikiDir = path.join(process.cwd(), "docs", "references", "wiki");
-  const candidates = [
-    path.join(wikiDir, `${slug}.md`),
-    path.join(wikiDir, `${slug.replace(/-/g, "_")}.md`),
-  ];
-
-  for (const candidate of candidates) {
-    if (!fs.existsSync(candidate)) continue;
-    try {
-      const source = fs.readFileSync(candidate, "utf-8");
-      const entry = parseWikiEntry(candidate, source);
-      if (entry) return { summary: entry.summary };
-    } catch {
-      // Ignore
-    }
-  }
-
-  return null;
 }

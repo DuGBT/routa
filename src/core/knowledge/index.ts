@@ -9,6 +9,7 @@ export type {
   KbEntry,
   KbEntryMeta,
   KbEntryHealth,
+  KbEntryOrigin,
   KbLinkStatus,
   KbLinkCheck,
   KbIndex,
@@ -23,7 +24,14 @@ export {
 } from "./kb-frontmatter";
 
 export {
+  noteToKbEntry,
+  loadNoteKbEntries,
+} from "./note-kb-source";
+
+export {
   buildKbIndex,
+  buildKbIndexFromEntries,
+  buildHybridKbIndex,
   loadKbIndex,
   queryKb,
   rebuildKbIndex,

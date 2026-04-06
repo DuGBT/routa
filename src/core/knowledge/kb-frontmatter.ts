@@ -152,7 +152,8 @@ export function parseWikiEntry(filePath: string, source: string): KbEntry | null
     health: healthStr as KbEntry["health"],
     tags,
     summary,
-    path: filePath,
+    origin: "fs",
+    sourceRef: filePath,
     sections,
     crossRefs,
   };
