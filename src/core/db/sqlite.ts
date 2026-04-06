@@ -217,11 +217,13 @@ function initializeSqliteTables(db: SqliteDatabase): void {
       parent_note_id TEXT,
       linked_task_id TEXT,
       custom_metadata TEXT,
+      wiki_frontmatter TEXT,
       created_at INTEGER NOT NULL DEFAULT (unixepoch('now') * 1000),
       updated_at INTEGER NOT NULL DEFAULT (unixepoch('now') * 1000),
       PRIMARY KEY (workspace_id, id)
     )
   `);
+  runAddColumn(sql`ALTER TABLE notes ADD COLUMN wiki_frontmatter TEXT`);
 
   db.run(sql`
     CREATE TABLE IF NOT EXISTS messages (

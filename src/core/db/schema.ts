@@ -18,6 +18,7 @@ import {
 } from "drizzle-orm/pg-core";
 import type { KanbanColumn } from "../models/kanban";
 import type { TaskLaneHandoff, TaskLaneSession } from "../models/task";
+import type { WikiFrontmatter } from "../models/note";
 
 // ─── Workspaces ─────────────────────────────────────────────────────
 
@@ -142,6 +143,8 @@ export const notes = pgTable(
     parentNoteId: text("parent_note_id"),
     linkedTaskId: text("linked_task_id"),
     customMetadata: jsonb("custom_metadata").$type<Record<string, string>>(),
+    /** Structured frontmatter for notes that act as KB/wiki entries (presence = wiki entry) */
+    wikiFrontmatter: jsonb("wiki_frontmatter").$type<WikiFrontmatter>(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },

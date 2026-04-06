@@ -12,6 +12,29 @@ import { TaskStatus } from "./task";
 
 export type NoteType = "spec" | "task" | "general";
 
+/** Health status of a wiki/KB entry */
+export type KbEntryHealth = "good" | "stale" | "broken" | "unknown";
+
+/**
+ * Structured metadata for notes that act as knowledge base / wiki entries.
+ * The presence of this field on a note signals "this note is a wiki entry";
+ * absence means it's a regular spec/task/general note.
+ */
+export interface WikiFrontmatter {
+  /** Stable kebab-case identifier, unique within workspace */
+  slug: string;
+  /** Tags for filtering and search */
+  tags: string[];
+  /** Source URLs for verification and traceability */
+  sourceUrls: string[];
+  /** Health status of this entry */
+  health: KbEntryHealth;
+  /** ISO date string when this entry was last compiled (e.g. "2026-04-06") */
+  lastCompiled?: string;
+  /** Identifier of the agent or user who compiled this entry */
+  compiledBy?: string;
+}
+
 export interface NoteMetadata {
   /** Note type classification */
   type: NoteType;
@@ -25,6 +48,11 @@ export interface NoteMetadata {
   linkedTaskId?: string;
   /** Custom key-value metadata */
   custom?: Record<string, string>;
+  /**
+   * If set, this note is a knowledge base / wiki entry.
+   * Used by the KB indexer for tag/health/search filtering.
+   */
+  wikiFrontmatter?: WikiFrontmatter;
 }
 
 export interface Note {
@@ -64,6 +92,7 @@ export function createNote(params: {
       parentNoteId: params.metadata?.parentNoteId,
       linkedTaskId: params.metadata?.linkedTaskId,
       custom: params.metadata?.custom,
+      wikiFrontmatter: params.metadata?.wikiFrontmatter,
     },
     createdAt: now,
     updatedAt: now,
