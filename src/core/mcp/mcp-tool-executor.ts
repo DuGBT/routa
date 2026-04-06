@@ -5,7 +5,6 @@
  * Used by both /api/mcp route and /api/mcp/tools route.
  */
 
-import fs from "fs";
 import { AgentTools } from "@/core/tools/agent-tools";
 import { NoteTools } from "@/core/tools/note-tools";
 import { WorkspaceTools } from "@/core/tools/workspace-tools";
@@ -13,7 +12,6 @@ import { KanbanTools } from "@/core/tools/kanban-tools";
 import { getRoutaOrchestrator } from "@/core/orchestration/orchestrator-singleton";
 import { ToolMode } from "./routa-mcp-tool-manager";
 import { getMcpProfileToolAllowlist, type McpServerProfile } from "./mcp-server-profiles";
-import path from "path";
 
 async function resolveSessionProvider(sessionId: string | undefined): Promise<string | undefined> {
   if (!sessionId) return undefined;
@@ -647,11 +645,11 @@ export async function executeMcpTool(
     // ── Knowledge base: promote document artifact to wiki ──────────
     case "promote_document_to_wiki": {
       const artifactId = args.artifactId as string;
-      const slug = args.slug as string;
-      if (!artifactId || !slug) {
+      const slugArg = args.slug as string;
+      if (!artifactId || !slugArg) {
         return formatResult({ success: false, error: "artifactId and slug are required" });
       }
-      if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(slug)) {
+      if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(slugArg)) {
         return formatResult({ success: false, error: "slug must be kebab-case (lowercase, hyphens, 2+ chars)" });
       }
       const artifact = await tools.getArtifact(artifactId);
@@ -660,31 +658,64 @@ export async function executeMcpTool(
       }
       const data = artifact.data as { type?: string; content?: string };
       if (data.type !== "document") {
-        return formatResult({ success: false, error: `Artifact ${artifactId} is type "${data.type}", only "document" can be promoted` });
+        return formatResult({
+          success: false,
+          error: `Artifact ${artifactId} is type "${data.type}", only "document" can be promoted`,
+        });
       }
       if (!data.content) {
         return formatResult({ success: false, error: `Artifact ${artifactId} has no content` });
       }
-      const wikiDir = path.join(process.cwd(), "docs", "references", "wiki");
-      const targetPath = path.join(wikiDir, `${slug}.md`);
-      if (fs.existsSync(targetPath)) {
-        return formatResult({ success: false, error: `Wiki entry already exists: ${slug}.md — update it manually if needed` });
+
+      const { extractMarkdownFrontmatter } = await import("@/core/knowledge");
+      const extracted = extractMarkdownFrontmatter(data.content);
+      if (!extracted) {
+        return formatResult({
+          success: false,
+          error: `Artifact ${artifactId} content is missing required YAML frontmatter (title:, slug:)`,
+        });
       }
-      try {
-        fs.mkdirSync(wikiDir, { recursive: true });
-        fs.writeFileSync(targetPath, data.content, "utf-8");
-      } catch (writeError) {
-        return formatResult({ success: false, error: `Failed to write wiki entry: ${String(writeError)}` });
+
+      // The slug arg overrides whatever the YAML claims, for safety.
+      const finalFrontmatter = { ...extracted.frontmatter, slug: slugArg };
+
+      // Use a deterministic noteId so duplicate detection is a single get().
+      const noteId = `wiki-${slugArg}`;
+      const { getRoutaSystem } = await import("../routa-system");
+      const system = getRoutaSystem();
+      const existing = await system.noteStore.get(noteId, workspace);
+      if (existing) {
+        return formatResult({
+          success: false,
+          error: `Wiki entry already exists in this workspace: ${slugArg} — update the note directly`,
+        });
       }
-      try {
-        const { rebuildKbIndex } = await import("@/core/knowledge");
-        rebuildKbIndex(process.cwd());
-      } catch {
-        // Index rebuild is best-effort
+
+      const result = await system.noteTools.createNote({
+        title: extracted.title,
+        content: extracted.body,
+        workspaceId: workspace,
+        noteId,
+        type: "general",
+        wikiFrontmatter: finalFrontmatter,
+      });
+
+      if (!result.success) {
+        return formatResult({
+          success: false,
+          error: `Failed to create wiki note: ${result.error ?? "unknown error"}`,
+        });
       }
+
       return formatResult({
         success: true,
-        data: { slug, path: targetPath, artifactId },
+        data: {
+          slug: slugArg,
+          noteId,
+          workspaceId: workspace,
+          artifactId,
+          title: extracted.title,
+        },
       });
     }
 
@@ -737,7 +768,7 @@ export function getMcpToolDefinitions(
     // ── Knowledge base tools ────────────────────────────────────────
     {
       name: "query_knowledge_base",
-      description: "Search the project knowledge base (docs/references/wiki/) for reference material. Returns matching entries with summaries. Use this to find protocols, framework docs, or technical references before implementing.",
+      description: "Search this workspace's knowledge base for reference material. Pulls from a hybrid index of workspace-private wiki notes (created by promote_document_to_wiki or knowledge curation) and the repo-level shared wiki at docs/references/wiki/. Returns matching entries with summaries. Use this to find protocols, framework docs, or technical references before implementing.",
       inputSchema: {
         type: "object",
         properties: {
@@ -750,7 +781,7 @@ export function getMcpToolDefinitions(
     },
     {
       name: "kb_health_check",
-      description: "Check the health of knowledge base entries: verify source URLs, cross-references, and entry metadata. Optionally filter by slugs.",
+      description: "Check the health of knowledge base entries (workspace notes ∪ shared fs wiki): verify source URLs, cross-references, and entry metadata. Optionally filter by slugs.",
       inputSchema: {
         type: "object",
         properties: {
@@ -760,12 +791,12 @@ export function getMcpToolDefinitions(
     },
     {
       name: "promote_document_to_wiki",
-      description: "Promote a document-type artifact to the project knowledge base wiki. Writes the artifact content as a new wiki entry at docs/references/wiki/{slug}.md and rebuilds the search index. Does not overwrite existing entries.",
+      description: "Promote a document-type artifact into this workspace's knowledge base. The artifact content must be markdown with YAML frontmatter (title, slug, tags, source_urls, health, …). Creates a new wiki note with id 'wiki-<slug>' carrying structured wikiFrontmatter. Does not overwrite existing wiki notes in the same workspace.",
       inputSchema: {
         type: "object",
         properties: {
           artifactId: { type: "string", description: "ID of the document-type artifact to promote" },
-          slug: { type: "string", description: "Target wiki entry slug (kebab-case, e.g. 'acp-protocol')" },
+          slug: { type: "string", description: "Target wiki entry slug (kebab-case, e.g. 'acp-protocol'). Overrides the slug in the YAML frontmatter for safety." },
         },
         required: ["artifactId", "slug"],
       },

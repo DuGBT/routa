@@ -37,6 +37,12 @@ export class NoteTools {
     type?: "spec" | "task" | "general";
     /** Session ID to scope this note to a specific session */
     sessionId?: string;
+    /**
+     * If set, marks this note as a knowledge base / wiki entry.
+     * Notes carrying wikiFrontmatter participate in KB queries via the
+     * hybrid index (workspace notes ∪ fs wiki entries).
+     */
+    wikiFrontmatter?: import("../models/note").WikiFrontmatter;
   }): Promise<ToolResult> {
     const noteId = params.noteId ?? uuidv4();
 
@@ -51,7 +57,10 @@ export class NoteTools {
       content: params.content ?? "",
       workspaceId: params.workspaceId,
       sessionId: params.sessionId,
-      metadata: { type: params.type ?? "general" },
+      metadata: {
+        type: params.type ?? "general",
+        wikiFrontmatter: params.wikiFrontmatter,
+      },
     });
 
     await this.saveNote(note, "agent");
@@ -60,6 +69,9 @@ export class NoteTools {
       noteId: note.id,
       title: note.title,
       type: note.metadata.type,
+      ...(params.wikiFrontmatter && {
+        wikiSlug: params.wikiFrontmatter.slug,
+      }),
     });
   }
 

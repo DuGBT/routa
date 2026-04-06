@@ -7,7 +7,8 @@
 
 import fs from "fs";
 import path from "path";
-import type { KbEntry, KbLinkStatus } from "./types";
+import type { KbEntry, KbEntryHealth, KbLinkStatus } from "./types";
+import type { WikiFrontmatter } from "../models/note";
 
 function normalizeLineEndings(source: string): string {
   return source.replace(/\r\n?/g, "\n");
@@ -179,6 +180,67 @@ export function loadWikiEntries(wikiDir: string): KbEntry[] {
     }
   }
   return entries;
+}
+
+/**
+ * Result of splitting a markdown source into structured frontmatter + body.
+ */
+export interface ExtractedMarkdown {
+  /** Page title from `title:` frontmatter (required) */
+  title: string;
+  /** Structured wiki frontmatter, with snake_case YAML keys mapped to camelCase struct */
+  frontmatter: WikiFrontmatter;
+  /** Markdown body with the YAML frontmatter block stripped */
+  body: string;
+}
+
+const HEALTH_VALUES: ReadonlySet<KbEntryHealth> = new Set([
+  "good",
+  "stale",
+  "broken",
+  "unknown",
+]);
+
+function coerceHealth(raw: string | null | undefined): KbEntryHealth {
+  if (raw && HEALTH_VALUES.has(raw as KbEntryHealth)) {
+    return raw as KbEntryHealth;
+  }
+  return "unknown";
+}
+
+/**
+ * Parse a markdown document with YAML frontmatter into a structured
+ * `WikiFrontmatter` plus body. Returns null if the source has no usable
+ * frontmatter (missing `title:` or `slug:`).
+ *
+ * Used by `promote_document_to_wiki` to convert a document artifact into
+ * a workspace note carrying `wikiFrontmatter`.
+ */
+export function extractMarkdownFrontmatter(
+  source: string,
+): ExtractedMarkdown | null {
+  const normalized = normalizeLineEndings(source);
+  if (!normalized.startsWith("---\n")) return null;
+  const endIndex = normalized.indexOf("\n---\n", 4);
+  if (endIndex === -1) return null;
+
+  const title = extractFrontmatterValue(normalized, "title");
+  const slug = extractFrontmatterValue(normalized, "slug");
+  if (!title || !slug) return null;
+
+  const frontmatter: WikiFrontmatter = {
+    slug,
+    tags: extractFrontmatterArray(normalized, "tags"),
+    sourceUrls: extractFrontmatterArray(normalized, "source_urls"),
+    health: coerceHealth(extractFrontmatterValue(normalized, "health")),
+    lastCompiled: extractFrontmatterValue(normalized, "last_compiled") ?? undefined,
+    compiledBy: extractFrontmatterValue(normalized, "compiled_by") ?? undefined,
+  };
+
+  // Body = everything after the closing `---\n` line
+  const body = normalized.slice(endIndex + 5).replace(/^\n+/, "");
+
+  return { title, frontmatter, body };
 }
 
 /**

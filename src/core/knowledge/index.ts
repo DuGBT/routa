@@ -21,6 +21,8 @@ export {
   parseWikiEntry,
   loadWikiEntries,
   checkLinkHealth,
+  extractMarkdownFrontmatter,
+  type ExtractedMarkdown,
 } from "./kb-frontmatter";
 
 export {
