@@ -40,3 +40,10 @@ export {
   getWikiDir,
   getRawDir,
 } from "./kb-index";
+
+export {
+  archiveCompletedTaskDocuments,
+  startKbAutoArchiver,
+  type ArchiveOutcome,
+  type KbArchiveStatus,
+} from "./auto-archiver";
