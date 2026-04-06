@@ -16,7 +16,7 @@ import { usePathname } from "next/navigation";
 import { useTranslation } from "@/i18n";
 import { HarnessMark } from "./harness-mark";
 import { SettingsPopupMenu } from "./settings-popup-menu";
-import { ChevronLeft, CircleUser, Columns2, LayoutGrid, Server, Calendar, Workflow, House, Share2, MonitorUp, Monitor } from "lucide-react";
+import { ChevronLeft, CircleUser, Columns2, LayoutGrid, Server, Calendar, Workflow, House, Share2, MonitorUp, Monitor, BookOpen } from "lucide-react";
 
 
 interface NavItem {
@@ -95,6 +95,15 @@ export function DesktopSidebar({
       requiresWorkspace: true,
       icon: (
         <Share2 className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}/>
+      ),
+    },
+    {
+      id: "knowledge",
+      label: t.nav.knowledge,
+      href: workspaceBaseHref ? `${workspaceBaseHref}/knowledge` : "/",
+      requiresWorkspace: true,
+      icon: (
+        <BookOpen className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
       ),
     },
   ];
