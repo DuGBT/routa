@@ -28,11 +28,6 @@ on:
         required: false
         default: true
         type: boolean
-      publish_desktop:
-        description: "Publish desktop release assets"
-        required: false
-        default: true
-        type: boolean
       publish_crates:
         description: "Publish Rust crates to crates.io"
         required: false
@@ -63,33 +58,6 @@ jobs:
           fi
 
           echo "value=${version}" >> "$GITHUB_OUTPUT"
-
-  release-desktop:
-    name: Release desktop
-    needs: resolve-version
-    if: |
-      github.event_name == 'push' ||
-      (
-        (github.event.inputs.dry_run == 'false' || github.event.inputs.dry_run == false) &&
-        (github.event.inputs.publish_desktop == 'true' || github.event.inputs.publish_desktop == true)
-      )
-    permissions:
-      contents: write
-    uses: ./.github/workflows/tauri-release.yml
-    with:
-      version: ${{ needs.resolve-version.outputs.version }}
-    secrets: inherit
-
-  build-desktop:
-    name: Build desktop only
-    needs: resolve-version
-    if: |
-      github.event.inputs.dry_run == 'true' ||
-      github.event.inputs.dry_run == true
-    uses: ./.github/workflows/tauri-build.yml
-    with:
-      version: ${{ needs.resolve-version.outputs.version }}
-    secrets: inherit
 
   release-cli:
     name: Release CLI

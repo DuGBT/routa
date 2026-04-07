@@ -7,7 +7,6 @@ members = [
     "crates/routa-rpc",
     "crates/routa-scanner",
     "crates/routa-entrix",
-    "apps/desktop/src-tauri",
 ]
 
 [workspace.package]

@@ -666,17 +666,7 @@ async fn execute_specialist_run(
     }
 
     let launch_options = SessionLaunchOptions {
-        initialize_timeout_ms: provider_timeout_ms,
         specialist_id: Some(selected_specialist.id.clone()),
-        provider_args: (effective_provider.eq_ignore_ascii_case("codex")
-            && output_json
-            && journey_context.is_none())
-        .then(|| {
-            vec![
-                "-c".to_string(),
-                "model_reasoning_effort=\"low\"".to_string(),
-            ]
-        }),
         ..SessionLaunchOptions::default()
     };
 

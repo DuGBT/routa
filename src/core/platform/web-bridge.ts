@@ -451,18 +451,6 @@ class WebEnv implements IPlatformEnv {
     );
   }
 
-  isDesktop(): boolean {
-    return false;
-  }
-
-  isTauri(): boolean {
-    return false;
-  }
-
-  isElectron(): boolean {
-    return false;
-  }
-
   homeDir(): string {
     return require("os").homedir();
   }

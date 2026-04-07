@@ -3,7 +3,7 @@ use std::io::Write as _;
 use std::path::{Path, PathBuf};
 use std::time::{Duration, SystemTime};
 
-use routa_core::acp::{get_preset_by_id_with_registry, AcpPreset};
+use routa_core::acp::AcpPreset;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct ProviderRuntimeDiagnostic {
@@ -37,9 +37,11 @@ pub(crate) async fn verify_provider_readiness(
         return Err("Provider is empty".to_string());
     }
 
-    let preset = get_preset_by_id_with_registry(&normalized_provider)
-        .await
-        .map_err(|err| format!("Unsupported provider '{}': {}", normalized_provider, err))?;
+    let presets = routa_core::acp::get_presets();
+    let preset = presets
+        .into_iter()
+        .find(|p| p.id == normalized_provider)
+        .ok_or_else(|| format!("Unsupported provider '{}'", normalized_provider))?;
     let command = resolve_preset_command(&preset);
 
     if !command_exists(&command) {
@@ -47,11 +49,6 @@ pub(crate) async fn verify_provider_readiness(
             "Provider '{}' requires '{}' but command not found. Is it installed and in PATH?",
             normalized_provider, command
         ));
-    }
-
-    if normalized_provider == "opencode" {
-        verify_opencode_config_directory()?;
-        verify_opencode_data_directory()?;
     }
 
     if emit_warnings

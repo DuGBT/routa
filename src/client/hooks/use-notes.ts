@@ -13,7 +13,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
   desktopAwareFetch,
-  getDesktopApiBaseUrl,
   logRuntime,
   shouldSuppressTeardownError,
   toErrorMessage,
@@ -246,7 +245,7 @@ export function useNotes(workspaceId: string, sessionId?: string): UseNotesRetur
       eventSourceRef.current.close();
     }
 
-    const base = getDesktopApiBaseUrl();
+    const base = "";
     // SSE subscribes at workspace level; filtering happens client-side
     const es = new EventSource(
       `${base}/api/notes/events?workspaceId=${encodeURIComponent(workspaceId)}`

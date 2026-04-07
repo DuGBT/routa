@@ -10,7 +10,7 @@
 
 // ─── Platform Types ───────────────────────────────────────────────────────
 
-export type PlatformType = "web" | "tauri" | "electron";
+export type PlatformType = "web";
 
 // ─── Process Management ───────────────────────────────────────────────────
 
@@ -244,15 +244,6 @@ export interface IPlatformEnv {
 
   /** Running in serverless environment (Vercel, AWS Lambda, etc.) */
   isServerless(): boolean;
-
-  /** Running as desktop app (Tauri or Electron) */
-  isDesktop(): boolean;
-
-  /** Running in Tauri */
-  isTauri(): boolean;
-
-  /** Running in Electron */
-  isElectron(): boolean;
 
   /** User home directory */
   homeDir(): string;

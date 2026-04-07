@@ -1,41 +1,31 @@
 //! ACP (Agent Client Protocol) integration.
 //!
-//! Manages ACP agent processes and provides JSON-RPC communication
-//! between the desktop client and coding agents (e.g. OpenCode, Claude, Copilot).
+//! Manages Claude Code agent processes and provides JSON-RPC communication
+//! between the desktop client and Claude Code.
 //!
-//! Architecture (matches the Next.js `AcpProcessManager`):
-//!   - `session/new`    → spawns a child process, sends `initialize` + `session/new`
-//!   - `session/prompt` → reuses the live process, sends `session/prompt`
+//! Architecture:
+//!   - `session/new`    → spawns a Claude Code child process
+//!   - `session/prompt` → reuses the live process, sends prompt
 //!   - `session/cancel` → sends cancellation notification
 //!   - SSE GET          → subscribes to `broadcast` channel for `session/update` events
 //!
-//! **Claude Code** uses a different protocol (stream-json) instead of ACP.
-//! The `ClaudeCodeProcess` translates Claude's output into ACP-compatible
-//! `session/update` notifications for frontend compatibility.
+//! Claude Code uses the stream-json protocol. The `ClaudeCodeProcess` translates
+//! Claude's output into ACP-compatible `session/update` notifications for
+//! frontend compatibility.
 //!
 //! **Agent Trace**: All sessions record trace events to JSONL files for
 //! attribution tracking (which model/session/tool affected which files and when).
 
-pub mod binary_manager;
 pub mod claude_code_process;
-pub mod docker;
-pub mod installation_state;
 pub mod mcp_setup;
 pub mod paths;
-pub mod process;
 pub mod provider_adapter;
-pub mod registry_fetch;
-pub mod registry_types;
 pub mod runtime_manager;
 pub mod terminal_manager;
 pub mod warmup;
 
-pub use binary_manager::AcpBinaryManager;
 pub use claude_code_process::{ClaudeCodeConfig, ClaudeCodeProcess};
-pub use installation_state::AcpInstallationState;
 pub use paths::AcpPaths;
-pub use registry_fetch::{fetch_registry, fetch_registry_json};
-pub use registry_types::*;
 pub use runtime_manager::{current_platform, AcpRuntimeManager, RuntimeInfo, RuntimeType};
 pub use warmup::{AcpWarmupService, WarmupState, WarmupStatus};
 
@@ -46,7 +36,6 @@ use serde::{Deserialize, Serialize};
 use tokio::sync::{broadcast, RwLock};
 
 use crate::trace::{Contributor, TraceConversation, TraceEventType, TraceRecord, TraceWriter};
-use process::AcpProcess;
 
 // ─── Session Record ─────────────────────────────────────────────────────
 
@@ -83,34 +72,27 @@ pub struct SessionLaunchOptions {
     pub specialist_id: Option<String>,
     pub specialist_system_prompt: Option<String>,
     pub allowed_native_tools: Option<Vec<String>>,
-    pub initialize_timeout_ms: Option<u64>,
-    pub provider_args: Option<Vec<String>>,
 }
 
 // ─── Managed Process ────────────────────────────────────────────────────
 
-/// Process type enum to support both ACP and Claude stream-json protocols.
+/// Managed agent process (always Claude Code).
 #[derive(Clone)]
-enum AgentProcessType {
-    /// Standard ACP protocol (opencode, gemini, copilot, etc.)
-    Acp(Arc<AcpProcess>),
-    /// Claude Code stream-json protocol
-    Claude(Arc<ClaudeCodeProcess>),
-}
+struct AgentProcess(Arc<ClaudeCodeProcess>);
 
-impl AgentProcessType {
-    /// Kill the underlying process.
+impl AgentProcess {
     async fn kill(&self) {
-        match self {
-            AgentProcessType::Acp(process) => process.kill().await,
-            AgentProcessType::Claude(process) => process.kill().await,
-        }
+        self.0.kill().await;
+    }
+
+    fn is_alive(&self) -> bool {
+        self.0.is_alive()
     }
 }
 
 /// A managed agent process with its metadata.
 struct ManagedProcess {
-    process: AgentProcessType,
+    process: AgentProcess,
     /// The agent's own session ID (returned by `session/new` or claude's session_id).
     acp_session_id: String,
     preset_id: String,
@@ -374,7 +356,7 @@ impl AcpManager {
         model: Option<String>,
         parent_session_id: Option<String>,
         options: &SessionLaunchOptions,
-        process_type: AgentProcessType,
+        process: AgentProcess,
         acp_session_id: String,
         ntx: broadcast::Sender<serde_json::Value>,
     ) {
@@ -404,7 +386,7 @@ impl AcpManager {
         self.processes.write().await.insert(
             session_id.clone(),
             ManagedProcess {
-                process: process_type,
+                process,
                 acp_session_id: acp_session_id.clone(),
                 preset_id: provider_name.clone(),
                 created_at,
@@ -434,62 +416,6 @@ impl AcpManager {
     }
 
     #[allow(clippy::too_many_arguments)]
-    pub async fn create_session_from_inline(
-        &self,
-        session_id: String,
-        cwd: String,
-        workspace_id: String,
-        provider_name: String,
-        role: Option<String>,
-        model: Option<String>,
-        parent_session_id: Option<String>,
-        command: String,
-        args: Vec<String>,
-        options: SessionLaunchOptions,
-    ) -> Result<(String, String), String> {
-        let (ntx, _) = broadcast::channel::<serde_json::Value>(256);
-
-        let process = AcpProcess::spawn(
-            &command,
-            &args.iter().map(|s| s.as_str()).collect::<Vec<_>>(),
-            &cwd,
-            ntx.clone(),
-            &provider_name,
-            &session_id,
-        )
-        .await?;
-
-        process
-            .initialize_with_timeout(options.initialize_timeout_ms)
-            .await?;
-
-        let acp_session_id = process.new_session(&cwd).await?;
-        self.register_managed_session(
-            session_id.clone(),
-            cwd.clone(),
-            workspace_id.clone(),
-            provider_name.clone(),
-            role.clone(),
-            model.clone(),
-            parent_session_id.clone(),
-            &options,
-            AgentProcessType::Acp(Arc::new(process)),
-            acp_session_id.clone(),
-            ntx.clone(),
-        )
-        .await;
-
-        tracing::info!(
-            "[AcpManager] Session {} created from inline command (provider: {}, agent session: {})",
-            session_id,
-            provider_name,
-            acp_session_id,
-        );
-
-        Ok((session_id, acp_session_id))
-    }
-
-    #[allow(clippy::too_many_arguments)]
     pub async fn create_session_with_options(
         &self,
         session_id: String,
@@ -503,94 +429,33 @@ impl AcpManager {
         mcp_profile: Option<String>,
         options: SessionLaunchOptions,
     ) -> Result<(String, String), String> {
-        let provider_name = provider.as_deref().unwrap_or("opencode");
+        let provider_name = provider.as_deref().unwrap_or("claude");
 
         // Create the notification broadcast channel for this session
         let (ntx, _) = broadcast::channel::<serde_json::Value>(256);
-        let claude_mcp_config = if provider_name == "claude" {
-            Some(mcp_setup::build_claude_mcp_config(
-                &workspace_id,
-                &session_id,
-                tool_mode.as_deref(),
-                mcp_profile.as_deref(),
-            ))
-        } else {
-            None
+        let claude_mcp_config = Some(mcp_setup::build_claude_mcp_config(
+            &workspace_id,
+            &session_id,
+            tool_mode.as_deref(),
+            mcp_profile.as_deref(),
+        ));
+
+        // Use Claude Code stream-json protocol
+        let config = ClaudeCodeConfig {
+            command: "claude".to_string(),
+            cwd: cwd.clone(),
+            display_name: format!("Claude-{}", &session_id[..8.min(session_id.len())]),
+            permission_mode: Some("bypassPermissions".to_string()),
+            mcp_configs: claude_mcp_config.into_iter().collect(),
+            append_system_prompt: options.specialist_system_prompt.clone(),
+            allowed_tools: options.allowed_native_tools.clone(),
         };
 
-        // Check if this is Claude (uses stream-json protocol, not ACP)
-        let (process_type, acp_session_id) = if provider_name == "claude" {
-            // Use Claude Code stream-json protocol
-            let config = ClaudeCodeConfig {
-                command: "claude".to_string(),
-                cwd: cwd.clone(),
-                display_name: format!("Claude-{}", &session_id[..8.min(session_id.len())]),
-                permission_mode: Some("bypassPermissions".to_string()),
-                mcp_configs: claude_mcp_config.into_iter().collect(),
-                append_system_prompt: options.specialist_system_prompt.clone(),
-                allowed_tools: options.allowed_native_tools.clone(),
-            };
-
-            let claude_process = ClaudeCodeProcess::spawn(config, ntx.clone()).await?;
-            let claude_session_id = claude_process
-                .session_id()
-                .await
-                .unwrap_or_else(|| format!("claude-{}", &session_id[..8.min(session_id.len())]));
-
-            (
-                AgentProcessType::Claude(Arc::new(claude_process)),
-                claude_session_id,
-            )
-        } else {
-            // Use standard ACP protocol
-            let preset = get_preset_by_id_with_registry(provider_name).await?;
-
-            if let Some(summary) = mcp_setup::ensure_mcp_for_provider(
-                provider_name,
-                &workspace_id,
-                &session_id,
-                tool_mode.as_deref(),
-                mcp_profile.as_deref(),
-            )
-            .await?
-            {
-                tracing::info!("[AcpManager] {}", summary);
-            }
-
-            // Build args: preset args + optional model flag
-            let mut extra_args: Vec<String> = preset.args.clone();
-            if let Some(provider_args) = options.provider_args.clone() {
-                extra_args.extend(provider_args);
-            }
-            if let Some(ref m) = model {
-                if !m.is_empty() {
-                    // opencode (and future providers) accept -m <model>
-                    extra_args.push("-m".to_string());
-                    extra_args.push(m.clone());
-                }
-            }
-
-            let preset_command = resolve_preset_command(&preset);
-            let process = AcpProcess::spawn(
-                &preset_command,
-                &extra_args.iter().map(|s| s.as_str()).collect::<Vec<_>>(),
-                &cwd,
-                ntx.clone(),
-                &preset.name,
-                &session_id,
-            )
-            .await?;
-
-            // Initialize the protocol
-            process
-                .initialize_with_timeout(options.initialize_timeout_ms)
-                .await?;
-
-            // Create the agent session
-            let agent_session_id = process.new_session(&cwd).await?;
-
-            (AgentProcessType::Acp(Arc::new(process)), agent_session_id)
-        };
+        let claude_process = ClaudeCodeProcess::spawn(config, ntx.clone()).await?;
+        let claude_session_id = claude_process
+            .session_id()
+            .await
+            .unwrap_or_else(|| format!("claude-{}", &session_id[..8.min(session_id.len())]));
 
         self.register_managed_session(
             session_id.clone(),
@@ -601,8 +466,8 @@ impl AcpManager {
             model.clone(),
             parent_session_id.clone(),
             &options,
-            process_type,
-            acp_session_id.clone(),
+            AgentProcess(Arc::new(claude_process)),
+            claude_session_id.clone(),
             ntx.clone(),
         )
         .await;
@@ -611,8 +476,10 @@ impl AcpManager {
             "[AcpManager] Session {} created (provider: {}, agent session: {})",
             session_id,
             provider_name,
-            acp_session_id,
+            claude_session_id,
         );
+
+        Ok((session_id, claude_session_id))
 
         Ok((session_id, acp_session_id))
     }
@@ -634,10 +501,7 @@ impl AcpManager {
             )
         };
 
-        let is_alive = match &process {
-            AgentProcessType::Acp(p) => p.is_alive(),
-            AgentProcessType::Claude(p) => p.is_alive(),
-        };
+        let is_alive = process.is_alive();
 
         if !is_alive {
             return Err(format!("Agent ({}) process is not running", preset_id));
@@ -667,12 +531,10 @@ impl AcpManager {
             "acp prompt start"
         );
 
-        let result = match &process {
-            AgentProcessType::Acp(p) => p.prompt(&acp_session_id, text).await,
-            AgentProcessType::Claude(p) => {
-                let stop_reason = p.prompt(text).await?;
-                Ok(serde_json::json!({ "stopReason": stop_reason }))
-            }
+        let result = {
+            let p = &process;
+            let stop_reason = p.0.prompt(text).await?;
+            Ok(serde_json::json!({ "stopReason": stop_reason }))
         };
 
         match &result {
@@ -698,10 +560,7 @@ impl AcpManager {
     pub async fn cancel(&self, session_id: &str) {
         let processes = self.processes.read().await;
         if let Some(managed) = processes.get(session_id) {
-            match &managed.process {
-                AgentProcessType::Acp(p) => p.cancel(&managed.acp_session_id).await,
-                AgentProcessType::Claude(p) => p.cancel().await,
-            }
+            managed.process.0.cancel().await;
         }
     }
 
@@ -717,10 +576,7 @@ impl AcpManager {
             );
             managed.trace_writer.append_safe(&trace).await;
 
-            match &managed.process {
-                AgentProcessType::Acp(p) => p.kill().await,
-                AgentProcessType::Claude(p) => p.kill().await,
-            }
+            managed.process.kill().await;
         }
         // Remove session record
         self.sessions.write().await.remove(session_id);
@@ -743,10 +599,7 @@ impl AcpManager {
         let processes = self.processes.read().await;
         processes
             .get(session_id)
-            .map(|m| match &m.process {
-                AgentProcessType::Acp(p) => p.is_alive(),
-                AgentProcessType::Claude(p) => p.is_alive(),
-            })
+            .map(|m| m.process.is_alive())
             .unwrap_or(false)
     }
 
@@ -756,13 +609,10 @@ impl AcpManager {
         processes.get(session_id).map(|m| m.preset_id.clone())
     }
 
-    /// Check if a session uses Claude (stream-json protocol, not ACP).
+    /// Check if a session uses Claude (always true now).
     pub async fn is_claude_session(&self, session_id: &str) -> bool {
         let processes = self.processes.read().await;
-        processes
-            .get(session_id)
-            .map(|m| matches!(&m.process, AgentProcessType::Claude(_)))
-            .unwrap_or(false)
+        processes.get(session_id).is_some()
     }
 
     /// Send a prompt to Claude session and return immediately.
@@ -790,7 +640,7 @@ impl AcpManager {
         managed.trace_writer.append_safe(&trace).await;
 
         match &managed.process {
-            AgentProcessType::Claude(p) => {
+            AgentProcess(p) => {
                 // Spawn the prompt in a background task so we can return immediately
                 let process = Arc::clone(p);
                 let text = text.to_string();
@@ -798,9 +648,6 @@ impl AcpManager {
                     let _ = process.prompt(&text).await;
                 });
                 Ok(())
-            }
-            AgentProcessType::Acp(_) => {
-                Err("prompt_claude_async is only for Claude sessions".to_string())
             }
         }
     }
@@ -823,176 +670,18 @@ pub struct AcpPreset {
     pub env_bin_override: Option<String>,
 }
 
-/// Get the list of known ACP agent presets (static/builtin only).
+/// Get the list of known ACP agent presets (Claude Code only).
 pub fn get_presets() -> Vec<AcpPreset> {
-    vec![
-        AcpPreset {
-            id: "opencode".to_string(),
-            name: "OpenCode".to_string(),
-            command: "opencode".to_string(),
-            args: vec!["acp".to_string()],
-            description: "OpenCode AI coding agent".to_string(),
-            env_bin_override: Some("OPENCODE_BIN".to_string()),
-        },
-        AcpPreset {
-            id: "gemini".to_string(),
-            name: "Gemini".to_string(),
-            command: "gemini".to_string(),
-            args: vec!["--experimental-acp".to_string()],
-            description: "Google Gemini CLI".to_string(),
-            env_bin_override: None,
-        },
-        AcpPreset {
-            id: "codex-acp".to_string(),
-            name: "Codex".to_string(),
-            command: "codex-acp".to_string(),
-            args: vec![],
-            description: "OpenAI Codex CLI (codex-acp wrapper)".to_string(),
-            env_bin_override: Some("CODEX_ACP_BIN".to_string()),
-        },
-        AcpPreset {
-            id: "copilot".to_string(),
-            name: "GitHub Copilot".to_string(),
-            command: "copilot".to_string(),
-            args: vec![
-                "--acp".to_string(),
-                "--allow-all-tools".to_string(),
-                "--no-ask-user".to_string(),
-            ],
-            description: "GitHub Copilot CLI".to_string(),
-            env_bin_override: Some("COPILOT_BIN".to_string()),
-        },
-        AcpPreset {
-            id: "auggie".to_string(),
-            name: "Auggie".to_string(),
-            command: "auggie".to_string(),
-            args: vec!["--acp".to_string()],
-            description: "Augment Code's AI agent".to_string(),
-            env_bin_override: None,
-        },
-        AcpPreset {
-            id: "kimi".to_string(),
-            name: "Kimi".to_string(),
-            command: "kimi".to_string(),
-            args: vec!["acp".to_string()],
-            description: "Moonshot AI's Kimi CLI".to_string(),
-            env_bin_override: None,
-        },
-        AcpPreset {
-            id: "kiro".to_string(),
-            name: "Kiro".to_string(),
-            command: "kiro-cli".to_string(),
-            args: vec!["acp".to_string()],
-            description: "Amazon Kiro AI coding agent".to_string(),
-            env_bin_override: Some("KIRO_BIN".to_string()),
-        },
-        AcpPreset {
-            id: "qoder".to_string(),
-            name: "Qoder".to_string(),
-            command: "qodercli".to_string(),
-            args: vec!["--acp".to_string()],
-            description: "Qoder AI coding agent".to_string(),
-            env_bin_override: Some("QODER_BIN".to_string()),
-        },
-        AcpPreset {
-            id: "claude".to_string(),
-            name: "Claude Code".to_string(),
-            command: "claude".to_string(),
-            // Claude Code uses stream-json protocol, not ACP flags
-            // Args are unused since we use ClaudeCodeProcess directly
-            args: vec![],
-            description: "Anthropic Claude Code (stream-json protocol)".to_string(),
-            env_bin_override: Some("CLAUDE_BIN".to_string()),
-        },
-    ]
-}
-
-/// Get a preset by ID, checking both static presets and registry.
-/// Static presets take precedence.
-///
-/// Supports suffixed IDs like "auggie-registry" to explicitly request
-/// the registry version when both built-in and registry versions exist.
-pub async fn get_preset_by_id_with_registry(id: &str) -> Result<AcpPreset, String> {
-    let normalized_id = match id {
-        "codex" => "codex-acp",
-        "qodercli" => "qoder",
-        other => other,
-    };
-
-    // Handle suffixed IDs (e.g., "auggie-registry")
-    // This allows explicit selection of registry version when both exist
-    const REGISTRY_SUFFIX: &str = "-registry";
-    if let Some(base_id) = normalized_id.strip_suffix(REGISTRY_SUFFIX) {
-        let mut preset = get_registry_preset(base_id).await?;
-        // Keep the suffixed ID in the returned preset for consistency
-        preset.id = id.to_string();
-        return Ok(preset);
-    }
-
-    // Check static presets first (match by id, not name)
-    if let Some(mut preset) = get_presets().into_iter().find(|p| p.id == normalized_id) {
-        if preset.id != id {
-            preset.id = id.to_string();
-        }
-        return Ok(preset);
-    }
-
-    // Fall back to registry
-    let mut preset = get_registry_preset(normalized_id).await?;
-    if preset.id != id {
-        preset.id = id.to_string();
-    }
-    Ok(preset)
-}
-
-/// Get a preset from the ACP registry by ID.
-async fn get_registry_preset(id: &str) -> Result<AcpPreset, String> {
-    let registry: AcpRegistry = fetch_registry().await?;
-
-    // Find the agent
-    let agent = registry
-        .agents
-        .into_iter()
-        .find(|a| a.id == id)
-        .ok_or_else(|| format!("Agent '{}' not found in registry", id))?;
-
-    // Build command from distribution
-    let (command, args) = if let Some(ref npx) = agent.distribution.npx {
-        let mut args = vec!["-y".to_string(), npx.package.clone()];
-        args.extend(npx.args.clone());
-        ("npx".to_string(), args)
-    } else if let Some(ref uvx) = agent.distribution.uvx {
-        let mut args = vec![uvx.package.clone()];
-        args.extend(uvx.args.clone());
-        ("uvx".to_string(), args)
-    } else {
-        return Err(format!(
-            "Agent '{}' has no supported distribution (npx/uvx)",
-            id
-        ));
-    };
-
-    Ok(AcpPreset {
-        id: agent.id.clone(),
-        name: agent.name,
-        command,
-        args,
-        description: agent.description,
-        env_bin_override: None,
-    })
-}
-
-fn resolve_preset_command(preset: &AcpPreset) -> String {
-    if let Some(env_var) = &preset.env_bin_override {
-        if let Ok(custom_command) = std::env::var(env_var) {
-            let trimmed = custom_command.trim();
-            if !trimmed.is_empty() {
-                return trimmed.to_string();
-            }
-        }
-    }
-
-    crate::shell_env::which(&preset.command).unwrap_or_else(|| preset.command.clone())
+    vec![AcpPreset {
+        id: "claude".to_string(),
+        name: "Claude Code".to_string(),
+        command: "claude".to_string(),
+        // Claude Code uses stream-json protocol, not ACP flags
+        // Args are unused since we use ClaudeCodeProcess directly
+        args: vec![],
+        description: "Anthropic Claude Code (stream-json protocol)".to_string(),
+        env_bin_override: Some("CLAUDE_BIN".to_string()),
+    }]
 }
 
 // ─── Utility Functions ─────────────────────────────────────────────────────
@@ -1012,32 +701,16 @@ fn truncate_content(text: &str, max_len: usize) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        get_preset_by_id_with_registry, get_presets, truncate_content, AcpManager, AcpSessionRecord,
+        get_presets, truncate_content, AcpManager, AcpSessionRecord,
     };
     use std::collections::HashMap;
     use std::sync::Arc;
     use tokio::sync::RwLock;
 
     #[test]
-    fn static_presets_include_codex_acp_for_codex_alias() {
+    fn static_presets_include_claude() {
         let presets = get_presets();
-        assert!(presets.iter().any(|preset| preset.id == "codex-acp"));
-    }
-
-    #[test]
-    fn static_presets_include_qoder() {
-        let presets = get_presets();
-        assert!(presets.iter().any(|preset| preset.id == "qoder"));
-    }
-
-    #[tokio::test]
-    async fn qodercli_alias_resolves_to_qoder_preset() {
-        let preset = get_preset_by_id_with_registry("qodercli")
-            .await
-            .expect("qodercli alias should resolve");
-        assert_eq!(preset.id, "qodercli");
-        assert_eq!(preset.command, "qodercli");
-        assert_eq!(preset.args, vec!["--acp".to_string()]);
+        assert!(presets.iter().any(|preset| preset.id == "claude"));
     }
 
     #[tokio::test]

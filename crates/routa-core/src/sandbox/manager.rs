@@ -17,7 +17,26 @@ use serde_json::Value;
 use tokio::process::Command;
 use tokio::sync::RwLock;
 
-use crate::acp::docker::find_available_port;
+/// Start of ephemeral port range for Docker containers.
+const DOCKER_EPHEMERAL_PORT_START: u16 = 49152;
+/// End of ephemeral port range for Docker containers.
+const DOCKER_EPHEMERAL_PORT_END: u16 = 65535;
+
+/// Find an available port in the ephemeral range.
+async fn find_available_port(used_ports: &HashSet<u16>) -> Result<u16, String> {
+    for port in DOCKER_EPHEMERAL_PORT_START..=DOCKER_EPHEMERAL_PORT_END {
+        if used_ports.contains(&port) {
+            continue;
+        }
+        if tokio::net::TcpListener::bind(("127.0.0.1", port))
+            .await
+            .is_ok()
+        {
+            return Ok(port);
+        }
+    }
+    Err("No available ports in Docker ephemeral range (49152-65535)".to_string())
+}
 
 use super::env::parse_env_file;
 use super::policy::{ResolvedSandboxPolicy, SandboxEnvMode, SandboxNetworkMode};

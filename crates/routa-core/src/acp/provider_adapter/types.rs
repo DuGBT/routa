@@ -10,13 +10,6 @@ use serde_json::Value;
 #[serde(rename_all = "lowercase")]
 pub enum ProviderType {
     Claude,
-    OpenCode,
-    Kimi,
-    Gemini,
-    Copilot,
-    Codex,
-    Auggie,
-    Kiro,
     Standard,
 }
 
@@ -24,13 +17,6 @@ impl ProviderType {
     pub fn as_str(&self) -> &'static str {
         match self {
             Self::Claude => "claude",
-            Self::OpenCode => "opencode",
-            Self::Kimi => "kimi",
-            Self::Gemini => "gemini",
-            Self::Copilot => "copilot",
-            Self::Codex => "codex",
-            Self::Auggie => "auggie",
-            Self::Kiro => "kiro",
             Self::Standard => "standard",
         }
     }

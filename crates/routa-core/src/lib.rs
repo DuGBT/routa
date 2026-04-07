@@ -41,4 +41,4 @@ pub mod workflow;
 // Convenience re-exports
 pub use db::Database;
 pub use error::ServerError;
-pub use state::{AppState, AppStateInner, DockerState};
+pub use state::{AppState, AppStateInner};

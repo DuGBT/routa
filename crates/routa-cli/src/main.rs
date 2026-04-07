@@ -56,16 +56,10 @@ enum Commands {
     },
 
     /// Run Routa as an ACP (Agent Client Protocol) server over stdio.
-    /// Use subcommands to manage ACP agents and runtimes.
     Acp {
         #[command(subcommand)]
         action: commands::acp::AcpAction,
     },
-
-    /// Install an ACP provider from presets/registry.
-    Install(commands::acp::TopLevelInstallArgs),
-    /// Uninstall a Routa-managed ACP provider.
-    Uninstall(commands::acp::TopLevelUninstallArgs),
 
     /// Manage agents
     Agent {
@@ -778,50 +772,7 @@ async fn main() {
                         let state = commands::init_state(&cli.db).await;
                         commands::acp_serve::run(&state, &workspace_id, &provider).await
                     }
-                    AcpAction::Install { agent_id, dist } => {
-                        let state = commands::init_state(&cli.db).await;
-                        commands::acp::install(&state, &agent_id, dist.as_deref()).await
-                    }
-                    AcpAction::Uninstall { agent_id } => {
-                        let state = commands::init_state(&cli.db).await;
-                        commands::acp::uninstall(&state, &agent_id).await
-                    }
-                    AcpAction::List => {
-                        let state = commands::init_state(&cli.db).await;
-                        commands::acp::list(&state).await
-                    }
-                    AcpAction::Installed => {
-                        let state = commands::init_state(&cli.db).await;
-                        commands::acp::list_installed(&state).await
-                    }
-                    AcpAction::RuntimeStatus => {
-                        let state = commands::init_state(&cli.db).await;
-                        commands::acp::runtime_status(&state).await
-                    }
-                    AcpAction::EnsureNode => {
-                        let state = commands::init_state(&cli.db).await;
-                        commands::acp::ensure_node(&state).await
-                    }
-                    AcpAction::EnsureUv => {
-                        let state = commands::init_state(&cli.db).await;
-                        commands::acp::ensure_uv(&state).await
-                    }
                 }
-            }
-
-            Commands::Install(args) => {
-                let state = commands::init_state(&cli.db).await;
-                commands::acp::install_top_level(
-                    &state,
-                    args.agent_id.as_deref(),
-                    args.dist.as_deref(),
-                )
-                .await
-            }
-
-            Commands::Uninstall(args) => {
-                let state = commands::init_state(&cli.db).await;
-                commands::acp::uninstall_top_level(&state, args.agent_id.as_deref()).await
             }
 
             Commands::Agent { action } => {

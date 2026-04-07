@@ -63,57 +63,6 @@ async fn resolve_session_cwd(
         .unwrap_or_else(|| ".".to_string())
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-struct CustomProviderLaunch {
-    command: String,
-    args: Vec<String>,
-}
-
-fn extract_custom_provider_launch(
-    params: &serde_json::Value,
-) -> Result<Option<CustomProviderLaunch>, String> {
-    let Some(raw_command) = params.get("customCommand") else {
-        return Ok(None);
-    };
-
-    let command = raw_command
-        .as_str()
-        .map(str::trim)
-        .filter(|value| !value.is_empty())
-        .ok_or_else(|| "customCommand must be a non-empty string".to_string())?
-        .to_string();
-
-    let args = match params.get("customArgs") {
-        None => Vec::new(),
-        Some(value) => value
-            .as_array()
-            .ok_or_else(|| "customArgs must be an array of strings".to_string())?
-            .iter()
-            .map(|item| {
-                item.as_str()
-                    .map(|value| value.to_string())
-                    .ok_or_else(|| "customArgs must be an array of strings".to_string())
-            })
-            .collect::<Result<Vec<_>, _>>()?,
-    };
-
-    Ok(Some(CustomProviderLaunch { command, args }))
-}
-
-fn custom_provider_launch_from_row(session: &AcpSessionRow) -> Option<CustomProviderLaunch> {
-    let command = session
-        .custom_command
-        .as_deref()
-        .map(str::trim)
-        .filter(|value| !value.is_empty())?
-        .to_string();
-
-    Some(CustomProviderLaunch {
-        command,
-        args: session.custom_args.clone(),
-    })
-}
-
 /// Type alias for the SSE stream used in ACP responses.
 type AcpSseStream =
     std::pin::Pin<Box<dyn tokio_stream::Stream<Item = Result<Event, Infallible>> + Send>>;
@@ -262,120 +211,16 @@ async fn acp_rpc(
         "_providers/list" => {
             use crate::shell_env;
 
-            let presets = acp::get_presets();
-            let mut static_ids = std::collections::HashSet::new();
+            let installed = shell_env::which("claude").is_some();
 
-            let mut providers: Vec<serde_json::Value> = Vec::new();
-            for preset in &presets {
-                let installed = shell_env::which(&preset.command).is_some();
-                static_ids.insert(preset.name.clone());
-
-                providers.push(serde_json::json!({
-                    "id": preset.name,
-                    "name": preset.name,
-                    "description": preset.description,
-                    "command": preset.command,
-                    "status": if installed { "available" } else { "unavailable" },
-                    "source": "static",
-                }));
-            }
-
-            // Merge registry agents (including those that overlap with static presets)
-            // For overlapping agents, use a different ID to allow both versions to coexist
-            let npx_available = shell_env::which("npx").is_some();
-            let uvx_available = shell_env::which("uv").is_some();
-
-            if let Ok(response) =
-                reqwest::get("https://cdn.agentclientprotocol.com/registry/v1/latest/registry.json")
-                    .await
-            {
-                if let Ok(registry) = response.json::<serde_json::Value>().await {
-                    if let Some(agents) = registry.get("agents").and_then(|a| a.as_array()) {
-                        for agent in agents {
-                            let agent_id = agent.get("id").and_then(|v| v.as_str()).unwrap_or("");
-                            if agent_id.is_empty() {
-                                continue;
-                            }
-
-                            let name = agent
-                                .get("name")
-                                .and_then(|v| v.as_str())
-                                .unwrap_or(agent_id);
-                            let desc = agent
-                                .get("description")
-                                .and_then(|v| v.as_str())
-                                .unwrap_or("");
-                            let dist = agent.get("distribution");
-
-                            let (command, status) = if let Some(dist) = dist {
-                                if dist.get("npx").is_some() && npx_available {
-                                    let pkg = dist
-                                        .get("npx")
-                                        .and_then(|v| v.get("package"))
-                                        .and_then(|v| v.as_str())
-                                        .unwrap_or(agent_id);
-                                    (format!("npx {}", pkg), "available")
-                                } else if dist.get("uvx").is_some() && uvx_available {
-                                    let pkg = dist
-                                        .get("uvx")
-                                        .and_then(|v| v.get("package"))
-                                        .and_then(|v| v.as_str())
-                                        .unwrap_or(agent_id);
-                                    (format!("uvx {}", pkg), "available")
-                                } else if dist.get("binary").is_some() {
-                                    (agent_id.to_string(), "unavailable")
-                                } else if dist.get("npx").is_some() {
-                                    let pkg = dist
-                                        .get("npx")
-                                        .and_then(|v| v.get("package"))
-                                        .and_then(|v| v.as_str())
-                                        .unwrap_or(agent_id);
-                                    (format!("npx {}", pkg), "unavailable")
-                                } else {
-                                    (agent_id.to_string(), "unavailable")
-                                }
-                            } else {
-                                (agent_id.to_string(), "unavailable")
-                            };
-
-                            // If this agent ID conflicts with a built-in preset, use a suffixed ID
-                            // to allow both versions to coexist in the UI
-                            let (provider_id, provider_name) = if static_ids.contains(agent_id) {
-                                (
-                                    format!("{}-registry", agent_id),
-                                    format!("{} (Registry)", name),
-                                )
-                            } else {
-                                (agent_id.to_string(), name.to_string())
-                            };
-
-                            providers.push(serde_json::json!({
-                                "id": provider_id,
-                                "name": provider_name,
-                                "description": desc,
-                                "command": command,
-                                "status": status,
-                                "source": "registry",
-                            }));
-                        }
-                    }
-                }
-            }
-
-            // Sort: available first
-            providers.sort_by(|a, b| {
-                let a_status = a.get("status").and_then(|v| v.as_str()).unwrap_or("");
-                let b_status = b.get("status").and_then(|v| v.as_str()).unwrap_or("");
-                if a_status == b_status {
-                    let a_name = a.get("name").and_then(|v| v.as_str()).unwrap_or("");
-                    let b_name = b.get("name").and_then(|v| v.as_str()).unwrap_or("");
-                    a_name.cmp(b_name)
-                } else if a_status == "available" {
-                    std::cmp::Ordering::Less
-                } else {
-                    std::cmp::Ordering::Greater
-                }
-            });
+            let providers = vec![serde_json::json!({
+                "id": "claude",
+                "name": "Claude Code",
+                "description": "Anthropic Claude Code (stream-json protocol)",
+                "command": "claude",
+                "status": if installed { "available" } else { "unavailable" },
+                "source": "static",
+            })];
 
             Ok(AcpResponse::Json(Json(serde_json::json!({
                 "jsonrpc": "2.0",
@@ -385,19 +230,6 @@ async fn acp_rpc(
         }
 
         "session/new" => {
-            let custom_provider_launch = match extract_custom_provider_launch(&params) {
-                Ok(value) => value,
-                Err(message) => {
-                    return Ok(AcpResponse::Json(Json(serde_json::json!({
-                        "jsonrpc": "2.0",
-                        "id": id,
-                        "error": {
-                            "code": -32602,
-                            "message": message
-                        }
-                    }))));
-                }
-            };
             let requested_cwd = params
                 .get("cwd")
                 .and_then(|v| v.as_str())
@@ -512,49 +344,23 @@ async fn acp_rpc(
                 allowed_native_tools: derive_allowed_native_tools(specialist_id.as_deref()),
                 ..SessionLaunchOptions::default()
             };
-            let persisted_custom_provider_launch = custom_provider_launch.clone();
-            let effective_provider = provider.clone().or_else(|| {
-                custom_provider_launch
-                    .as_ref()
-                    .map(|custom| custom.command.clone())
-            });
 
             // Spawn agent process, initialize protocol, create agent session
-            let create_result = if let Some(custom) = custom_provider_launch {
-                state
-                    .acp_manager
-                    .create_session_from_inline(
-                        session_id.clone(),
-                        cwd.clone(),
-                        workspace_id.clone(),
-                        effective_provider
-                            .clone()
-                            .unwrap_or_else(|| custom.command.clone()),
-                        role.clone(),
-                        model.clone(),
-                        parent_session_id.clone(),
-                        custom.command,
-                        custom.args,
-                        launch_options,
-                    )
-                    .await
-            } else {
-                state
-                    .acp_manager
-                    .create_session_with_options(
-                        session_id.clone(),
-                        cwd.clone(),
-                        workspace_id.clone(),
-                        provider.clone(),
-                        role.clone(),
-                        model.clone(),
-                        parent_session_id.clone(),
-                        tool_mode.clone(),
-                        mcp_profile.clone(),
-                        launch_options,
-                    )
-                    .await
-            };
+            let create_result = state
+                .acp_manager
+                .create_session_with_options(
+                    session_id.clone(),
+                    cwd.clone(),
+                    workspace_id.clone(),
+                    provider.clone(),
+                    role.clone(),
+                    model.clone(),
+                    parent_session_id.clone(),
+                    tool_mode.clone(),
+                    mcp_profile.clone(),
+                    launch_options,
+                )
+                .await;
 
             match create_result {
                 Ok((_our_sid, _agent_sid)) => {
@@ -577,14 +383,10 @@ async fn acp_rpc(
                             cwd: &cwd,
                             branch: branch.as_deref(),
                             workspace_id: &workspace_id,
-                            provider: effective_provider.as_deref(),
+                            provider: provider.as_deref(),
                             role: role.as_deref(),
-                            custom_command: persisted_custom_provider_launch
-                                .as_ref()
-                                .map(|launch| launch.command.as_str()),
-                            custom_args: persisted_custom_provider_launch
-                                .as_ref()
-                                .map(|launch| launch.args.as_slice()),
+                            custom_command: None,
+                            custom_args: None,
                             parent_session_id: parent_session_id.as_deref(),
                         })
                         .await
@@ -628,14 +430,10 @@ async fn acp_rpc(
                         &cwd,
                         branch.as_deref(),
                         &workspace_id,
-                        effective_provider.as_deref(),
+                        provider.as_deref(),
                         role.as_deref(),
-                        persisted_custom_provider_launch
-                            .as_ref()
-                            .map(|launch| launch.command.as_str()),
-                        persisted_custom_provider_launch
-                            .as_ref()
-                            .map(|launch| launch.args.as_slice()),
+                        None,
+                        None,
                         parent_session_id.as_deref(),
                     )
                     .await;
@@ -645,7 +443,7 @@ async fn acp_rpc(
                         "id": id,
                         "result": {
                             "sessionId": session_id,
-                            "provider": effective_provider.as_deref().unwrap_or("opencode"),
+                            "provider": provider.as_deref().unwrap_or("claude"),
                             "role": role.as_deref().unwrap_or("CRAFTER"),
                             "routaAgentId": routa_agent_id,
                         }
@@ -666,19 +464,6 @@ async fn acp_rpc(
         }
 
         "session/prompt" => {
-            let request_custom_provider_launch = match extract_custom_provider_launch(&params) {
-                Ok(value) => value,
-                Err(message) => {
-                    return Ok(AcpResponse::Json(Json(serde_json::json!({
-                        "jsonrpc": "2.0",
-                        "id": id,
-                        "error": {
-                            "code": -32602,
-                            "message": message
-                        }
-                    }))));
-                }
-            };
             let session_id = params.get("sessionId").and_then(|v| v.as_str());
 
             let session_id = match session_id {
@@ -785,16 +570,6 @@ async fn acp_rpc(
                     })
                     .or_else(|| specialist.as_ref().map(|s| s.role.as_str().to_string()))
                     .or(Some("CRAFTER".to_string()));
-                let custom_provider_launch = request_custom_provider_launch.clone().or_else(|| {
-                    persisted_session
-                        .as_ref()
-                        .and_then(custom_provider_launch_from_row)
-                });
-                let effective_provider = provider.clone().or_else(|| {
-                    custom_provider_launch
-                        .as_ref()
-                        .map(|launch| launch.command.clone())
-                });
                 let launch_options = SessionLaunchOptions {
                     specialist_id: specialist_id.clone(),
                     specialist_system_prompt: params
@@ -809,48 +584,28 @@ async fn acp_rpc(
                 };
 
                 // Create the session
-                let create_result = if let Some(custom) = custom_provider_launch.clone() {
-                    state
-                        .acp_manager
-                        .create_session_from_inline(
-                            session_id.clone(),
-                            cwd.clone(),
-                            workspace_id.clone(),
-                            effective_provider
-                                .clone()
-                                .unwrap_or_else(|| custom.command.clone()),
-                            role.clone(),
-                            None, // model
-                            parent_session_id.clone(),
-                            custom.command,
-                            custom.args,
-                            launch_options,
-                        )
-                        .await
-                } else {
-                    state
-                        .acp_manager
-                        .create_session_with_options(
-                            session_id.clone(),
-                            cwd.clone(),
-                            workspace_id.clone(),
-                            provider.clone(),
-                            role.clone(),
-                            None, // model
-                            parent_session_id.clone(),
-                            tool_mode,
-                            mcp_profile,
-                            launch_options,
-                        )
-                        .await
-                };
+                let create_result = state
+                    .acp_manager
+                    .create_session_with_options(
+                        session_id.clone(),
+                        cwd.clone(),
+                        workspace_id.clone(),
+                        provider.clone(),
+                        role.clone(),
+                        None, // model
+                        parent_session_id.clone(),
+                        tool_mode,
+                        mcp_profile,
+                        launch_options,
+                    )
+                    .await;
 
                 match create_result {
                     Ok((_our_sid, agent_sid)) => {
                         tracing::info!(
                             "[ACP Route] Auto-created session: {} (provider: {:?}, agent session: {})",
                             session_id,
-                            effective_provider.as_deref().unwrap_or("opencode"),
+                            provider.as_deref().unwrap_or("claude"),
                             agent_sid
                         );
                         // Persist auto-created session to DB
@@ -863,14 +618,10 @@ async fn acp_rpc(
                                     .as_ref()
                                     .and_then(|session| session.branch.as_deref()),
                                 workspace_id: &workspace_id,
-                                provider: effective_provider.as_deref(),
+                                provider: provider.as_deref(),
                                 role: role.as_deref(),
-                                custom_command: custom_provider_launch
-                                    .as_ref()
-                                    .map(|launch| launch.command.as_str()),
-                                custom_args: custom_provider_launch
-                                    .as_ref()
-                                    .map(|launch| launch.args.as_slice()),
+                                custom_command: None,
+                                custom_args: None,
                                 parent_session_id: parent_session_id.as_deref(),
                             })
                             .await
@@ -889,14 +640,10 @@ async fn acp_rpc(
                                 .as_ref()
                                 .and_then(|session| session.branch.as_deref()),
                             &workspace_id,
-                            effective_provider.as_deref(),
+                            provider.as_deref(),
                             role.as_deref(),
-                            custom_provider_launch
-                                .as_ref()
-                                .map(|launch| launch.command.as_str()),
-                            custom_provider_launch
-                                .as_ref()
-                                .map(|launch| launch.args.as_slice()),
+                            None,
+                            None,
                             parent_session_id.as_deref(),
                         )
                         .await;
@@ -1554,8 +1301,8 @@ mod tests {
     use tokio::sync::broadcast;
 
     use super::{
-        acp_rpc, custom_provider_launch_from_row, extract_custom_provider_launch, has_explicit_cwd,
-        resolve_session_cwd, AcpResponse, CustomProviderLaunch,
+        acp_rpc, has_explicit_cwd,
+        resolve_session_cwd, AcpResponse,
     };
     use routa_core::acp::terminal_manager::TerminalManager;
 
@@ -1573,64 +1320,6 @@ mod tests {
         assert!(!has_explicit_cwd(Some("")));
         assert!(!has_explicit_cwd(Some("   ")));
         assert!(!has_explicit_cwd(Some(".")));
-    }
-
-    #[test]
-    fn custom_provider_launch_extracts_command_and_args() {
-        let launch = extract_custom_provider_launch(&json!({
-            "customCommand": "codex-acp2",
-            "customArgs": ["--stdio", "--verbose"]
-        }))
-        .expect("custom provider should parse")
-        .expect("custom provider should exist");
-
-        assert_eq!(
-            launch,
-            CustomProviderLaunch {
-                command: "codex-acp2".to_string(),
-                args: vec!["--stdio".to_string(), "--verbose".to_string()],
-            }
-        );
-    }
-
-    #[test]
-    fn custom_provider_launch_rejects_non_string_args() {
-        let error = extract_custom_provider_launch(&json!({
-            "customCommand": "codex-acp2",
-            "customArgs": ["--stdio", 123]
-        }))
-        .expect_err("invalid custom args should fail");
-
-        assert_eq!(error, "customArgs must be an array of strings");
-    }
-
-    #[test]
-    fn custom_provider_launch_from_row_uses_persisted_inline_command() {
-        let session = AcpSessionRow {
-            id: "session-custom-provider".to_string(),
-            name: None,
-            cwd: "/tmp".to_string(),
-            branch: Some("main".to_string()),
-            workspace_id: "default".to_string(),
-            routa_agent_id: None,
-            provider: Some("custom-inline".to_string()),
-            role: Some("CRAFTER".to_string()),
-            mode_id: None,
-            custom_command: Some("uvx".to_string()),
-            custom_args: vec!["codex-acp".to_string(), "--stdio".to_string()],
-            first_prompt_sent: false,
-            message_history: Vec::new(),
-            created_at: 1,
-            updated_at: 1,
-            parent_session_id: None,
-        };
-
-        let launch = custom_provider_launch_from_row(&session).expect("launch should exist");
-        assert_eq!(launch.command, "uvx");
-        assert_eq!(
-            launch.args,
-            vec!["codex-acp".to_string(), "--stdio".to_string()]
-        );
     }
 
     #[tokio::test]

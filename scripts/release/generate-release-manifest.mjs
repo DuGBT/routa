@@ -86,17 +86,6 @@ function summarizeEntries(entries) {
   };
 }
 
-function parsePathListArg(rawValue) {
-  if (!rawValue) {
-    return [];
-  }
-
-  return rawValue
-    .split(",")
-    .map((value) => value.trim())
-    .filter(Boolean);
-}
-
 async function summarizeDirectory(rootDir, relativeTo = rootDir) {
   const entries = [];
 
@@ -205,112 +194,6 @@ async function collectNpmTarballs(npmDir, channel) {
   return artifacts;
 }
 
-async function collectTauriBundles(bundleDirs, channel) {
-  if (!bundleDirs || bundleDirs.length === 0) {
-    return [];
-  }
-
-  const bundleRoots = [];
-  const seenBundleRoots = new Set();
-
-  function addBundleRoot(bundleRoot) {
-    const normalized = path.resolve(bundleRoot);
-    if (seenBundleRoots.has(normalized)) {
-      return;
-    }
-    seenBundleRoots.add(normalized);
-    bundleRoots.push(normalized);
-  }
-
-  async function findBundleRoots(currentDir) {
-    const dirEntries = await fsp.readdir(currentDir, { withFileTypes: true });
-    for (const entry of dirEntries) {
-      if (!entry.isDirectory()) {
-        continue;
-      }
-      const fullPath = path.join(currentDir, entry.name);
-      if (entry.name === "bundle") {
-        addBundleRoot(fullPath);
-        continue;
-      }
-      await findBundleRoots(fullPath);
-    }
-  }
-
-  for (const bundleDir of bundleDirs) {
-    if (!fs.existsSync(bundleDir)) {
-      continue;
-    }
-
-    if (path.basename(bundleDir) === "bundle") {
-      addBundleRoot(bundleDir);
-      continue;
-    }
-
-    await findBundleRoots(bundleDir);
-  }
-
-  const artifacts = [];
-
-  for (const bundleRoot of bundleRoots) {
-    const bundleKinds = await fsp.readdir(bundleRoot, { withFileTypes: true });
-    for (const entry of bundleKinds) {
-      const fullPath = path.join(bundleRoot, entry.name);
-      if (entry.isDirectory()) {
-        const childEntries = await fsp.readdir(fullPath, { withFileTypes: true });
-        for (const child of childEntries) {
-          const childPath = path.join(fullPath, child.name);
-          if (child.isDirectory()) {
-            const summary = await summarizeDirectory(childPath, childPath);
-            artifacts.push({
-              kind: "tauri_bundle",
-              target: entry.name,
-              channel,
-              path: childPath,
-              size_bytes: summary.total_size_bytes,
-              file_count: summary.file_count,
-              sourcemap_count: summary.sourcemap_count,
-              sourcemap_bytes: summary.sourcemap_bytes,
-              entries: summary.entries,
-              largest_entries: summary.largest_entries,
-            });
-          } else {
-            const stat = await fsp.stat(childPath);
-            artifacts.push({
-              kind: "tauri_bundle",
-              target: entry.name,
-              channel,
-              path: childPath,
-              size_bytes: stat.size,
-              file_count: 1,
-              sourcemap_count: 0,
-              sourcemap_bytes: 0,
-              entries: [{ path: child.name, size_bytes: stat.size }],
-              largest_entries: [{ path: child.name, size_bytes: stat.size }],
-            });
-          }
-        }
-      } else {
-        const stat = await fsp.stat(fullPath);
-        artifacts.push({
-          kind: "tauri_bundle",
-          target: entry.name,
-          channel,
-          path: fullPath,
-          size_bytes: stat.size,
-          file_count: 1,
-          sourcemap_count: 0,
-          sourcemap_bytes: 0,
-          entries: [{ path: entry.name, size_bytes: stat.size }],
-          largest_entries: [{ path: entry.name, size_bytes: stat.size }],
-        });
-      }
-    }
-  }
-
-  return artifacts;
-}
-
 async function collectStaticAssets(staticDir, channel) {
   if (!staticDir || !fs.existsSync(staticDir)) {
     return [];
@@ -335,7 +218,6 @@ async function collectStaticAssets(staticDir, channel) {
 const args = parseArgs(process.argv.slice(2));
 const outPath = path.resolve(args.out || "dist/release/manifest.json");
 const channel = args.channel || "latest";
-const tauriBundleDirs = parsePathListArg(args["tauri-bundle-dir"]).map((dir) => path.resolve(dir));
 
 const artifacts = [
   ...(await collectCliBinaryArtifacts(
@@ -343,7 +225,6 @@ const artifacts = [
     channel,
   )),
   ...(await collectNpmTarballs(args["npm-dir"] ? path.resolve(args["npm-dir"]) : null, channel)),
-  ...(await collectTauriBundles(tauriBundleDirs, channel)),
   ...(await collectStaticAssets(
     args["static-dir"] ? path.resolve(args["static-dir"]) : null,
     channel,
