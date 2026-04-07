@@ -28,20 +28,14 @@ export function buildAcpLeaseExpiresAt(now: Date = new Date()): string {
   return new Date(now.getTime() + getAcpLeaseDurationMs()).toISOString();
 }
 
-export function isWorkspaceExecutionProvider(provider?: string): boolean {
-  const normalized = provider?.toLowerCase();
-  return normalized === "workspace" || normalized === "workspace-agent" || normalized === "routa-native";
+export function isWorkspaceExecutionProvider(_provider?: string): boolean {
+  return false;
 }
 
 export function isCliBackedProvider(provider?: string): boolean {
   const normalized = provider?.toLowerCase();
   if (!normalized) return true;
-  return !(
-    normalized === "claude-code-sdk"
-    || normalized === "opencode-sdk"
-    || normalized === "docker-opencode"
-    || isWorkspaceExecutionProvider(normalized)
-  );
+  return normalized === "claude";
 }
 
 export function shouldUseRunnerForProvider(provider?: string): boolean {

@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import { DesktopAppShell } from "@/client/components/desktop-app-shell";
-import { AcpProviderDropdown } from "@/client/components/acp-provider-dropdown";
 import { useAcp } from "@/client/hooks/use-acp";
 import { storePendingPrompt } from "@/client/utils/pending-prompt";
 import { desktopAwareFetch } from "@/client/utils/diagnostics";
@@ -196,13 +195,7 @@ export function RepoSlidePageClient() {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <AcpProviderDropdown
-            providers={acp.providers}
-            selectedProvider={selectableProvider ?? acp.selectedProvider}
-            onProviderChange={acp.setProvider}
-            disabled={launching || acp.loading}
-            ariaLabel="Select RepoSlide provider"
-          />
+          <span className="text-sm text-desktop-text-secondary">Claude Code</span>
           <button
             type="button"
             onClick={handleLaunch}

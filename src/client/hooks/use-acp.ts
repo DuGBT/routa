@@ -21,18 +21,10 @@ import {
   AcpConnectionIssue,
 } from "../acp-client";
 import {
-  getDesktopApiBaseUrl,
   logRuntime,
   shouldSuppressTeardownError,
   toErrorMessage,
 } from "../utils/diagnostics";
-import {
-  loadCustomAcpProviders,
-  loadHiddenProviders,
-  sortProviderIdsByPreference,
-  type CustomAcpProvider,
-} from "../utils/custom-acp-providers";
-import { loadDockerOpencodeAuthJson } from "../components/settings-panel";
 import type { McpServerProfile } from "@/core/mcp/mcp-server-profiles";
 
 const ACP_SELECTED_PROVIDER_STORAGE_KEY = "routa.acp.selectedProvider";
@@ -46,67 +38,17 @@ const BUILTIN_PROVIDER_FALLBACKS: AcpProviderInfo[] = [
     status: "checking",
     source: "static",
   },
-  {
-    id: "opencode",
-    name: "OpenCode",
-    description: "OpenCode AI coding agent",
-    command: "opencode",
-    status: "checking",
-    source: "static",
-  },
-  {
-    id: "codex",
-    name: "Codex",
-    description: "OpenAI Codex CLI (via codex-acp wrapper)",
-    command: "codex-acp",
-    status: "checking",
-    source: "static",
-  },
 ];
-
-/** Convert a custom ACP provider to AcpProviderInfo for the provider list. */
-function toAcpProviderInfo(cp: CustomAcpProvider): AcpProviderInfo {
-  return {
-    id: cp.id,
-    name: cp.name,
-    description: cp.description ?? `Custom: ${[cp.command, ...cp.args].join(" ")}`,
-    command: cp.command,
-    status: "available",
-    source: "static",
-  };
-}
-
-function sortProvidersByPreference(providers: AcpProviderInfo[]): AcpProviderInfo[] {
-  const orderedIds = sortProviderIdsByPreference(providers.map((provider) => provider.id));
-  const orderMap = new Map(orderedIds.map((providerId, index) => [providerId, index]));
-
-  return [...providers].sort((left, right) => {
-    const leftIndex = orderMap.get(left.id) ?? Number.MAX_SAFE_INTEGER;
-    const rightIndex = orderMap.get(right.id) ?? Number.MAX_SAFE_INTEGER;
-    return leftIndex - rightIndex;
-  });
-}
-
-function getInitialProviderFallbacks(): AcpProviderInfo[] {
-  const disabledProviders = loadHiddenProviders();
-  const customProviders = loadCustomAcpProviders().map(toAcpProviderInfo);
-
-  return sortProvidersByPreference(
-    [...BUILTIN_PROVIDER_FALLBACKS, ...customProviders].filter(
-      (provider) => !disabledProviders.includes(provider.id)
-    )
-  );
-}
 
 export function loadSelectedAcpProvider(): string {
   if (typeof window === "undefined" || !window.localStorage) {
-    return "opencode";
+    return "claude";
   }
   try {
     const stored = window.localStorage.getItem(ACP_SELECTED_PROVIDER_STORAGE_KEY)?.trim();
-    return stored || "opencode";
+    return stored || "claude";
   } catch {
-    return "opencode";
+    return "claude";
   }
 }
 
@@ -150,8 +92,6 @@ export interface UseAcpState {
   error: string | null;
   /** Authentication error with methods to authenticate */
   authError: AuthErrorInfo | null;
-  /** Docker OpenCode configuration error (shows config popup) */
-  dockerConfigError: string | null;
 }
 
 export interface UseAcpActions {
@@ -203,8 +143,6 @@ export interface UseAcpActions {
   disconnect: () => void;
   /** Clear auth error (e.g., when user dismisses the popup) */
   clearAuthError: () => void;
-  /** Clear docker configuration error (e.g., when user dismisses the popup) */
-  clearDockerConfigError: () => void;
   /** List models available for a provider (e.g. opencode) */
   listProviderModels: (provider: string) => Promise<string[]>;
   /** Write data to a terminal in the current session */
@@ -224,12 +162,11 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
     connected: false,
     sessionId: null,
     updates: [],
-    providers: getInitialProviderFallbacks(),
+    providers: [...BUILTIN_PROVIDER_FALLBACKS],
     selectedProvider: loadSelectedAcpProvider(),
     loading: false,
     error: null,
     authError: null,
-    dockerConfigError: null,
   });
 
   // Clean up on unmount
@@ -276,24 +213,13 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
       setState((s) => ({ ...s, loading: true, error: null }));
 
       // In Tauri desktop static mode, use the embedded Rust server URL
-      const effectiveBaseUrl = baseUrl || getDesktopApiBaseUrl();
+      const effectiveBaseUrl = baseUrl || "";
       const client = new BrowserAcpClient(effectiveBaseUrl);
 
       await client.initialize();
 
       // Fast path: Load only local providers (instant, < 10ms)
       const localProviders = await client.listProviders(false, false);
-
-      // Merge in user-defined custom ACP providers
-      const customProviders = loadCustomAcpProviders().map(toAcpProviderInfo);
-
-      // Filter out disabled providers
-      const disabledProviders = loadHiddenProviders();
-      const allLocalProviders = sortProvidersByPreference(
-        [...localProviders, ...customProviders].filter(
-          (p) => !disabledProviders.includes(p.id)
-        )
-      );
 
       client.onUpdate((update) => {
         setState((s) => ({
@@ -313,12 +239,12 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
       clientRef.current = client;
 
       // Auto-select first available provider (claude-code-sdk in serverless, or first available)
-      const firstAvailable = allLocalProviders.find((p) => p.status === "available");
+      const firstAvailable = localProviders.find((p) => p.status === "available");
 
       setState((s) => ({
         ...(function () {
           const persistedProvider = loadSelectedAcpProvider();
-          const preferredProvider = allLocalProviders.find((provider) =>
+          const preferredProvider = localProviders.find((provider) =>
             provider.id === persistedProvider && provider.status !== "unavailable"
           )?.id;
           const nextSelectedProvider = preferredProvider ?? firstAvailable?.id ?? s.selectedProvider;
@@ -326,97 +252,25 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
           return {
             ...s,
             connected: true,
-            providers: allLocalProviders,
+            providers: localProviders,
             selectedProvider: nextSelectedProvider,
             loading: false,
           };
         })(),
       }));
 
-      // Background task 1: Check local provider status
+      // Background task: Check local provider status
       client.listProviders(true, false).then((checkedLocalProviders) => {
         if (tearingDownRef.current) return;
-        // Only update local providers (source === 'static'), keep existing registry providers
-        // Re-merge custom providers (they are always "available")
-        const customProvs = loadCustomAcpProviders().map(toAcpProviderInfo);
-
-        // Filter out disabled providers
-        const disabledProvs = loadHiddenProviders();
-        const filteredLocalProviders = sortProvidersByPreference(
-          [...checkedLocalProviders, ...customProvs].filter(
-            (p) => !disabledProvs.includes(p.id)
-          )
-        );
-
-        setState((s) => {
-          const existingRegistry = s.providers.filter((p) => p.source === "registry");
-          return {
-            ...s,
-            providers: sortProvidersByPreference([...filteredLocalProviders, ...existingRegistry]),
-          };
-        });
+        setState((s) => ({
+          ...s,
+          providers: checkedLocalProviders,
+        }));
       }).catch((err) => {
         if (tearingDownRef.current || shouldSuppressTeardownError(err)) {
           return;
         }
         logRuntime("warn", "useAcp.connect", "Failed to check local provider status", err);
-      });
-
-      // Background task 2: Load registry providers (with timeout protection)
-      // This runs in parallel and adds registry providers when ready
-      // First, quickly load registry providers (without checking status)
-      client.loadRegistryProviders().then((allProviders) => {
-        if (tearingDownRef.current) return;
-        // loadRegistryProviders returns ALL providers (local + registry)
-        // Filter to get only registry providers to avoid duplicates
-        const disabledProvs = loadHiddenProviders();
-        const registryProviders = sortProvidersByPreference(
-          allProviders
-            .filter((p) => p.source === "registry")
-            .filter((p) => !disabledProvs.includes(p.id))
-        );
-        if (registryProviders.length > 0) {
-          setState((s) => {
-            // Keep only local providers from current state, add new registry providers
-            const localProviders = s.providers.filter((p) => p.source === "static");
-            return {
-              ...s,
-              providers: sortProvidersByPreference([...localProviders, ...registryProviders]),
-            };
-          });
-
-          // Background task 3: Check registry provider availability (slower)
-          // This updates the status from "checking" to "available" or "unavailable"
-          client.listProviders(true, true).then((checkedAllProviders) => {
-            if (tearingDownRef.current) return;
-            const disabledProvs = loadHiddenProviders();
-            const checkedRegistry = sortProvidersByPreference(
-              checkedAllProviders
-                .filter((p) => p.source === "registry")
-                .filter((p) => !disabledProvs.includes(p.id))
-            );
-            if (checkedRegistry.length > 0) {
-              setState((s) => {
-                const localProviders = s.providers.filter((p) => p.source === "static");
-                return {
-                  ...s,
-                  providers: sortProvidersByPreference([...localProviders, ...checkedRegistry]),
-                };
-              });
-            }
-          }).catch((err) => {
-            if (tearingDownRef.current || shouldSuppressTeardownError(err)) {
-              return;
-            }
-            logRuntime("info", "useAcp.connect", "Failed to check registry provider status", err);
-          });
-        }
-      }).catch((err) => {
-        if (tearingDownRef.current || shouldSuppressTeardownError(err)) {
-          return;
-        }
-        // Registry load failed (timeout or network error) - not critical
-        logRuntime("info", "useAcp.connect", "Registry providers unavailable (network/timeout)", err);
       });
     } catch (err) {
       if (tearingDownRef.current || shouldSuppressTeardownError(err)) {
@@ -435,10 +289,6 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
   /** Clear auth error (e.g., when user dismisses the popup) */
   const clearAuthError = useCallback(() => {
     setState((s) => ({ ...s, authError: null }));
-  }, []);
-
-  const clearDockerConfigError = useCallback(() => {
-    setState((s) => ({ ...s, dockerConfigError: null }));
   }, []);
 
   const createSession = useCallback(
@@ -466,12 +316,6 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
         setState((s) => ({ ...s, loading: true, error: null, authError: null, updates: [] }));
         const activeProvider = provider ?? state.selectedProvider;
 
-        // Look up custom provider inline config if the selected provider is custom
-        const customProvider = loadCustomAcpProviders().find((cp) => cp.id === activeProvider);
-
-        // For docker-opencode provider, load auth.json from localStorage
-        const authJson = activeProvider === "docker-opencode" ? loadDockerOpencodeAuthJson() : undefined;
-
         const result = await client.newSession({
           cwd,
           branch,
@@ -490,9 +334,6 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
           systemPrompt,
           baseUrl,
           apiKey,
-          customCommand: customProvider?.command,
-          customArgs: customProvider?.args,
-          authJson,
         });
         sessionIdRef.current = result.sessionId;
         setState((s) => ({
@@ -521,20 +362,11 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
         }
 
         const errorMsg = toErrorMessage(err) || "Session creation failed";
-        // Docker session errors show as a config popup (not inline error)
-        if ((provider ?? state.selectedProvider) === "docker-opencode") {
-          setState((s) => ({
-            ...s,
-            loading: false,
-            dockerConfigError: errorMsg,
-          }));
-        } else {
-          setState((s) => ({
-            ...s,
-            loading: false,
-            error: errorMsg,
-          }));
-        }
+        setState((s) => ({
+          ...s,
+          loading: false,
+          error: errorMsg,
+        }));
         return null;
       }
     },
@@ -694,7 +526,6 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
     });
   }, []);
 
@@ -736,7 +567,6 @@ export function useAcp(baseUrl: string = ""): UseAcpState & UseAcpActions {
     cancel,
     disconnect,
     clearAuthError,
-    clearDockerConfigError,
     listProviderModels,
     writeTerminal,
     resizeTerminal,

@@ -18,7 +18,7 @@ import { useSkills } from "../hooks/use-skills";
 import { useWorkspaces, useCodebases } from "../hooks/use-workspaces";
 import type { RepoSelection } from "./repo-picker";
 import { storePendingPrompt } from "../utils/pending-prompt";
-import { loadProviderConnectionConfig, getModelDefinitionByAlias, DockerConfigModal } from "./settings-panel";
+import { loadProviderConnectionConfig, getModelDefinitionByAlias } from "./settings-panel";
 import { desktopAwareFetch } from "../utils/diagnostics";
 import { useTranslation } from "@/i18n";
 import { Check, ChevronDown, Folder, CircleUser, Sun, Zap } from "lucide-react";
@@ -576,17 +576,6 @@ export function HomeInput({
           </div>
         </div>
       )}
-
-      {/* ─── Docker Config Modal ──────────────────────────────────── */}
-      <DockerConfigModal
-        open={!!acp.dockerConfigError}
-        errorMessage={acp.dockerConfigError ?? ""}
-        onClose={() => acp.clearDockerConfigError()}
-        onSaved={() => {
-          acp.clearDockerConfigError();
-          // Input text is still in TiptapInput — user can re-submit
-        }}
-      />
     </div>
   );
 }

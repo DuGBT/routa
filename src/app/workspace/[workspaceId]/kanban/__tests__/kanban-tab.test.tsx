@@ -312,7 +312,6 @@ describe("KanbanTab GitHub import", () => {
           loading: false,
           error: null,
           authError: null,
-          dockerConfigError: null,
           setProvider: vi.fn(),
           connect: vi.fn(),
           disconnect: vi.fn(),
@@ -324,7 +323,6 @@ describe("KanbanTab GitHub import", () => {
           setMode: vi.fn(),
           respondToUserInput: vi.fn(),
           respondToUserInputForSession: vi.fn(),
-          clearDockerConfigError: vi.fn(),
           writeTerminal: vi.fn(),
           resizeTerminal: vi.fn(),
           cancel: vi.fn(),
@@ -435,7 +433,6 @@ describe("KanbanTab manual card creation", () => {
           loading: false,
           error: null,
           authError: null,
-          dockerConfigError: null,
           setProvider: vi.fn(),
           connect: vi.fn(),
           disconnect: vi.fn(),
@@ -447,7 +444,6 @@ describe("KanbanTab manual card creation", () => {
           setMode: vi.fn(),
           respondToUserInput: vi.fn(),
           respondToUserInputForSession: vi.fn(),
-          clearDockerConfigError: vi.fn(),
           writeTerminal: vi.fn(),
           resizeTerminal: vi.fn(),
           cancel: vi.fn(),
@@ -480,7 +476,11 @@ describe("KanbanTab manual card creation", () => {
     fireEvent.click(screen.getByRole("button", { name: "Create" }));
 
     await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledWith("/api/tasks", {
+      const postCall = fetchMock.mock.calls.find(
+        (call: unknown[]) => String(call[0]) === "/api/tasks" && (call[1] as RequestInit)?.method === "POST",
+      );
+      expect(postCall).toBeTruthy();
+      expect(postCall![1]).toEqual({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -489,6 +489,9 @@ describe("KanbanTab manual card creation", () => {
           title: "create a js hello world",
           objective: "Create a JavaScript Hello World example.",
           testCases: [],
+          taskType: "code",
+          acceptanceCriteria: [],
+          verificationCommands: [],
           priority: "medium",
           labels: [],
           createGitHubIssue: false,
@@ -537,7 +540,6 @@ describe("KanbanTab manual run provider selection", () => {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -552,7 +554,6 @@ describe("KanbanTab manual run provider selection", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 
@@ -656,7 +657,6 @@ describe("KanbanTab manual run provider selection", () => {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -671,7 +671,6 @@ describe("KanbanTab manual run provider selection", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 
@@ -727,10 +726,9 @@ describe("KanbanTab manual run provider selection", () => {
     });
   });
 
-  it("persists the board auto provider when the Kanban tab selection changes", async () => {
+  it("persists the board auto provider on task creation when provider differs", async () => {
     const automatedBoard: KanbanBoardInfo = {
       ...board,
-      autoProviderId: "codex",
       columns: [
         {
           id: "backlog",
@@ -752,11 +750,10 @@ describe("KanbanTab manual run provider selection", () => {
       sessionId: null,
       updates: [],
       providers: [],
-      selectedProvider: "codex",
+      selectedProvider: "claude",
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -771,7 +768,6 @@ describe("KanbanTab manual run provider selection", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 
@@ -781,6 +777,12 @@ describe("KanbanTab manual run provider selection", () => {
         return {
           ok: true,
           json: async () => ({ board: { ...automatedBoard, autoProviderId: "claude" } }),
+        } as Response;
+      }
+      if (init?.method === "PATCH" && url === "/api/tasks/task-1") {
+        return {
+          ok: true,
+          json: async () => ({ task: createTask("task-1", "Story One", { triggerSessionId: "session-123" }) }),
         } as Response;
       }
       throw new Error(`Unexpected fetch: ${init?.method ?? "GET"} ${url}`);
@@ -794,7 +796,6 @@ describe("KanbanTab manual run provider selection", () => {
         tasks={[createTask("task-1", "Story One")]}
         sessions={[]}
         providers={[
-          { id: "codex", name: "Codex", description: "Codex provider", command: "codex-acp", status: "available" },
           { id: "claude", name: "Claude Code", description: "Claude Code provider", command: "claude", status: "available" },
         ]}
         specialists={[{ id: "backlog-refiner", name: "Backlog Refiner", role: "ROUTA" }]}
@@ -805,16 +806,17 @@ describe("KanbanTab manual run provider selection", () => {
       />,
     );
 
-    fireEvent.click(screen.getByTestId("kanban-agent-provider"));
-    fireEvent.click(screen.getByRole("button", { name: /Claude Code/i }));
+    // The board auto provider should be persisted when a task action triggers ensureBoardAutoProviderPersisted
+    fireEvent.click(screen.getByRole("button", { name: "Open Story One" }));
+    const runButton = await screen.findByTestId("kanban-detail-run");
+    fireEvent.click(runButton);
 
     await waitFor(() => {
-      expect(acp.setProvider).toHaveBeenCalledWith("claude");
-      expect(fetchMock).toHaveBeenCalledWith("/api/kanban/boards/board-1", expect.objectContaining({
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ autoProviderId: "claude" }),
-      }));
+      const patchBoardCall = fetchMock.mock.calls.find(
+        (call: unknown[]) => String(call[0]).includes("/api/kanban/boards/") && (call[1] as RequestInit)?.method === "PATCH",
+      );
+      expect(patchBoardCall).toBeTruthy();
+      expect((patchBoardCall![1] as RequestInit).body).toBe(JSON.stringify({ autoProviderId: "claude" }));
     });
   });
 });
@@ -1053,7 +1055,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -1068,7 +1069,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 
@@ -1351,7 +1351,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -1366,7 +1365,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 
@@ -1465,7 +1463,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -1480,7 +1477,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 
@@ -1539,7 +1535,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -1554,7 +1549,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 
@@ -1635,7 +1629,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -1650,7 +1643,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 
@@ -1784,7 +1776,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -1799,7 +1790,6 @@ describe.skip("KanbanTab card detail manual runs", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 

@@ -2,7 +2,6 @@
 
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import type { AcpProviderInfo } from "@/client/acp-client";
-import { AcpProviderDropdown } from "@/client/components/acp-provider-dropdown";
 import { desktopAwareFetch } from "@/client/utils/diagnostics";
 import { resolveKanbanAutomationStep } from "@/core/kanban/effective-task-automation";
 import {
@@ -291,18 +290,9 @@ function ProviderField({
   const { t } = useTranslation();
   return (
     <div className="space-y-2">
-      <AcpProviderDropdown
-        providers={providers}
-        selectedProvider={value ?? ""}
-        onProviderChange={(providerId) => onChange(providerId || undefined)}
-        allowAuto={true}
-        autoLabel={t.common.auto}
-        showStatusDot={false}
-        ariaLabel={ariaLabel}
-        dataTestId={dataTestId}
-        buttonClassName="flex w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-200 dark:hover:bg-[#111722]"
-        labelClassName="truncate text-left"
-      />
+      <div className="flex w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-200">
+        <span className="truncate text-left">{value || "Auto (Claude)"}</span>
+      </div>
       <p className="text-[11px] text-slate-500 dark:text-slate-400">
         {t.kanban.autoFollowsGlobal}
       </p>

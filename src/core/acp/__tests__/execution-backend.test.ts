@@ -25,8 +25,8 @@ describe("execution-backend helpers", () => {
     const mod = await import("../execution-backend");
 
     expect(mod.getAcpRunnerUrl()).toBe("http://runner.internal");
-    expect(mod.shouldUseRunnerForProvider("opencode")).toBe(true);
     expect(mod.shouldUseRunnerForProvider("claude")).toBe(true);
+    expect(mod.shouldUseRunnerForProvider("opencode")).toBe(false);
     expect(mod.shouldUseRunnerForProvider("claude-code-sdk")).toBe(false);
     expect(mod.shouldUseRunnerForProvider("workspace-agent")).toBe(false);
   });

@@ -2,7 +2,6 @@
  * Shared types for ChatPanel components
  */
 
-import type { AcpProviderInfo } from "../../acp-client";
 import type { ChatMessage, MessageRole, PlanEntry, UsageInfo } from "@/core/chat-message";
 import type { WorkspaceData } from "../../hooks/use-workspaces";
 import type { RepoSelection } from "../repo-picker";
@@ -18,14 +17,6 @@ export interface SetupViewProps {
   onSetupInputChange: (value: string) => void;
   onStartSession: () => void;
   connected: boolean;
-
-  // Provider selection
-  providers: AcpProviderInfo[];
-  selectedProvider: string;
-  onProviderChange: (provider: string) => void;
-
-  // Model selection
-  onFetchModels: (provider: string) => Promise<string[]>;
 
   // Workspace & Repository
   workspaces: WorkspaceData[];

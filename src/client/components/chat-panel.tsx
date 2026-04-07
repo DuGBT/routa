@@ -476,10 +476,6 @@ export function ChatPanel({
           onSetupInputChange={setSetupInput}
           onStartSession={handleStartSession}
           connected={connected}
-          providers={acp.providers}
-          selectedProvider={acp.selectedProvider}
-          onProviderChange={acp.setProvider}
-          onFetchModels={acp.listProviderModels}
           workspaces={workspaces}
           activeWorkspaceId={activeWorkspaceId ?? null}
           onWorkspaceChange={(id) => onWorkspaceChange?.(id)}

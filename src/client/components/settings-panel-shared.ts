@@ -149,10 +149,6 @@ export interface ProviderOption {
   command?: string;
 }
 
-export function isCustomProvider(provider: ProviderOption): boolean {
-  return provider.id.startsWith("custom-");
-}
-
 export interface SettingsPanelProps {
   open: boolean;
   onClose: () => void;

@@ -201,7 +201,7 @@ describe("HttpSessionStore — ACP status", () => {
       sessionId: "test-runtime-error",
       cwd: "/tmp",
       workspaceId: "ws-1",
-      provider: "auggie",
+      provider: "claude",
       acpStatus: "ready",
       createdAt: new Date().toISOString(),
     });

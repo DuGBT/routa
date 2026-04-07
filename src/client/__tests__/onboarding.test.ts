@@ -35,15 +35,12 @@ describe("onboarding helpers", () => {
     expect(hasSavedProviderConfiguration({}, {})).toBe(false);
   });
 
-  it("treats docker auth json as explicit provider setup", () => {
-    expect(
-      hasSavedProviderConfiguration({}, {}, { dockerOpencodeAuthJson: "{\"zai\":{\"key\":\"secret\"}}" }),
-    ).toBe(true);
-  });
-
   it("treats custom providers as explicit provider setup", () => {
     expect(
-      hasSavedProviderConfiguration({}, {}, { customProviderCount: 1 }),
+      hasSavedProviderConfiguration(
+        {},
+        { custom: { apiKey: "secret" } },
+      ),
     ).toBe(true);
   });
 

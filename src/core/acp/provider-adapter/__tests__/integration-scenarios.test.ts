@@ -41,10 +41,10 @@ describe("Integration Scenarios", () => {
     vi.clearAllMocks();
   });
 
-  describe("Scenario: OpenCode Complete Workflow", () => {
-    it("handles full OpenCode tool call lifecycle", () => {
-      const adapter = getProviderAdapter("opencode");
-      const sessionId = "opencode-session-1";
+  describe("Scenario: Claude Code Complete Workflow", () => {
+    it("handles full Claude Code tool call lifecycle", () => {
+      const adapter = getProviderAdapter("claude");
+      const sessionId = "claude-session-1";
       const cwd = "/test/cwd";
 
       // Step 1: User message
@@ -61,7 +61,7 @@ describe("Integration Scenarios", () => {
         eventType: "user_message",
       }));
 
-      // Step 2: Tool call with empty input (OpenCode behavior)
+      // Step 2: Tool call with immediate input (Claude Code behavior)
       const toolCall = adapter.normalize(sessionId, {
         sessionId,
         update: {
@@ -69,29 +69,13 @@ describe("Integration Scenarios", () => {
           toolCallId: "call_1",
           kind: "read",
           title: "Read File",
-          rawInput: {}, // Empty!
-        },
-      }) as NormalizedSessionUpdate;
-
-      expect(toolCall.toolCall?.inputFinalized).toBe(false);
-      recorder.recordFromUpdate(toolCall, cwd);
-      // Should NOT record yet
-      expect(recordTrace).toHaveBeenCalledTimes(1); // Only user_message
-
-      // Step 3: Tool call update with actual input
-      const toolUpdate = adapter.normalize(sessionId, {
-        sessionId,
-        update: {
-          sessionUpdate: "tool_call_update",
-          toolCallId: "call_1",
-          kind: "read",
           rawInput: { filePath: "/test/test.ts" },
-          status: "in_progress",
         },
       }) as NormalizedSessionUpdate;
 
-      recorder.recordFromUpdate(toolUpdate, cwd);
-      // Now should record tool_call
+      expect(toolCall.toolCall?.inputFinalized).toBe(true);
+      recorder.recordFromUpdate(toolCall, cwd);
+      // Should record immediately since input is finalized
       expect(recordTrace).toHaveBeenCalledTimes(2);
       expect(recordTrace).toHaveBeenCalledWith(cwd, expect.objectContaining({
         eventType: "tool_call",
@@ -100,7 +84,7 @@ describe("Integration Scenarios", () => {
         }),
       }));
 
-      // Step 4: Tool completion
+      // Step 3: Tool completion
       const toolComplete = adapter.normalize(sessionId, {
         sessionId,
         update: {
@@ -117,7 +101,7 @@ describe("Integration Scenarios", () => {
         eventType: "tool_result",
       }));
 
-      // Step 5: Agent response chunks
+      // Step 4: Agent response chunks
       for (let i = 0; i < 4; i++) {
         const chunk = adapter.normalize(sessionId, {
           sessionId,
@@ -129,7 +113,7 @@ describe("Integration Scenarios", () => {
         recorder.recordFromUpdate(chunk, cwd);
       }
 
-      // Step 6: Turn complete (should flush buffer)
+      // Step 5: Turn complete (should flush buffer)
       const turnComplete = adapter.normalize(sessionId, {
         sessionId,
         update: {
@@ -144,10 +128,10 @@ describe("Integration Scenarios", () => {
     });
   });
 
-  describe("Scenario: Claude Code Complete Workflow", () => {
-    it("handles full Claude Code tool call lifecycle", () => {
+  describe("Scenario: Claude Code Tool Call with Immediate Input", () => {
+    it("records tool call immediately when input is provided upfront", () => {
       const adapter = getProviderAdapter("claude");
-      const sessionId = "claude-session-1";
+      const sessionId = "claude-session-immediate";
       const cwd = "/test/cwd";
 
       // Tool call with immediate input (Claude behavior)
@@ -164,7 +148,7 @@ describe("Integration Scenarios", () => {
 
       expect(toolCall.toolCall?.inputFinalized).toBe(true);
       recorder.recordFromUpdate(toolCall, cwd);
-      
+
       // Should record immediately
       expect(recordTrace).toHaveBeenCalledWith(cwd, expect.objectContaining({
         eventType: "tool_call",
@@ -176,19 +160,19 @@ describe("Integration Scenarios", () => {
   });
 
   describe("Scenario: Multiple Concurrent Tool Calls", () => {
-    it("handles multiple pending tool calls correctly", () => {
-      const adapter = getProviderAdapter("opencode");
+    it("handles multiple concurrent tool calls correctly", () => {
+      const adapter = getProviderAdapter("claude");
       const sessionId = "concurrent-session";
       const cwd = "/test/cwd";
 
-      // Two tool calls started with empty input
+      // Two tool calls with immediate input (Claude Code behavior)
       const toolCall1 = adapter.normalize(sessionId, {
         sessionId,
         update: {
           sessionUpdate: "tool_call",
           toolCallId: "call_1",
           kind: "read",
-          rawInput: {},
+          rawInput: { filePath: "/file1.ts" },
         },
       }) as NormalizedSessionUpdate;
 
@@ -198,55 +182,55 @@ describe("Integration Scenarios", () => {
           sessionUpdate: "tool_call",
           toolCallId: "call_2",
           kind: "write",
-          rawInput: {},
+          rawInput: { filePath: "/file2.ts", content: "new content" },
         },
       }) as NormalizedSessionUpdate;
 
       recorder.recordFromUpdate(toolCall1, cwd);
       recorder.recordFromUpdate(toolCall2, cwd);
 
-      // Both should be pending
-      expect(recordTrace).not.toHaveBeenCalled();
+      // Both should be recorded immediately (input finalized)
+      expect(recordTrace).toHaveBeenCalledTimes(2);
 
-      // Update for call_2 arrives first
+      // Update for call_2 completes first
       const update2 = adapter.normalize(sessionId, {
         sessionId,
         update: {
           sessionUpdate: "tool_call_update",
           toolCallId: "call_2",
           kind: "write",
-          rawInput: { filePath: "/file2.ts", content: "new content" },
+          rawOutput: "write complete",
           status: "completed",
         },
       }) as NormalizedSessionUpdate;
 
       recorder.recordFromUpdate(update2, cwd);
 
-      // Should record call_2 tool_call and tool_result
-      expect(recordTrace).toHaveBeenCalledTimes(2);
+      // Should record call_2 tool_result
+      expect(recordTrace).toHaveBeenCalledTimes(3);
 
-      // Update for call_1 arrives later
+      // Update for call_1 completes later
       const update1 = adapter.normalize(sessionId, {
         sessionId,
         update: {
           sessionUpdate: "tool_call_update",
           toolCallId: "call_1",
           kind: "read",
-          rawInput: { filePath: "/file1.ts" },
+          rawOutput: "file contents",
           status: "completed",
         },
       }) as NormalizedSessionUpdate;
 
       recorder.recordFromUpdate(update1, cwd);
 
-      // Should record call_1 tool_call and tool_result
+      // Should record call_1 tool_result
       expect(recordTrace).toHaveBeenCalledTimes(4);
     });
   });
 
   describe("Edge Case: Malformed Notifications", () => {
     it("handles notification without update field", () => {
-      const adapter = getProviderAdapter("opencode");
+      const adapter = getProviderAdapter("claude");
       const result = adapter.normalize("session-1", {
         sessionId: "session-1",
         // missing update field
@@ -255,7 +239,7 @@ describe("Integration Scenarios", () => {
     });
 
     it("handles notification with empty update", () => {
-      const adapter = getProviderAdapter("opencode");
+      const adapter = getProviderAdapter("claude");
       const result = adapter.normalize("session-1", {
         sessionId: "session-1",
         update: {},
@@ -264,7 +248,7 @@ describe("Integration Scenarios", () => {
     });
 
     it("handles notification with non-object update", () => {
-      const adapter = getProviderAdapter("opencode");
+      const adapter = getProviderAdapter("claude");
       const result = adapter.normalize("session-1", {
         sessionId: "session-1",
         update: "invalid",
@@ -273,13 +257,13 @@ describe("Integration Scenarios", () => {
     });
 
     it("handles completely empty notification", () => {
-      const adapter = getProviderAdapter("opencode");
+      const adapter = getProviderAdapter("claude");
       const result = adapter.normalize("session-1", {});
       expect(result).toBeNull();
     });
 
     it("handles null notification", () => {
-      const adapter = getProviderAdapter("opencode");
+      const adapter = getProviderAdapter("claude");
       const result = adapter.normalize("session-1", null);
       expect(result).toBeNull();
     });
@@ -408,7 +392,7 @@ describe("Integration Scenarios", () => {
     });
 
     it("converts plan_update through full pipeline", () => {
-      const adapter = getProviderAdapter("opencode");
+      const adapter = getProviderAdapter("claude");
       const sessionId = "bridge-plan-session";
       const bridge = new AgentEventBridge(sessionId);
 

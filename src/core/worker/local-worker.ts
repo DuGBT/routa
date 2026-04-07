@@ -11,7 +11,6 @@
 
 import os from "os";
 import type { BackgroundTask } from "@/core/models/background-task";
-import { createWorkspaceSessionSandbox } from "@/core/sandbox/permissions";
 import type {
   Worker,
   WorkerType,
@@ -33,10 +32,6 @@ const LOCAL_WORKER_CAPABILITIES: readonly WorkerCapability[] = [
   "workspace-agent",
   "routa-native",
 ] as const;
-
-function isWorkspaceProvider(provider: string): boolean {
-  return provider === "workspace" || provider === "workspace-agent" || provider === "routa-native";
-}
 
 /**
  * Calculate max concurrency based on system CPU cores.
@@ -126,42 +121,19 @@ export class LocalWorker implements Worker {
           cwd,
           noopNotification,
         );
-      } else if (isWorkspaceProvider(task.agentId)) {
-        const sandboxId = task.sandboxId ?? (await createWorkspaceSessionSandbox({
-          workspaceId: task.workspaceId,
-          workdir: cwd,
-        }))?.id;
-        acpSessionId = await manager.createWorkspaceAgentSession(
-          sessionId,
-          cwd,
-          noopNotification,
-          {
-            workspaceId: task.workspaceId,
-            sandboxId,
-          },
-        );
       } else if (KNOWN_PROVIDERS.has(task.agentId)) {
-        acpSessionId = await manager.createSession(
+        // Map all known providers to Claude Code
+        acpSessionId = await manager.createClaudeSession(
           sessionId,
           cwd,
           noopNotification,
-          task.agentId,
-          undefined,
-          undefined,
-          undefined,
-          task.workspaceId,
         );
       } else {
-        // Unknown agentId — try as a generic ACP session
-        acpSessionId = await manager.createSession(
+        // Unknown agentId — use Claude Code
+        acpSessionId = await manager.createClaudeSession(
           sessionId,
           cwd,
           noopNotification,
-          task.agentId,
-          undefined,
-          undefined,
-          undefined,
-          task.workspaceId,
         );
       }
 

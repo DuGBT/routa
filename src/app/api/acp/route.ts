@@ -20,14 +20,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAcpProcessManager } from "@/core/acp/processer";
 import { getHttpSessionStore } from "@/core/acp/http-session-store";
-import { getStandardPresets, getPresetById, resolveCommand } from "@/core/acp/acp-presets";
-import { which } from "@/core/acp/utils";
-import { fetchRegistry, detectPlatformTarget } from "@/core/acp/acp-registry";
+import { getPresetById } from "@/core/acp/acp-presets";
 import { ensureMcpForProvider } from "@/core/acp/mcp-setup";
 import { getDefaultRoutaMcpConfig } from "@/core/acp/mcp-config-generator";
 import { resolveMcpServerProfile, type McpServerProfile } from "@/core/mcp/mcp-server-profiles";
 import { isServerlessEnvironment } from "@/core/acp/api-based-providers";
-import { isOpencodeServerConfigured } from "@/core/acp/opencode-sdk-adapter";
 import { AcpError } from "@/core/acp/acp-process";
 import {
   loadHistorySinceEventIdFromDb,
@@ -493,22 +490,8 @@ export async function POST(request: NextRequest) {
         const manager = getAcpProcessManager();
         const store = getHttpSessionStore();
 
-        // Check if OpenCode SDK session
-        if (manager.isOpencodeAdapterSession(sessionId)) {
-          const opcAdapter = manager.getOpencodeAdapter(sessionId);
-          if (opcAdapter) {
-            opcAdapter.cancel();
-          }
-        }
-        // Check if Docker OpenCode session
-        else if (manager.isDockerAdapterSession(sessionId)) {
-          const dockerAdapter = manager.getDockerAdapter(sessionId);
-          if (dockerAdapter) {
-            dockerAdapter.cancel();
-          }
-        }
         // Check if Claude Code SDK session
-        else if (manager.isClaudeCodeSdkSession(sessionId)) {
+        if (manager.isClaudeCodeSdkSession(sessionId)) {
           // Try to get existing adapter, or recreate for cancel (though cancel is less critical)
           const adapter = await manager.getOrRecreateClaudeCodeSdkAdapter(
             sessionId,
@@ -525,11 +508,7 @@ export async function POST(request: NextRequest) {
             await claudeProc.cancel();
           }
         } else {
-          const proc = manager.getProcess(sessionId);
-          const acpSessionId = manager.getAcpSessionId(sessionId);
-          if (proc && acpSessionId) {
-            await proc.cancel(acpSessionId);
-          }
+          // No matching session type found; ignore gracefully
         }
       }
 
@@ -647,9 +626,10 @@ export async function POST(request: NextRequest) {
     // _providers/list - List available ACP agent presets with install status
     // Merges static presets with dynamically-loaded ACP Registry agents.
     if (method === "_providers/list") {
-      const allPresets = [...getStandardPresets()];
       const claudePreset = getPresetById("claude");
-      if (claudePreset) allPresets.push(claudePreset);
+      if (!claudePreset) {
+        return jsonrpcResponse(id ?? null, { providers: [] });
+      }
 
       type ProviderEntry = {
         id: string;
@@ -657,96 +637,17 @@ export async function POST(request: NextRequest) {
         description: string;
         command: string;
         status: "available" | "unavailable";
-        source: "static" | "registry";
       };
 
-      // Check which static preset commands are installed in parallel
-      const staticProviders: ProviderEntry[] = await Promise.all(
-        allPresets.map(async (p): Promise<ProviderEntry> => {
-          const cmd = resolveCommand(p);
-          const resolved = await which(cmd);
-          return {
-            id: p.id,
-            name: p.name,
-            description: p.description,
-            command: p.command,
-            status: resolved ? "available" : "unavailable",
-            source: "static",
-          };
-        })
-      );
-
-      // Merge registry agents (including those that overlap with static presets)
-      // For overlapping agents, use a different ID to allow both versions to coexist
-      const staticIds = new Set(staticProviders.map((p) => p.id));
-      try {
-        const registry = await fetchRegistry();
-        const npxPath = await which("npx");
-        const uvxPath = await which("uv");
-        const platform = detectPlatformTarget();
-
-        for (const agent of registry.agents) {
-          const dist = agent.distribution;
-          let command = "";
-          let status: "available" | "unavailable" = "unavailable";
-
-          if (dist.npx && npxPath) {
-            command = `npx ${dist.npx.package}`;
-            status = "available";
-          } else if (dist.uvx && uvxPath) {
-            command = `uvx ${dist.uvx.package}`;
-            status = "available";
-          } else if (dist.binary && platform && dist.binary[platform]) {
-            command = dist.binary[platform]!.cmd ?? agent.id;
-            status = "unavailable"; // binary needs install first
-          } else if (dist.npx) {
-            command = `npx ${dist.npx.package}`;
-            status = "unavailable";
-          } else if (dist.uvx) {
-            command = `uvx ${dist.uvx.package}`;
-            status = "unavailable";
-          }
-
-          // If this agent ID conflicts with a built-in preset, use a suffixed ID
-          // to allow both versions to coexist in the UI
-          const providerId = staticIds.has(agent.id) ? `${agent.id}-registry` : agent.id;
-          const providerName = staticIds.has(agent.id) ? `${agent.name} (Registry)` : agent.name;
-
-          staticProviders.push({
-            id: providerId,
-            name: providerName,
-            description: agent.description,
-            command,
-            status,
-            source: "registry",
-          });
-        }
-      } catch (err) {
-        console.warn("[ACP Route] Failed to fetch registry for providers:", err);
-      }
-
-      const providers = staticProviders;
-
-      // Add OpenCode SDK as a provider option (available in any environment when configured)
-      {
-        const sdkConfigured = isOpencodeServerConfigured();
-        providers.unshift({
-          id: "opencode-sdk",
-          name: "OpenCode SDK",
-          description: sdkConfigured
-            ? "OpenCode via SDK (configured)"
-            : "OpenCode SDK (set OPENCODE_SERVER_URL or OPENCODE_API_KEY)",
-          command: "sdk",
-          status: sdkConfigured ? "available" : "unavailable",
-          source: "static",
-        });
-      }
-
-      // Sort: available first, then alphabetical
-      providers.sort((a, b) => {
-        if (a.status === b.status) return a.name.localeCompare(b.name);
-        return a.status === "available" ? -1 : 1;
-      });
+      const providers: ProviderEntry[] = [
+        {
+          id: claudePreset.id,
+          name: claudePreset.name,
+          description: claudePreset.description,
+          command: claudePreset.command,
+          status: "available",
+        },
+      ];
 
       return jsonrpcResponse(id ?? null, { providers });
     }

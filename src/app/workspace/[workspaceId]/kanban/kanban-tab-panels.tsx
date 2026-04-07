@@ -4,7 +4,6 @@ import type { AcpProviderInfo } from "@/client/acp-client";
 import type { CodebaseData } from "@/client/hooks/use-workspaces";
 import type { UseAcpActions, UseAcpState } from "@/client/hooks/use-acp";
 import { ChatPanel } from "@/client/components/chat-panel";
-import { AcpProviderDropdown } from "@/client/components/acp-provider-dropdown";
 import { RepoPicker, type RepoSelection } from "@/client/components/repo-picker";
 import { resolveEffectiveTaskAutomation } from "@/core/kanban/effective-task-automation";
 import { KanbanCard } from "./kanban-card";
@@ -251,18 +250,9 @@ export function KanbanBoardSurface({
           {onAgentPrompt ? (
             <div className="flex min-w-0 flex-1 items-center justify-center">
                 <div className="group relative flex w-full max-w-3xl items-center border border-slate-200 bg-white transition-colors focus-within:border-amber-400/80 focus-within:ring-2 focus-within:ring-amber-400/15 dark:border-slate-700 dark:bg-[#12141c]">
-                  <div className="shrink-0 border-r border-slate-200 dark:border-slate-700">
-                    <AcpProviderDropdown
-                      providers={availableProviders}
-                    selectedProvider={resolveKanbanBoardAutoProviderId(board, acp?.selectedProvider) ?? ""}
-                    onProviderChange={(providerId) => onBoardProviderChange(providerId)}
-                    disabled={!acp?.connected || availableProviders.length === 0}
-                    ariaLabel={kanbanTaskAgentCopy.providerAriaLabel}
-                    dataTestId="kanban-agent-provider"
-                    buttonClassName="flex h-8 items-center gap-1.5 border-r border-slate-200 bg-transparent px-2.5 text-[12px] font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-r-slate-700 dark:text-slate-200 dark:hover:bg-slate-800/40"
-                    labelClassName="max-w-[120px] truncate"
-                  />
-                </div>
+                  <div className="shrink-0 border-r border-slate-200 dark:border-slate-700 flex h-8 items-center px-2.5 text-[12px] font-medium text-slate-700 dark:text-slate-200">
+                    Claude Code
+                  </div>
                 <input
                   type="text"
                   value={agentInput}

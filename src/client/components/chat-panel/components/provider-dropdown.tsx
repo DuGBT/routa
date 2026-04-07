@@ -1,1 +1,1 @@
-export { AcpProviderDropdown as ProviderDropdown } from "../../acp-provider-dropdown";
+// Provider dropdown removed - Claude Code is the only supported provider now.

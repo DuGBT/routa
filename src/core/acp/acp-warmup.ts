@@ -21,7 +21,6 @@
  */
 
 import { spawn } from "child_process";
-import { getRegistryAgent } from "./acp-registry";
 import { AcpRuntimeManager } from "./runtime-manager";
 import { needsShell, quoteShellCommandPath } from "./utils";
 
@@ -141,28 +140,7 @@ export class AcpWarmupService {
   // ── Internal ───────────────────────────────────────────────────────────
 
   private async _warmup(agentId: string): Promise<boolean> {
-    const agent = await getRegistryAgent(agentId);
-    if (!agent) {
-      console.warn(`[AcpWarmup] Agent not found in registry: ${agentId}`);
-      return false;
-    }
-
-    const dist = agent.distribution;
-    const manager = AcpRuntimeManager.getInstance();
-
-    // npx agent
-    if (dist.npx) {
-      const runtimeInfo = await manager.ensureRuntime("npx");
-      return this.executePrewarmCommand("npx", runtimeInfo.path, dist.npx.package);
-    }
-
-    // uvx agent
-    if (dist.uvx) {
-      const runtimeInfo = await manager.ensureRuntime("uvx");
-      return this.executePrewarmCommand("uvx", runtimeInfo.path, dist.uvx.package);
-    }
-
-    // binary — no warmup needed
+    // Since only Claude Code (binary) is supported now, no warmup is needed.
     console.log(`[AcpWarmup] Agent ${agentId} is binary — no warmup needed`);
     return true;
   }

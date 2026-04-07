@@ -9,7 +9,6 @@ import { HomeInput } from "@/client/components/home-input";
 import {
   SettingsPanel,
   loadDefaultProviders,
-  loadDockerOpencodeAuthJson,
   loadProviderConnections,
 } from "@/client/components/settings-panel";
 import { DesktopAppShell } from "@/client/components/desktop-app-shell";
@@ -17,7 +16,6 @@ import { WorkspaceSwitcher } from "@/client/components/workspace-switcher";
 import { useAcp } from "@/client/hooks/use-acp";
 import { useWorkspaces } from "@/client/hooks/use-workspaces";
 import { desktopAwareFetch } from "@/client/utils/diagnostics";
-import { loadCustomAcpProviders } from "@/client/utils/custom-acp-providers";
 import {
   clearOnboardingState,
   ONBOARDING_COMPLETED_KEY,
@@ -239,10 +237,7 @@ export default function HomePage() {
   const hasWorkspace = workspacesHook.workspaces.length > 0;
   const hasProviderConfig =
     hydrated
-      ? hasSavedProviderConfiguration(loadDefaultProviders(), loadProviderConnections(), {
-        dockerOpencodeAuthJson: loadDockerOpencodeAuthJson(),
-        customProviderCount: loadCustomAcpProviders().length,
-      })
+      ? hasSavedProviderConfiguration(loadDefaultProviders(), loadProviderConnections())
       : false;
   const needsInlineOnboarding =
     hasWorkspace &&

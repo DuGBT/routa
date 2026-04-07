@@ -560,7 +560,6 @@ describe("KanbanTab agent prompt flow", () => {
       loading: false,
       error: null,
       authError: null,
-      dockerConfigError: null,
       connect: vi.fn(),
       createSession: vi.fn(),
       selectSession: vi.fn(),
@@ -575,7 +574,6 @@ describe("KanbanTab agent prompt flow", () => {
       cancel: vi.fn(),
       disconnect: vi.fn(),
       clearAuthError: vi.fn(),
-      clearDockerConfigError: vi.fn(),
       listProviderModels: vi.fn(),
     } satisfies Partial<UseAcpState & UseAcpActions> as UseAcpState & UseAcpActions;
 

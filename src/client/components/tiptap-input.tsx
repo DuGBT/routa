@@ -34,7 +34,6 @@ import type { SkillSummary } from "../skill-client";
 import { RepoPicker, type RepoSelection } from "./repo-picker";
 import type { FileMatch } from "../hooks/use-file-search";
 import { isDarkThemeActive } from "../utils/theme";
-import { AcpProviderDropdown } from "./acp-provider-dropdown";
 import { useTranslation } from "@/i18n";
 import { ChevronDown, Zap, Monitor, Square, ArrowRight } from "lucide-react";
 
@@ -967,19 +966,15 @@ export function TiptapInput({
             />
           </div>
 
-          {/* Provider dropdown */}
+          {/* Provider indicator */}
           <div className="shrink-0">
-            <AcpProviderDropdown
-              providers={providers}
-              selectedProvider={selectedProvider}
-              onProviderChange={onProviderChange ?? (() => {})}
-              disabled={disabled}
-              variant={isHero ? "hero" : "compact"}
-            />
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 px-2">
+              Claude Code
+            </span>
           </div>
 
-          {/* Model selector — shown for providers that support model listing */}
-          {onFetchModels && (selectedProvider === "opencode" || selectedProvider === "gemini") && (
+          {/* Model selector — not needed for Claude Code */}
+          {false && (
             <div ref={modelDropdownRef}>
               <button
                 ref={modelBtnRef}
@@ -997,7 +992,7 @@ export function TiptapInput({
                       setModelDropdownPos({ left: rect.left, top: rect.bottom + 4, maxHeight: Math.min(spaceBelow, 280) });
                     }
                   }
-                  if (!modelDropdownOpen && availableModels.length === 0) {
+                  if (!modelDropdownOpen && availableModels.length === 0 && onFetchModels) {
                     setModelLoading(true);
                     const models = await onFetchModels(selectedProvider);
                     setAvailableModels(models);
@@ -1019,10 +1014,12 @@ export function TiptapInput({
                 }
               </button>
 
-              {modelDropdownOpen && modelDropdownPos && (
+              {modelDropdownOpen && modelDropdownPos && (() => {
+                const pos = modelDropdownPos!;
+                return (
                 <div
                   className="fixed w-72 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1e2130] shadow-xl z-[9999] flex flex-col"
-                  style={{ left: modelDropdownPos.left, bottom: modelDropdownPos.bottom, top: modelDropdownPos.top, maxHeight: `${modelDropdownPos.maxHeight}px` }}
+                  style={{ left: pos.left, maxHeight: `${pos.maxHeight}px`, ...(pos.bottom !== undefined ? { bottom: pos.bottom } : {}), ...(pos.top !== undefined ? { top: pos.top } : {}) }}
                 >
                   {/* Search */}
                   <div className="p-2 border-b border-slate-100 dark:border-slate-800">
@@ -1073,7 +1070,8 @@ export function TiptapInput({
                     )}
                   </div>
                 </div>
-              )}
+                );
+              })()}
             </div>
           )}
 

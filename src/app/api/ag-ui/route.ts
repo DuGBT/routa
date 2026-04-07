@@ -24,7 +24,6 @@ import { getHttpSessionStore } from "@/core/acp/http-session-store";
 import type { SessionUpdateNotification } from "@/core/acp/http-session-store";
 import { isServerlessEnvironment } from "@/core/acp/api-based-providers";
 import { isClaudeCodeSdkConfigured } from "@/core/acp/claude-code-sdk-adapter";
-import { isOpencodeServerConfigured } from "@/core/acp/opencode-sdk-adapter";
 import { persistSessionToDb, saveHistoryToDb } from "@/core/acp/session-db-persister";
 import { SessionWriteBuffer } from "@/core/acp/session-write-buffer";
 
@@ -143,7 +142,7 @@ export async function POST(request: NextRequest) {
   // Determine provider from forwardedProps or default
   const provider =
     (input.forwardedProps?.provider as string) ??
-    (isServerlessEnvironment() ? "claude-code-sdk" : "opencode");
+    (isServerlessEnvironment() ? "claude-code-sdk" : "claude");
   const workspaceId = requireWorkspaceId(input.forwardedProps?.workspaceId);
   const cwd =
     (input.forwardedProps?.cwd as string) ?? process.cwd();
@@ -177,10 +176,8 @@ export async function POST(request: NextRequest) {
   // Check if session is still alive
   if (sessionId) {
     const sessionExists =
-      manager.getProcess(sessionId) !== undefined ||
       manager.getClaudeProcess(sessionId) !== undefined ||
-      manager.isClaudeCodeSdkSession(sessionId) ||
-      manager.isOpencodeAdapterSession(sessionId);
+      manager.isClaudeCodeSdkSession(sessionId);
 
     if (!sessionExists) {
       threadSessionMap.delete(threadId);
@@ -196,24 +193,17 @@ export async function POST(request: NextRequest) {
     const forwardSessionUpdate = createSessionUpdateForwarder(store, sessionId);
 
     try {
-      if (provider === "opencode-sdk" && isOpencodeServerConfigured()) {
-        await manager.createOpencodeSdkSession(sessionId, forwardSessionUpdate);
-      } else if (provider === "claude-code-sdk" && isClaudeCodeSdkConfigured()) {
+      if (provider === "claude-code-sdk" && isClaudeCodeSdkConfigured()) {
         await manager.createClaudeCodeSdkSession(sessionId, cwd, forwardSessionUpdate, {
           provider: "claude-code-sdk",
           role: "CRAFTER",
         });
       } else {
-        // Standard ACP session (opencode CLI)
-        await manager.createSession(
+        // Claude Code CLI session
+        await manager.createClaudeSession(
           sessionId,
           cwd,
           forwardSessionUpdate,
-          provider,
-          undefined,
-          undefined,
-          undefined,
-          workspaceId,
         );
       }
 
@@ -302,31 +292,7 @@ export async function POST(request: NextRequest) {
       // Forward prompt to ACP
       try {
         // Use the streaming prompt for SDK sessions
-        if (
-          manager.isOpencodeAdapterSession(sessionId!) ||
-          (await manager.isOpencodeSdkSessionAsync(sessionId!))
-        ) {
-          const opcAdapter = await manager.getOrRecreateOpencodeSdkAdapter(
-            sessionId!,
-            createSessionUpdateForwarder(store, sessionId!),
-          );
-
-          if (opcAdapter && opcAdapter.alive) {
-            store.enterStreamingMode(sessionId!);
-            for await (const event of opcAdapter.promptStream(promptText, sessionId!)) {
-              // Parse ACP SSE event and convert to AG-UI
-              const notifications = parseAcpSseEvent(event, sessionId!);
-              for (const n of notifications) {
-                const aguiEvents = adapter.convert(n);
-                for (const e of aguiEvents) {
-                  write(encodeSSE(e));
-                }
-              }
-            }
-            store.flushAgentBuffer(sessionId!);
-            store.exitStreamingMode(sessionId!);
-          }
-        } else if (await manager.isClaudeCodeSdkSessionAsync(sessionId!)) {
+        if (await manager.isClaudeCodeSdkSessionAsync(sessionId!)) {
           const claudeAdapter = await manager.getOrRecreateClaudeCodeSdkAdapter(
             sessionId!,
             createSessionUpdateForwarder(store, sessionId!),
@@ -347,49 +313,10 @@ export async function POST(request: NextRequest) {
             store.exitStreamingMode(sessionId!);
           }
         } else {
-          // Standard ACP session — listen for intercepted notifications
-          const proc = manager.getProcess(sessionId!);
-          const acpSessionId = manager.getAcpSessionId(sessionId!);
-
-          if (proc && acpSessionId) {
-            // Send prompt via JSON-RPC to the process
-            const promptResult = proc.prompt(acpSessionId, promptText);
-
-            // Poll for intercepted updates while prompt is processing
-            const pollNotifications = async () => {
-              while (!isDone) {
-                while (notificationBuffer.length > 0) {
-                  const n = notificationBuffer.shift()!;
-                  const aguiEvents = adapter.convert(n);
-                  for (const e of aguiEvents) {
-                    write(encodeSSE(e));
-                  }
-
-                  // Check for turn_complete
-                  const updateType = n.update?.sessionUpdate;
-                  if (updateType === "turn_complete" || updateType === "error") {
-                    isDone = true;
-                    return;
-                  }
-                }
-
-                // Wait for more notifications
-                await new Promise<void>((resolve) => {
-                  resolveWait = resolve;
-                  // Timeout to prevent hanging
-                  setTimeout(resolve, 500);
-                });
-              }
-            };
-
-            // Run prompt and poll in parallel
-            await Promise.race([
-              promptResult.then(() => {
-                // Give a small window for remaining events to arrive
-                return new Promise<void>((resolve) => setTimeout(resolve, 1000));
-              }),
-              pollNotifications(),
-            ]);
+          // Claude Code CLI session
+          const claudeProc = manager.getClaudeProcess(sessionId!);
+          if (claudeProc) {
+            const promptResult = await claudeProc.prompt(sessionId!, promptText);
 
             // Drain any remaining notifications
             while (notificationBuffer.length > 0) {
@@ -399,6 +326,8 @@ export async function POST(request: NextRequest) {
                 write(encodeSSE(e));
               }
             }
+
+            return promptResult;
           }
         }
       } catch (err) {

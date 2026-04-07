@@ -21,7 +21,6 @@ export type {
 
 // ─── Implementations ─────────────────────────────────────────────────────────
 export { LocalWorker } from "./local-worker";
-export { DockerWorker } from "./docker-worker";
 
 // ─── Registry ────────────────────────────────────────────────────────────────
 export { WorkerRegistry } from "./registry";

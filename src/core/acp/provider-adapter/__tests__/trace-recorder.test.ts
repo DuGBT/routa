@@ -83,11 +83,11 @@ describe("TraceRecorder", () => {
     });
   });
 
-  describe("Use Case: OpenCode (Deferred Input)", () => {
+  describe("Use Case: Claude (Deferred Input)", () => {
     it("buffers tool_call when inputFinalized=false", () => {
       const update: NormalizedSessionUpdate = {
         sessionId: "session-1",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call",
         timestamp: new Date(),
         toolCall: {
@@ -109,7 +109,7 @@ describe("TraceRecorder", () => {
       // Step 1: tool_call with empty input
       const toolCall: NormalizedSessionUpdate = {
         sessionId: "session-1",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call",
         timestamp: new Date(),
         toolCall: {
@@ -127,7 +127,7 @@ describe("TraceRecorder", () => {
       // Step 2: tool_call_update with actual input
       const toolCallUpdate: NormalizedSessionUpdate = {
         sessionId: "session-1",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call_update",
         timestamp: new Date(),
         toolCall: {
@@ -158,7 +158,7 @@ describe("TraceRecorder", () => {
       // Setup: pending tool call
       const toolCall: NormalizedSessionUpdate = {
         sessionId: "session-1",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call",
         timestamp: new Date(),
         toolCall: {
@@ -174,7 +174,7 @@ describe("TraceRecorder", () => {
       // Completion with input and output
       const completion: NormalizedSessionUpdate = {
         sessionId: "session-1",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call_update",
         timestamp: new Date(),
         toolCall: {
@@ -197,7 +197,7 @@ describe("TraceRecorder", () => {
       // Setup: tool_call with empty input
       const toolCall: NormalizedSessionUpdate = {
         sessionId: "session-1",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call",
         timestamp: new Date(),
         toolCall: {
@@ -213,7 +213,7 @@ describe("TraceRecorder", () => {
       // First update with input
       const update1: NormalizedSessionUpdate = {
         sessionId: "session-1",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call_update",
         timestamp: new Date(),
         toolCall: {
@@ -229,7 +229,7 @@ describe("TraceRecorder", () => {
       // Second update with input (should not record again)
       const update2: NormalizedSessionUpdate = {
         sessionId: "session-1",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call_update",
         timestamp: new Date(),
         toolCall: {
@@ -323,7 +323,7 @@ describe("TraceRecorder", () => {
       // Add a pending tool call
       const toolCall: NormalizedSessionUpdate = {
         sessionId: "session-to-clean",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call",
         timestamp: new Date(),
         toolCall: {
@@ -342,7 +342,7 @@ describe("TraceRecorder", () => {
       // Now if we send an update for this tool call, it should not find it
       const update: NormalizedSessionUpdate = {
         sessionId: "session-to-clean",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call_update",
         timestamp: new Date(),
         toolCall: {
@@ -368,7 +368,7 @@ describe("TraceRecorder", () => {
       // This can happen if we missed the initial tool_call
       const update: NormalizedSessionUpdate = {
         sessionId: "session-1",
-        provider: "opencode",
+        provider: "claude",
         eventType: "tool_call_update",
         timestamp: new Date(),
         toolCall: {

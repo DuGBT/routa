@@ -53,8 +53,6 @@ describe("KanbanSettingsModal", () => {
     );
 
     fireEvent.click(screen.getByRole("checkbox", { name: /toggle automation for review/i }));
-    fireEvent.click(screen.getByTestId("kanban-settings-provider"));
-    fireEvent.click(screen.getByRole("button", { name: /claude code/i }));
     fireEvent.click(screen.getByRole("button", { name: /save board settings/i }));
 
     await waitFor(() => {
@@ -64,10 +62,8 @@ describe("KanbanSettingsModal", () => {
           review: expect.objectContaining({
             enabled: true,
             steps: [expect.objectContaining({
-              providerId: "claude",
               role: "GATE",
             })],
-            providerId: "claude",
             role: "GATE",
             transitionType: "exit",
             requiredArtifacts: ["screenshot", "test_results"],

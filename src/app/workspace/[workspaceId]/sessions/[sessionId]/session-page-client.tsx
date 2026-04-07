@@ -25,8 +25,7 @@ import {useWorkspaces, useCodebases} from "@/client/hooks/use-workspaces";
 import {useAcp} from "@/client/hooks/use-acp";
 import {useNotes} from "@/client/hooks/use-notes";
 import type {RepoSelection} from "@/client/components/repo-picker";
-import {storePendingPrompt} from "@/client/utils/pending-prompt";
-import {SettingsPanel, DockerConfigModal, loadDefaultProviders, loadProviderConnectionConfig, getModelDefinitionByAlias} from "@/client/components/settings-panel";
+import {SettingsPanel, loadDefaultProviders, loadProviderConnectionConfig, getModelDefinitionByAlias} from "@/client/components/settings-panel";
 import {DesktopNavRail} from "@/client/components/desktop-nav-rail";
 import { useRealSessionParams } from "./use-real-session-params";
 import { type AgentRole, type SpecialistOption, useSessionPageBootstrap } from "./use-session-page-bootstrap";
@@ -126,10 +125,6 @@ export function SessionPageClient() {
   const [showAgentInstallPopup, setShowAgentInstallPopup] = useState(false);
   const [showSettingsPanel, setShowSettingsPanel] = useState(false);
   const [showSpecialistManager, setShowSpecialistManager] = useState(false);
-  // Docker error popup state
-  const [dockerErrorMessage, setDockerErrorMessage] = useState<string | null>(null);
-  // Input text to restore when a docker session fails before prompt was sent
-  const [dockerRetryText, setDockerRetryText] = useState<string | null>(null);
   const navigationTargetRef = useRef<string | null>(null);
   const displaySessionId = focusedSessionId ?? sessionId;
 
@@ -152,8 +147,6 @@ export function SessionPageClient() {
     acpSetProvider,
     acpPrompt,
     setSelectedAgent,
-    setDockerErrorMessage,
-    setDockerRetryText,
   });
 
   // Handle custom events for specialist manager
@@ -776,8 +769,8 @@ export function SessionPageClient() {
             activeWorkspaceId={workspaceId}
             onWorkspaceChange={handleWorkspaceSelect}
             codebases={codebases}
-            inputPrefill={dockerRetryText}
-            onInputPrefillConsumed={() => setDockerRetryText(null)}
+            inputPrefill={undefined}
+            onInputPrefillConsumed={() => {}}
           />
         </main>
 
@@ -905,22 +898,6 @@ export function SessionPageClient() {
         open={showSettingsPanel}
         onClose={() => setShowSettingsPanel(false)}
         providers={acp.providers}
-      />
-
-      {/* ─── Docker Config Modal ─────────────────────────────────── */}
-      <DockerConfigModal
-        open={!!dockerErrorMessage}
-        errorMessage={dockerErrorMessage ?? ""}
-        onClose={() => setDockerErrorMessage(null)}
-        onSaved={(apiKey) => {
-          setDockerErrorMessage(null);
-          // Re-store pending text so the pending-prompt effect can re-send after reconnect
-          if (dockerRetryText && sessionId) {
-            storePendingPrompt(sessionId, dockerRetryText);
-          }
-          // The input will be pre-filled in the TiptapInput via dockerRetryText state
-          void apiKey; // used by saveProviderConnections inside DockerConfigModal
-        }}
       />
 
       {/* ─── Specialist Manager ──────────────────────────────────── */}

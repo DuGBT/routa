@@ -251,7 +251,7 @@ export function createSqliteSystem(): RoutaSystem {
     } = require("./db/sqlite-stores") as typeof import("./db/sqlite-stores");
 
     const db = getSqliteDatabase();
-    ensureSqliteDefaultWorkspace();
+    ensureSqliteDefaultWorkspace(db, "default");
     agentStore = new SqliteAgentStore(db);
     conversationStore = new SqliteConversationStore(db);
     taskStore = new SqliteTaskStore(db);

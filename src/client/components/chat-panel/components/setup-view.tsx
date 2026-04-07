@@ -1,8 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { ProviderDropdown } from "./provider-dropdown";
-import { ModelDropdown } from "./model-dropdown";
+import { useCallback } from "react";
 import { RepoPicker } from "../../repo-picker";
 import { Select } from "../../select";
 import type { SetupViewProps } from "../types";
@@ -14,10 +12,6 @@ export function SetupView({
   onSetupInputChange,
   onStartSession,
   connected,
-  providers,
-  selectedProvider,
-  onProviderChange,
-  onFetchModels,
   workspaces,
   activeWorkspaceId,
   onWorkspaceChange,
@@ -26,25 +20,12 @@ export function SetupView({
   agentRole,
   onAgentRoleChange,
 }: SetupViewProps) {
-  const [selectedModel, setSelectedModel] = useState("");
-
-  const handleProviderChange = useCallback((providerId: string) => {
-    setSelectedModel("");
-    onProviderChange(providerId);
-  }, [onProviderChange]);
-
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       onStartSession();
     }
   }, [onStartSession]);
-
-  const handleFetchModels = useCallback(() => {
-    return onFetchModels(selectedProvider);
-  }, [onFetchModels, selectedProvider]);
-
-  const supportsModelSelection = selectedProvider === "opencode" || selectedProvider === "gemini";
 
   return (
     <div className="flex-1 overflow-y-auto">
@@ -67,21 +48,8 @@ export function SetupView({
           <div className="flex items-center justify-between px-3 py-2 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/40 dark:bg-slate-900/20">
             <div className="flex items-center gap-1.5">
               <span className="text-[11px] text-slate-400 dark:text-slate-500 mr-1">⌘↵</span>
-              {providers.length > 0 && (
-                <ProviderDropdown
-                  providers={providers}
-                  selectedProvider={selectedProvider}
-                  onProviderChange={handleProviderChange}
-                />
-              )}
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">Claude Code</span>
             </div>
-            {supportsModelSelection && (
-              <ModelDropdown
-                selectedModel={selectedModel}
-                onModelChange={setSelectedModel}
-                onFetchModels={handleFetchModels}
-              />
-            )}
             <button
               onClick={onStartSession}
               disabled={!setupInput.trim() || !connected}

@@ -34,43 +34,6 @@ export const dispatchPromptToHostSession: SharedPromptDispatcher = async (
   const forwardSessionUpdate = createSessionUpdateForwarder(store, hostSessionId);
   store.pushUserMessage(hostSessionId, prompt);
 
-  if (
-    manager.isOpencodeAdapterSession(hostSessionId)
-    || await manager.isOpencodeSdkSessionAsync(hostSessionId)
-  ) {
-    const adapter = await manager.getOrRecreateOpencodeSdkAdapter(hostSessionId, forwardSessionUpdate);
-    if (!adapter || !adapter.alive) {
-      throw new Error(`OpenCode SDK session unavailable: ${hostSessionId}`);
-    }
-    for await (const _event of adapter.promptStream(
-      prompt,
-      hostSessionId,
-      undefined,
-      sessionRecord.workspaceId,
-    )) {
-      // Drain stream to completion so notifications are fully emitted.
-    }
-    store.flushAgentBuffer(hostSessionId);
-    return;
-  }
-
-  if (manager.isDockerAdapterSession(hostSessionId)) {
-    const dockerAdapter = manager.getDockerAdapter(hostSessionId);
-    if (!dockerAdapter || !dockerAdapter.alive) {
-      throw new Error(`Docker OpenCode session unavailable: ${hostSessionId}`);
-    }
-    for await (const _event of dockerAdapter.promptStream(
-      prompt,
-      hostSessionId,
-      undefined,
-      sessionRecord.workspaceId,
-    )) {
-      // Drain stream to completion so notifications are fully emitted.
-    }
-    store.flushAgentBuffer(hostSessionId);
-    return;
-  }
-
   if (await manager.isClaudeCodeSdkSessionAsync(hostSessionId)) {
     const adapter = await manager.getOrRecreateClaudeCodeSdkAdapter(hostSessionId, forwardSessionUpdate);
     if (!adapter || !adapter.alive) {
@@ -91,12 +54,11 @@ export const dispatchPromptToHostSession: SharedPromptDispatcher = async (
     return;
   }
 
-  const proc = manager.getProcess(hostSessionId);
-  const acpSessionId = manager.getAcpSessionId(hostSessionId);
-  if (!proc || !acpSessionId || !proc.alive) {
-    throw new Error(`ACP process unavailable for host session: ${hostSessionId}`);
+  const claudeProc = manager.getClaudeProcess(hostSessionId);
+  if (!claudeProc || !claudeProc.alive) {
+    throw new Error(`Claude Code session unavailable for host session: ${hostSessionId}`);
   }
 
-  await proc.prompt(acpSessionId, prompt);
+  await claudeProc.prompt(hostSessionId, prompt);
   store.flushAgentBuffer(hostSessionId);
 };

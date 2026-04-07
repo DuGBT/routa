@@ -141,7 +141,7 @@ export class PostgresCustomMcpServerStore implements CustomMcpServerStore {
       ? await this.db.select().from(pgCustomMcpServers).where(eq(pgCustomMcpServers.workspaceId, workspaceId))
       : await this.db.select().from(pgCustomMcpServers);
 
-    return results.map((r) => toConfig(r));
+    return results.map((r: any) => toConfig(r));
   }
 
   async listEnabled(workspaceId?: string): Promise<CustomMcpServerConfig[]> {
@@ -154,7 +154,7 @@ export class PostgresCustomMcpServerStore implements CustomMcpServerStore {
       .from(pgCustomMcpServers)
       .where(and(...conditions));
 
-    return results.map((r) => toConfig(r));
+    return results.map((r: any) => toConfig(r));
   }
 
   async update(id: string, input: CustomMcpServerUpdateInput): Promise<CustomMcpServerConfig | null> {
@@ -233,7 +233,7 @@ export class SqliteCustomMcpServerStore implements CustomMcpServerStore {
       ? await this.db.select().from(sqliteCustomMcpServers).where(eq(sqliteCustomMcpServers.workspaceId, workspaceId))
       : await this.db.select().from(sqliteCustomMcpServers);
 
-    return results.map((r) => toConfig(r));
+    return results.map((r: any) => toConfig(r));
   }
 
   async listEnabled(workspaceId?: string): Promise<CustomMcpServerConfig[]> {
@@ -246,7 +246,7 @@ export class SqliteCustomMcpServerStore implements CustomMcpServerStore {
       .from(sqliteCustomMcpServers)
       .where(and(...conditions));
 
-    return results.map((r) => toConfig(r));
+    return results.map((r: any) => toConfig(r));
   }
 
   async update(id: string, input: CustomMcpServerUpdateInput): Promise<CustomMcpServerConfig | null> {
