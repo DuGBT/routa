@@ -155,7 +155,7 @@ export function KanbanBoardSurface({
               type="button"
               onClick={onDismissMoveError}
               className="shrink-0 rounded-lg border border-rose-200 px-2 py-1 text-xs font-medium text-rose-700 transition hover:bg-rose-100 dark:border-rose-900/50 dark:text-rose-300 dark:hover:bg-rose-900/20"
-            >
+ >
               {t.common.dismiss}
             </button>
           </div>
@@ -205,7 +205,7 @@ export function KanbanBoardSurface({
                         void fetchCodebaseWorktrees(defaultCodebase);
                       }}
                       className="inline-flex h-8 max-w-[200px] items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 text-[11px] text-slate-700 transition-colors hover:border-amber-400 hover:bg-amber-50 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-300 dark:hover:bg-amber-900/10"
-                      data-testid="codebase-badge"
+ data-testid="codebase-badge"
                       title={`${defaultCodebase.label ?? defaultCodebase.repoPath} - ${defaultCodebase.branch ? `@${defaultCodebase.branch}` : ""}`}
                     >
                       <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${defaultCodebase.sourceType === "github" ? "bg-blue-500" : "bg-emerald-500"}`} />
@@ -223,7 +223,7 @@ export function KanbanBoardSurface({
                         }
                       }}
                       className="inline-flex h-8 items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2 text-[11px] text-slate-600 transition-colors hover:border-amber-400 hover:bg-amber-50 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-400 dark:hover:bg-amber-900/10"
-                      title={`+${codebases.length - 1} more ${codebases.length - 1 === 1 ? "repository" : "repositories"} - click to view all`}
+ title={`+${codebases.length - 1} more ${codebases.length - 1 === 1 ? "repository" : "repositories"} - click to view all`}
                     >
                       <span className="font-medium">+{codebases.length - 1}</span>
                     </button>
@@ -234,7 +234,7 @@ export function KanbanBoardSurface({
                 type="button"
                 onClick={() => setFileChangesOpen((current) => !current)}
                 className="inline-flex h-8 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 text-[11px] font-medium text-slate-700 transition-colors hover:border-amber-400 hover:bg-amber-50 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-300 dark:hover:bg-amber-900/10"
-                data-testid={fileChangesOpen ? "kanban-file-changes-close" : "kanban-file-changes-open"}
+ data-testid={fileChangesOpen ? "kanban-file-changes-close" : "kanban-file-changes-open"}
                 aria-label={fileChangesOpen ? "Close file changes drawer" : "Open file changes drawer"}
                 title={`${fileChangesSummary.changedFiles} changed file${fileChangesSummary.changedFiles === 1 ? "" : "s"}`}
               >
@@ -276,12 +276,12 @@ export function KanbanBoardSurface({
                   placeholder={acp?.connected ? kanbanTaskAgentCopy.placeholder : kanbanTaskAgentCopy.connectingPlaceholder}
                   disabled={agentLoading || !acp?.connected}
                   className="h-8 w-full bg-transparent px-3 pr-2 text-sm text-slate-800 placeholder-slate-400 outline-none disabled:opacity-50 dark:text-slate-200 dark:placeholder-slate-500"
-                />
+ />
                 <button
                   onClick={() => void handleAgentSubmit()}
                   disabled={!agentInput.trim() || agentLoading || !acp?.connected}
                   className="mr-1.5 inline-flex h-8 shrink-0 items-center gap-1 rounded-lg bg-slate-900 px-3 text-[12px] font-semibold text-white transition-colors hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400 dark:bg-amber-500 dark:hover:bg-amber-400 dark:disabled:bg-[#1a1d29] dark:disabled:text-slate-500"
-                >
+ >
                   {agentLoading ? "..." : (
                     <>
                       <span>{kanbanTaskAgentCopy.send}</span>
@@ -292,7 +292,7 @@ export function KanbanBoardSurface({
                 <button
                   onClick={() => setShowCreateModal(true)}
                   className="inline-flex h-8 shrink-0 items-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-500 px-3 py-0 text-[12px] font-semibold text-white shadow-sm transition-all hover:from-amber-600 hover:to-amber-500"
-                >
+ >
                   {kanbanTaskAgentCopy.manual}
                 </button>
               </div>
@@ -300,7 +300,7 @@ export function KanbanBoardSurface({
                 <button
                   onClick={() => openAgentPanel(agentSessionId)}
                   className="shrink-0 text-xs text-amber-600 hover:underline dark:text-amber-400"
-                  title={kanbanTaskAgentCopy.openPanelTitle}
+ title={kanbanTaskAgentCopy.openPanelTitle}
                 >
                   {kanbanTaskAgentCopy.view}
                 </button>
@@ -310,7 +310,7 @@ export function KanbanBoardSurface({
             <button
               onClick={() => setShowCreateModal(true)}
               className="inline-flex h-8 items-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-500 px-3 text-[12px] font-medium text-white shadow-sm transition-all hover:from-amber-600 hover:to-amber-500"
-            >
+ >
               {kanbanTaskAgentCopy.manual}
             </button>
           )}
@@ -354,7 +354,7 @@ export function KanbanBoardSurface({
                         </div>
                         <div
                           className="truncate text-[10px] leading-4 text-slate-500 dark:text-slate-400"
-                          data-testid={`kanban-column-automation-${column.id}`}
+ data-testid={`kanban-column-automation-${column.id}`}
                           title={laneAutomation?.enabled ? formatLaneAutomationSummary(laneAutomation, providers, specialists, {
                             autoProviderId: boardAutoProviderId,
                             autoLabel: t.common.auto,
@@ -406,7 +406,7 @@ export function KanbanBoardSurface({
         {agentPanelOpen && agentSessionId && acp && (
           <aside
             className="flex h-full w-lg min-w-md flex-col overflow-hidden border border-slate-200/70 bg-white dark:border-[#1c1f2e] dark:bg-[#12141c]"
-            data-testid="kanban-agent-panel"
+ data-testid="kanban-agent-panel"
           >
             <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 dark:border-[#191c28]">
               <div className="min-w-0">
@@ -421,13 +421,13 @@ export function KanbanBoardSurface({
                   target="_blank"
                   rel="noreferrer"
                   className="rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#191c28]"
-                >
+ >
                   {kanbanTaskAgentCopy.open}
                 </a>
                 <button
                   onClick={onCloseAgentPanel}
                   className="rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#191c28]"
-                >
+ >
                   {kanbanTaskAgentCopy.close}
                 </button>
               </div>
@@ -548,7 +548,7 @@ function A2ASessionPane({
                 <div
                   key={entry.label}
                   className="border-b border-slate-200 px-3 py-2.5 dark:border-slate-700"
-                >
+ >
                   <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
                     {entry.label}
                   </div>
@@ -659,13 +659,13 @@ export function KanbanTaskDetailOverlay({
   return (
     <div
       className={`fixed inset-0 z-50 flex bg-black/50 animate-in fade-in duration-150 ${
-        isTaskDetailFullscreen ? "items-stretch justify-stretch px-0 py-0" : "items-center justify-center px-4 py-6"
-      }`}
+ isTaskDetailFullscreen ? "items-stretch justify-stretch px-0 py-0" : "items-center justify-center px-4 py-6"
+ }`}
     >
       <div
         className={`relative w-full overflow-hidden border border-slate-200 bg-white shadow-sm dark:border-[#1c1f2e] dark:bg-[#12141c] animate-in zoom-in-95 duration-150 ${
-          isTaskDetailFullscreen ? "h-screen max-w-none border-0" : "h-[88vh] max-w-7xl"
-        }`}
+ isTaskDetailFullscreen ? "h-screen max-w-none border-0" : "h-[88vh] max-w-7xl"
+ }`}
       >
         <div ref={detailSplitContainerRef} className="flex h-full">
           {activeTaskId && (() => {
@@ -716,7 +716,7 @@ export function KanbanTaskDetailOverlay({
           {activeTaskId && hasSessionPane && (
             <div
               className="hidden h-full w-3 shrink-0 cursor-col-resize items-center justify-center bg-transparent hover:bg-amber-50/80 dark:hover:bg-amber-900/10 md:flex"
-              onMouseDown={() => setIsDraggingDetailSplit(true)}
+ onMouseDown={() => setIsDraggingDetailSplit(true)}
               data-testid="kanban-detail-split-handle"
             >
               <div className="h-12 w-1 rounded-full bg-slate-300 transition-colors hover:bg-amber-400 dark:bg-slate-700 dark:hover:bg-amber-500" />
@@ -750,7 +750,7 @@ export function KanbanTaskDetailOverlay({
               return (
                 <div
                   className="flex h-full min-w-0 flex-1 flex-col overflow-hidden"
-                  style={activeTaskId ? { width: `${(1 - detailSplitRatio) * 100}%` } : undefined}
+ style={activeTaskId ? { width: `${(1 - detailSplitRatio) * 100}%` } : undefined}
                 >
                   <KanbanEmptySessionPane
                     task={activeTask}
@@ -768,7 +768,7 @@ export function KanbanTaskDetailOverlay({
             return (
               <div
                 className="flex h-full min-w-0 flex-1 flex-col overflow-hidden"
-                style={activeTaskId ? { width: `${(1 - detailSplitRatio) * 100}%` } : undefined}
+ style={activeTaskId ? { width: `${(1 - detailSplitRatio) * 100}%` } : undefined}
               >
                 {activeTask && !isA2ASessionPane && (
                   <div className="shrink-0 border-b border-slate-200/80 p-2 dark:border-[#202433]">

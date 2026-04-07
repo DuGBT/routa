@@ -220,7 +220,7 @@ export function KanbanDescriptionEditor({
                 onClick={cancelEdit}
                 disabled={isSaving}
                 className="rounded-md border border-slate-200 px-2 py-1 text-[11px] font-medium text-slate-600 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-              >
+ >
                 {t.common.cancel}
               </button>
               <button
@@ -228,7 +228,7 @@ export function KanbanDescriptionEditor({
                 onClick={() => void saveEdit()}
                 disabled={isSaving}
                 className="rounded-md bg-amber-500 px-2 py-1 text-[11px] font-medium text-white transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-60"
-              >
+ >
                 {isSaving ? t.workspace.saving : t.common.save}
               </button>
             </>
@@ -237,7 +237,7 @@ export function KanbanDescriptionEditor({
               type="button"
               onClick={beginEdit}
               className="rounded-md border border-slate-200 px-2 py-1 text-[11px] font-medium text-slate-600 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
+ >
               {t.common.edit}
             </button>
           )}
@@ -261,9 +261,9 @@ export function KanbanDescriptionEditor({
                 type="button"
                 onClick={item.action}
                 className={`rounded px-1.5 py-0.5 text-[11px] font-mono font-semibold transition-colors ${item.active
-                    ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
-                    : "text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-                  }`}
+ ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+ : "text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+ }`}
               >
                 {item.label}
               </button>
@@ -277,7 +277,7 @@ export function KanbanDescriptionEditor({
             <MarkdownViewer
               content={value}
               className="text-slate-700 dark:text-slate-300"
-              hideCanonicalStory
+ hideCanonicalStory
             />
           ) : (
             <div className="text-sm text-slate-400 dark:text-slate-500">{t.kanban.noDescriptionYet}</div>

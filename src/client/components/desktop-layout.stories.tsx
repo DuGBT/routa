@@ -49,7 +49,7 @@ const meta = {
       {...args}
       titleBarRight={<Button size="sm">Create</Button>}
     >
-      <div className="h-full p-4 text-sm text-desktop-text-primary">
+      <div className="h-full p-4 text-sm text-slate-900 dark:text-slate-200">
         Desktop layout content area
       </div>
     </DesktopLayout>
@@ -68,7 +68,7 @@ const defaultStoryArgs = {
   onWorkspaceSelect: () => {},
   onWorkspaceCreate: async () => {},
   children: (
-    <div className="h-full p-4 text-sm text-desktop-text-primary">
+    <div className="h-full p-4 text-sm text-slate-900 dark:text-slate-200">
       Desktop layout content area
     </div>
   ),

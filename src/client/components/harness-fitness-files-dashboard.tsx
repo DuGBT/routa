@@ -46,14 +46,14 @@ function DimensionDensityTooltip({ active, payload }: TooltipContentProps<ValueT
   };
 
   return (
-    <div className="rounded-sm border border-desktop-border bg-white/95 px-3 py-2 text-[11px] dark:bg-slate-950/95">
-      <div className="font-semibold text-desktop-text-primary">{datum.label}</div>
-      <div className="mt-1 text-desktop-text-secondary">{datum.fileName}</div>
-      <div className="mt-2 text-desktop-text-primary">score {datum.score}</div>
-      <div className="text-desktop-text-secondary">{datum.metricCount} metrics</div>
-      <div className="text-desktop-text-secondary">{datum.hardGateCount} hard gates</div>
-      <div className="text-desktop-text-secondary">weight {datum.weight}</div>
-      <div className="text-desktop-text-secondary">pass {datum.thresholdPass} · warn {datum.thresholdWarn}</div>
+    <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-white/95 px-3 py-2 text-[11px] dark:bg-slate-950/95">
+      <div className="font-semibold text-slate-900 dark:text-slate-200">{datum.label}</div>
+      <div className="mt-1 text-slate-700 dark:text-slate-400">{datum.fileName}</div>
+      <div className="mt-2 text-slate-900 dark:text-slate-200">score {datum.score}</div>
+      <div className="text-slate-700 dark:text-slate-400">{datum.metricCount} metrics</div>
+      <div className="text-slate-700 dark:text-slate-400">{datum.hardGateCount} hard gates</div>
+      <div className="text-slate-700 dark:text-slate-400">weight {datum.weight}</div>
+      <div className="text-slate-700 dark:text-slate-400">pass {datum.thresholdPass} · warn {datum.thresholdWarn}</div>
     </div>
   );
 }
@@ -86,11 +86,11 @@ export function HarnessFitnessFilesDashboard({
 
       {!unsupportedMessage && !loading && !error ? (
         <div className="mt-3" data-testid="harness-fitness-files-dashboard">
-          <section className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 p-4 dark:bg-white/6">
+          <section className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 p-4 dark:bg-white/6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">{t.harness.fitnessFiles.dimensionRadar}</div>
-                <p className="mt-1 text-[12px] leading-5 text-desktop-text-secondary">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">{t.harness.fitnessFiles.dimensionRadar}</div>
+                <p className="mt-1 text-[12px] leading-5 text-slate-700 dark:text-slate-400">
                   {t.harness.fitnessFiles.dimensionRadarDescription}
                 </p>
               </div>
@@ -126,7 +126,7 @@ export function HarnessFitnessFilesDashboard({
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="mt-4 rounded-sm border border-dashed border-desktop-border px-3 py-5 text-sm text-desktop-text-secondary">
+              <div className="mt-4 rounded-sm border border-dashed border-slate-300 dark:border-slate-700 px-3 py-5 text-sm text-slate-700 dark:text-slate-400">
                 {t.harness.fitnessFiles.noDimensionFiles}
               </div>
             )}

@@ -606,7 +606,7 @@ export function SessionPageClient() {
   // or while workspaces are loading
   if (!isResolved || (workspacesHook.loading && !isDefaultWorkspace)) {
     return (
-      <div className="desktop-theme h-screen flex items-center justify-center bg-[var(--dt-bg-primary)]">
+      <div className=" h-screen flex items-center justify-center bg-[var(--dt-bg-primary)]">
         <div className="text-[var(--dt-text-secondary)]">{t.common.loading}</div>
       </div>
     );
@@ -615,7 +615,7 @@ export function SessionPageClient() {
   // For non-default workspaces, require workspace to exist
   if (!workspace && !isDefaultWorkspace) {
     return (
-      <div className="desktop-theme h-screen flex items-center justify-center bg-[var(--dt-bg-primary)]">
+      <div className=" h-screen flex items-center justify-center bg-[var(--dt-bg-primary)]">
         <div className="text-[var(--dt-text-secondary)]">{t.common.loading}</div>
       </div>
     );
@@ -632,7 +632,7 @@ export function SessionPageClient() {
   };
 
   return (
-    <div className={`desktop-theme h-screen flex bg-[var(--dt-bg-primary)] ${isEmbedMode ? "embed-mode" : ""}`}>
+    <div className={` h-screen flex bg-[var(--dt-bg-primary)] ${isEmbedMode ? "embed-mode" : ""}`}>
       {/* Desktop Navigation Rail */}
       {!isEmbedMode && (
         <DesktopNavRail workspaceId={workspaceId} />
@@ -656,7 +656,7 @@ export function SessionPageClient() {
               value={selectedSpecialistId ? `specialist:${selectedSpecialistId}` : selectedAgent}
               onChange={(e) => handleAgentChange(e.target.value)}
               className="appearance-none pl-2.5 pr-6 py-0.5 text-xs font-medium rounded-md border border-[var(--dt-border)] bg-[var(--dt-bg-primary)] text-[var(--dt-text-primary)] cursor-pointer focus:ring-1 focus:ring-[var(--dt-accent)]"
-            >
+ >
               {BUILTIN_ROLES.map((r) => (
                 <option key={r.value} value={r.value}>{r.label}</option>
               ))}
@@ -684,7 +684,7 @@ export function SessionPageClient() {
                   checked={toolMode === "essential"}
                   onChange={(e) => handleToolModeToggle(e.target.checked)}
                   className="sr-only peer"
-                />
+ />
                 <div className="w-7 h-3.5 bg-[var(--dt-bg-active)] rounded-full peer peer-checked:bg-[var(--dt-accent)] transition-colors" />
                 <div className="absolute left-0.5 top-0.5 w-2.5 h-2.5 bg-[var(--dt-accent-text)] rounded-full transition-transform peer-checked:translate-x-3.5" />
               </div>
@@ -707,7 +707,7 @@ export function SessionPageClient() {
         {showMobileSidebar && (
           <div
             className="fixed inset-0 z-30 bg-black/40 md:hidden"
-            onClick={() => setShowMobileSidebar(false)}
+ onClick={() => setShowMobileSidebar(false)}
           />
         )}
 
@@ -787,13 +787,13 @@ export function SessionPageClient() {
             {/* Right sidebar resize handle */}
             <div
               className="hidden md:flex items-center justify-center w-1 cursor-col-resize hover:bg-[var(--dt-accent)]/30 active:bg-[var(--dt-accent)]/50 transition-colors group shrink-0"
-              onMouseDown={handleResizeStart}
+ onMouseDown={handleResizeStart}
             >
               <div className="w-0.5 h-8 rounded-full bg-[var(--dt-border)] group-hover:bg-[var(--dt-accent)] group-active:bg-[var(--dt-accent)] transition-colors" />
             </div>
             <aside
               className="hidden md:flex shrink-0 border-l border-[var(--dt-border)] bg-[var(--dt-bg-primary)] flex-col overflow-hidden"
-              style={{ width: `${sidebarWidth}px` }}
+ style={{ width: `${sidebarWidth}px` }}
             >
               {/* CRAFTER agents header */}
               <div className="px-3 py-2 border-b border-[var(--dt-border)] flex items-center justify-between">
@@ -816,10 +816,10 @@ export function SessionPageClient() {
                         key={n}
                         onClick={() => handleConcurrencyChange(n)}
                         className={`px-2 py-0.5 text-[11px] font-medium transition-colors ${
-                          concurrency === n
-                            ? "bg-[var(--dt-accent)] text-[var(--dt-accent-text)]"
-                            : "bg-[var(--dt-bg-primary)] text-[var(--dt-text-secondary)] hover:bg-[var(--dt-bg-active)]"
-                        }`}
+ concurrency === n
+ ? "bg-[var(--dt-accent)] text-[var(--dt-accent-text)]"
+ : "bg-[var(--dt-bg-primary)] text-[var(--dt-text-secondary)] hover:bg-[var(--dt-bg-active)]"
+ }`}
                       >
                         {n}
                       </button>
@@ -848,18 +848,18 @@ export function SessionPageClient() {
       {showAgentInstallPopup && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          role="dialog"
+ role="dialog"
           aria-modal="true"
           aria-labelledby="agent-install-title"
         >
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setShowAgentInstallPopup(false)}
+ onClick={() => setShowAgentInstallPopup(false)}
             aria-hidden="true"
           />
           <div
             className="relative w-full max-w-5xl h-[80vh] bg-[var(--dt-bg-primary)] border border-[var(--dt-border)] rounded-xl shadow-2xl overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
+ onClick={(e) => e.stopPropagation()}
           >
             <div className="h-11 px-4 border-b border-[var(--dt-border)] flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -871,7 +871,7 @@ export function SessionPageClient() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[11px] text-[var(--dt-text-secondary)] hover:text-[var(--dt-text-primary)] transition-colors"
-                >
+ >
                   {t.sessions.openInNewTab}
                 </a>
               </div>
@@ -880,7 +880,7 @@ export function SessionPageClient() {
                 type="button"
                 onClick={() => setShowAgentInstallPopup(false)}
                 className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-[var(--dt-bg-active)] text-[var(--dt-text-secondary)] hover:text-[var(--dt-text-primary)] transition-colors"
-                title={t.common.closeEsc}
+ title={t.common.closeEsc}
                 aria-label={t.common.close}
               >
                 <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>

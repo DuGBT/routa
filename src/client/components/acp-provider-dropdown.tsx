@@ -261,10 +261,10 @@ export function AcpProviderDropdown({
                     type="button"
                     onClick={() => handleSelect("")}
                     className={`mb-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs transition-colors ${
-                      selectedProvider
-                        ? "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50"
-                        : "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300"
-                    }`}
+ selectedProvider
+ ? "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50"
+ : "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300"
+ }`}
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
                     <span className="font-medium">{autoLabel}</span>
@@ -279,12 +279,12 @@ export function AcpProviderDropdown({
                         onClick={() => handleSelect(provider.id)}
                         title={provider.unavailableReason ?? provider.description}
                         className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs transition-colors ${
-                          provider.id === selectedProvider
-                            ? "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300"
-                            : provider.status === "available"
-                              ? "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50"
-                              : "text-slate-500 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50"
-                        }`}
+ provider.id === selectedProvider
+ ? "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300"
+ : provider.status === "available"
+ ? "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50"
+ : "text-slate-500 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800/50"
+ }`}
                       >
                         <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${provider.status === "available" ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-600"}`} />
                         <span className="min-w-0 flex-1 truncate font-medium">{provider.name}</span>
@@ -306,7 +306,7 @@ export function AcpProviderDropdown({
                   type="button"
                   onClick={() => setSettingsOpen((open) => !open)}
                   className="flex w-full items-center justify-between px-3 py-2 text-left"
-                >
+ >
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
                     {t.providerDropdown.quickAccess}
                   </p>
@@ -333,15 +333,15 @@ export function AcpProviderDropdown({
                           moveVisibleProvider(draggingProviderId, provider.id);
                         }}
                         className={`flex items-center gap-2 rounded-lg px-2 py-2 text-xs ${
-                          draggingProviderId === provider.id ? "bg-slate-50 dark:bg-slate-800/60" : ""
-                        }`}
+ draggingProviderId === provider.id ? "bg-slate-50 dark:bg-slate-800/60" : ""
+ }`}
                       >
                         <button
                           type="button"
                           aria-label={`Drag ${provider.name}`}
                           className={`flex h-6 w-6 items-center justify-center rounded text-slate-400 ${
-                            checked ? "cursor-grab hover:bg-slate-100 dark:hover:bg-slate-800" : "cursor-not-allowed opacity-40"
-                          }`}
+ checked ? "cursor-grab hover:bg-slate-100 dark:hover:bg-slate-800" : "cursor-not-allowed opacity-40"
+ }`}
                         >
                           <GripVertical className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                         </button>
@@ -350,7 +350,7 @@ export function AcpProviderDropdown({
                           checked={checked}
                           onChange={(event) => handleVisibleToggle(provider.id, event.target.checked)}
                           className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 dark:border-slate-600"
-                        />
+ />
                         <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${provider.status === "available" ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-600"}`} />
                         <div className="min-w-0 flex-1">
                           <p className="truncate font-medium text-slate-900 dark:text-slate-100">{provider.name}</p>
@@ -367,7 +367,7 @@ export function AcpProviderDropdown({
                   type="button"
                   onClick={handleOpenSettingsPanel}
                   className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800/50"
-                >
+ >
                   {t.providerDropdown.openProviderSettings}
                 </button>
               </div>

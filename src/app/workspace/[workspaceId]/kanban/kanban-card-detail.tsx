@@ -295,7 +295,7 @@ export function KanbanCardDetail({
                   type="button"
                   onClick={() => onToggleFullscreen(!isFullscreen)}
                   className="inline-flex h-6 w-6 items-center justify-center border border-slate-300/80 text-slate-500 transition-colors hover:border-amber-400 hover:text-amber-700 dark:border-slate-700 dark:text-slate-300 dark:hover:border-amber-700 dark:hover:text-amber-200"
-                  aria-label={isFullscreen ? t.kanbanDetail.exitFullscreen : t.kanbanDetail.enterFullscreen}
+ aria-label={isFullscreen ? t.kanbanDetail.exitFullscreen : t.kanbanDetail.enterFullscreen}
                   title={isFullscreen ? t.kanbanDetail.exitFullscreen : t.kanbanDetail.enterFullscreen}
                 >
                   {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
@@ -305,7 +305,7 @@ export function KanbanCardDetail({
                 type="button"
                 onClick={onRefresh}
                 className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-300 dark:hover:border-amber-700 dark:hover:bg-amber-900/20 dark:hover:text-amber-200"
-              >
+ >
                 {t.common.refresh}
               </button>
             </div>
@@ -375,10 +375,10 @@ export function KanbanCardDetail({
                     setTabSelections((current) => ({ ...current, [tabStateKey]: tab.id }));
                   }}
                   className={`shrink-0 border-b-2 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
-                    active
-                      ? "border-b-amber-600 text-slate-900 dark:border-b-amber-400 dark:text-slate-100"
-                      : "border-b-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-                  }`}
+ active
+ ? "border-b-amber-600 text-slate-900 dark:border-b-amber-400 dark:text-slate-100"
+ : "border-b-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+ }`}
                   aria-pressed={active}
                 >
                   {tab.label}
@@ -425,7 +425,7 @@ export function KanbanCardDetail({
                       <MarkdownViewer
                         content={task.comment}
                         className="prose prose-sm max-w-none text-slate-800 dark:prose-invert dark:text-slate-200"
-                      />
+ />
                     </div>
                   ) : (
                     <div className={`text-sm text-slate-500 dark:text-slate-400 ${compactMode ? "mt-2 px-3 py-2.5" : "mt-2 px-4 py-2.5"}`}>
@@ -461,7 +461,7 @@ export function KanbanCardDetail({
                   rows={compactMode ? 4 : 5}
                   placeholder={t.kanbanDetail.testCasesPlaceholder}
                   className="focus:ring-offset-0 w-full border border-slate-200/80 bg-transparent px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-400 dark:border-slate-700 dark:bg-transparent dark:text-slate-100"
-                />
+ />
               </DetailSection>
 
               <ExecutionSection
@@ -559,7 +559,7 @@ export function KanbanCardDetail({
           <button
             onClick={onDelete}
             className="w-full rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700 transition-colors hover:border-red-300 hover:bg-red-100 dark:border-red-900/50 dark:bg-red-900/10 dark:text-red-400 dark:hover:bg-red-900/20"
-          >
+ >
             {t.kanbanModals.deleteTaskTitle}
           </button>
         </div>
@@ -646,16 +646,16 @@ function StoryReadinessPanel({
   return (
     <div className="space-y-3">
       <div className={`border-l-2 px-3 py-2.5 ${
-        readiness?.ready
-          ? "border-l-emerald-400/80 dark:border-l-emerald-500/70"
-          : "border-l-amber-400/80 dark:border-l-amber-500/70"
-      }`}>
+ readiness?.ready
+ ? "border-l-emerald-400/80 dark:border-l-emerald-500/70"
+ : "border-l-amber-400/80 dark:border-l-amber-500/70"
+ }`}>
         <div className="flex flex-wrap items-center gap-2">
           <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
-            readiness?.ready
-              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200"
-              : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200"
-          }`}>
+ readiness?.ready
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200"
+ : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200"
+ }`}>
             {readiness?.ready ? t.kanbanDetail.readyForDev : t.kanbanDetail.blockedForDev}
           </span>
           <span className="text-xs text-slate-600 dark:text-slate-300">
@@ -800,16 +800,16 @@ function EvidenceBundlePanel({
   return (
     <div className="space-y-3">
       <div className={`border-l-2 px-3 py-2.5 ${
-        reviewable
-          ? "border-l-emerald-400/80 dark:border-l-emerald-500/70"
-          : "border-l-amber-400/80 dark:border-l-amber-500/70"
-      }`}>
+ reviewable
+ ? "border-l-emerald-400/80 dark:border-l-emerald-500/70"
+ : "border-l-amber-400/80 dark:border-l-amber-500/70"
+ }`}>
         <div className="flex flex-wrap items-center gap-2">
           <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
-            reviewable
-              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200"
-              : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200"
-          }`}>
+ reviewable
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200"
+ : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200"
+ }`}>
             {reviewable ? t.kanbanDetail.reviewable : t.kanbanDetail.reviewBlocked}
           </span>
           <span className="text-xs text-slate-600 dark:text-slate-300">
@@ -899,12 +899,12 @@ function TaskChangesPanel({
           </div>
         </div>
         <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${
-          changes.error
-            ? "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300"
-            : changes.status.clean
-              ? "bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-300"
-              : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
-        }`}>
+ changes.error
+ ? "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300"
+ : changes.status.clean
+ ? "bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+ : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+ }`}>
           {stateLabel}
         </span>
       </div>
@@ -1306,7 +1306,7 @@ function ExecutionSection({
               onProviderChange?.(null);
             }}
             className="rounded border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-amber-600 dark:hover:text-amber-200"
-          >
+ >
             {t.kanbanDetail.resetOverride}
           </button>
         )}
@@ -1392,12 +1392,12 @@ function RepositoriesWorktreeRow({
           )}
           {worktree && (
             <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${
-              worktree.status === "active"
-                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
-                : worktree.status === "creating"
-                  ? "bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-300"
-                  : "bg-rose-100 text-rose-700 dark:bg-rose-900/20 dark:text-rose-300"
-            }`}>{effectiveBranch ?? worktree.branch}</span>
+ worktree.status === "active"
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
+ : worktree.status === "creating"
+ ? "bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-300"
+ : "bg-rose-100 text-rose-700 dark:bg-rose-900/20 dark:text-rose-300"
+ }`}>{effectiveBranch ?? worktree.branch}</span>
           )}
           <span className="ml-auto text-xs text-slate-400 transition-colors group-hover:text-slate-600 dark:group-hover:text-slate-300">
             Edit
@@ -1406,8 +1406,8 @@ function RepositoriesWorktreeRow({
         <div className={`space-y-3 border-l-2 border-slate-200 dark:border-slate-700 ${compact ? "mt-2.5 pl-2.5" : "mt-3 pl-3"}`}>
           {sessionInfo && (
             <div className={`border-l-2 px-3 py-2 ${sessionCwdMismatch
-              ? "border-l-amber-400/80 dark:border-l-amber-600/70"
-              : "border-l-emerald-400/80 dark:border-l-emerald-600/70"}`}>
+ ? "border-l-amber-400/80 dark:border-l-amber-600/70"
+ : "border-l-emerald-400/80 dark:border-l-emerald-600/70"}`}>
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
                   <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
@@ -1420,10 +1420,10 @@ function RepositoriesWorktreeRow({
                   </div>
                 </div>
                 <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                  sessionCwdMismatch
-                    ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
-                    : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
-                }`}>
+ sessionCwdMismatch
+ ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+ : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
+ }`}>
                   {sessionCwdMismatch ? "Session mismatch" : "Aligned"}
                 </span>
               </div>
@@ -1454,7 +1454,7 @@ function RepositoriesWorktreeRow({
                       type="button"
                       onClick={() => onSelectSession((sessionInfo?.sessionId ?? task.triggerSessionId)!)}
                       className="rounded border border-amber-300 px-3 py-1.5 text-xs font-medium text-amber-700 transition-colors hover:border-amber-400 hover:text-amber-800"
-                    >
+ >
                       Open active session
                     </button>
                   )}
@@ -1476,7 +1476,7 @@ function RepositoriesWorktreeRow({
                         }
                       }}
                       className="rounded border border-amber-300 px-3 py-1.5 text-xs font-medium text-amber-700 transition-colors hover:border-amber-400 hover:text-amber-800"
-                    >
+ >
                       Use session repo
                     </button>
                   )}
@@ -1508,10 +1508,10 @@ function RepositoriesWorktreeRow({
                         }
                       }}
                         className={`inline-flex items-center gap-1 rounded border px-2 py-0.5 text-[11px] transition-colors ${
-                          selected
-                            ? "border-blue-400 bg-blue-50 text-blue-700 dark:border-blue-600 dark:bg-blue-900/20 dark:text-blue-300"
-                            : "border-slate-300 text-slate-600 hover:border-blue-300 dark:border-slate-600 dark:text-slate-400"
-                        }`}
+ selected
+ ? "border-blue-400 bg-blue-50 text-blue-700 dark:border-blue-600 dark:bg-blue-900/20 dark:text-blue-300"
+ : "border-slate-300 text-slate-600 hover:border-blue-300 dark:border-slate-600 dark:text-slate-400"
+ }`}
                       data-testid="detail-repo-toggle"
                     >
                       <span className={`h-1.5 w-1.5 rounded-full ${codebase.sourceType === "github" ? "bg-blue-500" : "bg-emerald-500"}`} />

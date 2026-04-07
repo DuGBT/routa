@@ -28,7 +28,7 @@ const meta = {
       {...args}
       titleBarRight={<Button size="sm">New Task</Button>}
     >
-      <div className="h-full p-4 text-sm text-desktop-text-primary">
+      <div className="h-full p-4 text-sm text-slate-900 dark:text-slate-200">
         Desktop shell content area
       </div>
     </DesktopAppShell>

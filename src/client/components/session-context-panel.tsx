@@ -202,7 +202,7 @@ export function SessionContextPanel({
           setRenamingId(sid);
         }}
         className="p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-        title={t.sessions.rename}
+ title={t.sessions.rename}
       >
         <SquarePen className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
       </button>
@@ -213,7 +213,7 @@ export function SessionContextPanel({
           handleDelete(sid);
         }}
         className="p-0.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-slate-400 hover:text-red-500"
-        title={t.common.delete}
+ title={t.common.delete}
       >
         <Trash2 className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
       </button>
@@ -260,7 +260,7 @@ export function SessionContextPanel({
                 }}
                 onClick={(e) => e.stopPropagation()}
                 className="w-full text-[11px] font-medium bg-white dark:bg-slate-900 border border-blue-400 rounded px-1 py-0.5 outline-none text-slate-700 dark:text-slate-300"
-              />
+ />
             ) : (
               <div className="flex items-center gap-1.5 min-w-0">
                 <div className="text-[11px] font-medium text-slate-700 dark:text-slate-300 truncate">
@@ -306,7 +306,7 @@ export function SessionContextPanel({
                   if (e.key === "Escape") setRenamingId(null);
                 }}
                 className="w-full text-xs font-semibold bg-white dark:bg-slate-900 border border-blue-400 rounded px-1 py-0.5 outline-none text-blue-700 dark:text-blue-300"
-              />
+ />
             ) : (
               <div className="flex items-center gap-1">
                 <div className="text-xs font-semibold text-blue-700 dark:text-blue-300 truncate flex-1">
@@ -319,7 +319,7 @@ export function SessionContextPanel({
                       setRenamingId(context.current.sessionId);
                     }}
                     className="p-0.5 rounded hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-400 hover:text-blue-600 dark:hover:text-blue-300"
-                    title={t.sessions.rename}
+ title={t.sessions.rename}
                   >
                     <SquarePen className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                   </button>
@@ -396,7 +396,7 @@ export function SessionContextPanel({
                   <button
                     onClick={() => onSelectSession(context.kanbanContext!.previousLaneSession!.sessionId)}
                     className="shrink-0 rounded-md border border-blue-200 px-2 py-1 text-[10px] font-medium text-blue-600 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-900/20"
-                  >
+ >
                     {t.sessions.open}
                   </button>
                 </div>
@@ -414,7 +414,7 @@ export function SessionContextPanel({
                   <button
                     onClick={() => onSelectSession(context.kanbanContext!.previousLaneRun!.sessionId)}
                     className="shrink-0 rounded-md border border-slate-200 px-2 py-1 text-[10px] font-medium text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-900/20"
-                  >
+ >
                     {t.sessions.open}
                   </button>
                 </div>
@@ -435,7 +435,7 @@ export function SessionContextPanel({
                     <div
                       key={handoff.id}
                       className="rounded-lg border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-[#121722]"
-                    >
+ >
                       <div className="flex flex-wrap items-center gap-1.5">
                         <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                           {handoff.direction}
@@ -462,7 +462,7 @@ export function SessionContextPanel({
                         <button
                           onClick={() => onSelectSession(counterpartSessionId)}
                           className="rounded-md border border-slate-200 px-2 py-1 font-medium text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
+ >
                           {t.sessions.openSession}
                         </button>
                       </div>

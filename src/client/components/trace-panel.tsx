@@ -295,7 +295,7 @@ function InlineToolView({
       <button
         onClick={() => setExpanded(!expanded)}
         className="group flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50/50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-800/30 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors w-full text-left"
-      >
+ >
         <ChevronRight className={`w-3 h-3 text-amber-400 transition-transform shrink-0 ${expanded ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
         <span className="text-[10px] text-amber-500 dark:text-amber-400">🔧</span>
         <code className="text-[11px] font-mono font-medium text-amber-700 dark:text-amber-300">
@@ -368,7 +368,7 @@ function InlineThoughtView({ trace }: { trace: TraceRecord }) {
     <button
       onClick={() => setExpanded(!expanded)}
       className="group flex items-start gap-2 my-1 px-3 py-1.5 rounded-lg bg-amber-50/40 dark:bg-amber-900/5 border border-amber-100/50 dark:border-amber-800/20 hover:bg-amber-50/70 dark:hover:bg-amber-900/10 transition-colors w-full text-left"
-    >
+ >
       <span className="text-[10px] text-amber-500 shrink-0 pt-0.5">💭</span>
       <p className={`text-[11px] text-slate-500 dark:text-slate-400 italic leading-relaxed ${expanded ? "" : "line-clamp-2"}`}>
         {content}
@@ -454,9 +454,9 @@ function AgentResponseBlock({
           <span
             key={evt.id}
             className={`text-[10px] font-semibold uppercase tracking-wide ${evt.eventType === "session_start"
-              ? "text-emerald-600 dark:text-emerald-400"
-              : "text-red-500 dark:text-red-400"
-              }`}
+ ? "text-emerald-600 dark:text-emerald-400"
+ : "text-red-500 dark:text-red-400"
+ }`}
           >
             {evt.eventType === "session_start" ? `▶ ${t.trace.sessionStarted}` : `■ ${t.trace.sessionEnded}`}
             <span className="ml-2 font-normal text-slate-400">{formatTime(evt.timestamp)}</span>
@@ -527,7 +527,7 @@ function AgentResponseBlock({
           <button
             onClick={() => setThoughtsExpanded(!thoughtsExpanded)}
             className="flex items-center gap-1.5 mb-2 text-[10px] text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300"
-          >
+ >
             <ChevronRight className={`w-3 h-3 transition-transform ${thoughtsExpanded ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             {t.trace.thoughtsLabel} {t.trace.thoughtsCount.replace("{count}", String(thoughts.length))}
           </button>
@@ -741,14 +741,14 @@ export function TracePanel({ sessionId }: TracePanelProps) {
             onClick={fetchTraces}
             disabled={loading}
             className="text-[11px] text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 disabled:opacity-50 transition-colors"
-          >
+ >
             {loading ? "..." : t.trace.refresh}
           </button>
           <button
             onClick={exportTraces}
             disabled={traces.length === 0}
             className="px-2 py-1 text-[11px] font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
+ >
             {t.trace.export}
           </button>
         </div>
@@ -778,9 +778,9 @@ export function TracePanel({ sessionId }: TracePanelProps) {
             key={key}
             onClick={() => setFilter(key)}
             className={`px-2 py-1 text-[11px] font-medium rounded-md whitespace-nowrap transition-colors ${filter === key
-              ? active
-              : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
-              }`}
+ ? active
+ : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+ }`}
           >
             {label}
           </button>
@@ -830,7 +830,7 @@ export function TracePanel({ sessionId }: TracePanelProps) {
                 <div
                   key={handoff.id}
                   className="rounded-lg border border-slate-200 bg-white/90 px-3 py-2 dark:border-slate-700 dark:bg-[#13151d]"
-                >
+ >
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                       {handoff.direction}

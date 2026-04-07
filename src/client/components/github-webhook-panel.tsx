@@ -385,10 +385,10 @@ export function GitHubWebhookPanel() {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-3 py-1 text-sm rounded-md transition-colors ${
-                activeTab === tab
-                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-              }`}
+ activeTab === tab
+ ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm"
+ : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+ }`}
             >
               {tab === "configs" ? wt.tabs.configurations : wt.tabs.triggerLogs}
             </button>
@@ -399,7 +399,7 @@ export function GitHubWebhookPanel() {
           <button
             onClick={openCreate}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
-          >
+ >
             <Plus className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             {wt.addTrigger}
           </button>
@@ -419,23 +419,23 @@ export function GitHubWebhookPanel() {
                       {wt.localPolling}
                     </span>
                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium ${
-                      pollingRunning
-                        ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-                        : "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400"
-                    }`}>
+ pollingRunning
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+ : "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400"
+ }`}>
                       {pollingRunning ? wt.running : wt.stopped}
                     </span>
                   </div>
                   <button
                     onClick={handleTogglePolling}
                     className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                      pollingEnabled ? "bg-blue-600" : "bg-slate-300 dark:bg-slate-600"
-                    }`}
+ pollingEnabled ? "bg-blue-600" : "bg-slate-300 dark:bg-slate-600"
+ }`}
                     title={pollingEnabled ? wt.disablePolling : wt.enablePolling}
                   >
                     <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
-                      pollingEnabled ? "translate-x-4.5" : "translate-x-1"
-                    }`} style={{ transform: pollingEnabled ? "translateX(18px)" : "translateX(4px)" }} />
+ pollingEnabled ? "translate-x-4.5" : "translate-x-1"
+ }`} style={{ transform: pollingEnabled ? "translateX(18px)" : "translateX(4px)" }} />
                   </button>
                 </div>
                 <div className="flex items-center gap-2">
@@ -443,7 +443,7 @@ export function GitHubWebhookPanel() {
                     value={String(pollingInterval)}
                     onChange={(e) => handleUpdatePollingInterval(Number(e.target.value))}
                     className="text-xs px-2 py-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300"
-                    disabled={!pollingEnabled}
+ disabled={!pollingEnabled}
                   >
                     <option value={10}>10s</option>
                     <option value={30}>30s</option>
@@ -454,7 +454,7 @@ export function GitHubWebhookPanel() {
                     onClick={handleManualCheck}
                     disabled={pollingChecking}
                     className="flex items-center gap-1 px-2 py-1 text-xs bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded hover:bg-slate-50 dark:hover:bg-slate-600 disabled:opacity-50 text-slate-700 dark:text-slate-300"
-                    title={wt.manuallyCheckNow}
+ title={wt.manuallyCheckNow}
                   >
                     {pollingChecking ? (
                       <div className="w-3 h-3 border border-slate-400 border-t-blue-500 rounded-full animate-spin" />
@@ -540,7 +540,7 @@ function EmptyState({ onAdd, t }: { onAdd: () => void; t: TranslationDictionary[
       <button
         onClick={onAdd}
         className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
-      >
+ >
         {t.addFirstTrigger}
       </button>
     </div>
@@ -578,7 +578,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
           placeholder={t.webhook.namePlaceholder}
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-          required
+ required
         />
       </div>
 
@@ -595,7 +595,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           onChange={(e) => setForm((p) => ({ ...p, repo: e.target.value }))}
           placeholder="phodal-archive/data-mesh-spike"
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-          required
+ required
         />
       </div>
 
@@ -612,7 +612,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           onChange={(e) => setForm((p) => ({ ...p, githubToken: e.target.value }))}
           placeholder={editId ? t.webhook.tokenEditPlaceholder : t.webhook.tokenPlaceholder}
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-          required={!editId}
+ required={!editId}
         />
       </div>
 
@@ -629,7 +629,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           onChange={(e) => setForm((p) => ({ ...p, webhookSecret: e.target.value }))}
           placeholder="routa-webhook-secret-2026"
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-        />
+ />
       </div>
 
       {/* Events */}
@@ -642,10 +642,10 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
             <label
               key={ev.value}
               className={`flex items-start gap-2 p-2.5 rounded-lg border cursor-pointer transition-colors ${
-                form.eventTypes.includes(ev.value)
-                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-500"
-                  : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
-              }`}
+ form.eventTypes.includes(ev.value)
+ ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-500"
+ : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+ }`}
             >
               <input
                 type="checkbox"
@@ -653,7 +653,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
                 checked={form.eventTypes.includes(ev.value)}
                 onChange={() => toggleEvent(ev.value)}
                 className="mt-0.5 accent-blue-600"
-              />
+ />
               <div>
                 <p className="text-xs font-medium text-slate-900 dark:text-slate-100">{ev.label}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{ev.description}</p>
@@ -676,7 +676,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           onChange={(e) => setForm((p) => ({ ...p, labelFilter: e.target.value }))}
           placeholder={t.webhook.labelFilterPlaceholder}
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-        />
+ />
       </div>
 
       {/* Trigger Agent */}
@@ -689,7 +689,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           value={form.triggerAgentId}
           onChange={(e) => setForm((p) => ({ ...p, triggerAgentId: e.target.value }))}
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-          required
+ required
         >
           <option value="">{t.webhook.selectAgent}</option>
           {specialists.length > 0 ? (
@@ -719,7 +719,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           rows={3}
           placeholder={t.webhook.promptTemplatePlaceholder}
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100 resize-none"
-        />
+ />
       </div>
 
       {/* Enabled */}
@@ -730,7 +730,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           checked={form.enabled}
           onChange={(e) => setForm((p) => ({ ...p, enabled: e.target.checked }))}
           className="accent-blue-600"
-        />
+ />
         <span className="text-sm text-slate-700 dark:text-slate-300">{t.webhook.enabled}</span>
       </label>
 
@@ -740,7 +740,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           type="button"
           onClick={onCancel}
           className="px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-        >
+ >
           {t.common.cancel}
         </button>
         <button
@@ -748,7 +748,7 @@ function WebhookConfigForm({ form, setForm, editId, saving, specialists, onSubmi
           type="submit"
           disabled={saving}
           className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg transition-colors"
-        >
+ >
           {saving ? `${t.common.loading}…` : editId ? t.common.update : t.common.create}
         </button>
       </div>
@@ -769,10 +769,10 @@ function WebhookConfigCard({ config, onEdit, onDelete, onRegister, onToggle, reg
   const { t } = useTranslation();
   return (
     <div className={`bg-white dark:bg-slate-800/50 border rounded-xl p-4 transition-colors ${
-      config.enabled
-        ? "border-slate-200 dark:border-slate-700"
-        : "border-slate-100 dark:border-slate-800 opacity-60"
-    }`}>
+ config.enabled
+ ? "border-slate-200 dark:border-slate-700"
+ : "border-slate-100 dark:border-slate-800 opacity-60"
+ }`}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1">
@@ -806,7 +806,7 @@ function WebhookConfigCard({ config, onEdit, onDelete, onRegister, onToggle, reg
           onClick={onToggle}
           title={config.enabled ? t.webhook.disable : t.webhook.enable}
           className="p-1 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-        >
+ >
           {config.enabled ? (
             <CircleOff className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           ) : (
@@ -821,7 +821,7 @@ function WebhookConfigCard({ config, onEdit, onDelete, onRegister, onToggle, reg
           onClick={onRegister}
           disabled={registering}
           className="flex items-center gap-1 px-2.5 py-1 text-xs bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-700 dark:hover:bg-slate-300 rounded-md transition-colors disabled:opacity-50"
-        >
+ >
           {registering ? (
             <span className="w-3 h-3 border border-white dark:border-slate-900 border-t-transparent rounded-full animate-spin" />
           ) : (
@@ -835,7 +835,7 @@ function WebhookConfigCard({ config, onEdit, onDelete, onRegister, onToggle, reg
         <button
           onClick={onEdit}
           className="flex items-center gap-1 px-2.5 py-1 text-xs text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-colors"
-        >
+ >
           <SquarePen className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           {t.webhook.edit}
         </button>
@@ -843,7 +843,7 @@ function WebhookConfigCard({ config, onEdit, onDelete, onRegister, onToggle, reg
         <button
           onClick={onDelete}
           className="flex items-center gap-1 px-2.5 py-1 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors ml-auto"
-        >
+ >
           <Trash2 className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           {t.webhook.delete}
         </button>
@@ -869,7 +869,7 @@ function TriggerLogsTable({ logs, configs, onRefresh }: TriggerLogsTableProps) {
         <button
           onClick={onRefresh}
           className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-        >
+ >
           <RefreshCw className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           {t.webhook.refresh}
         </button>
@@ -885,9 +885,9 @@ function TriggerLogsTable({ logs, configs, onRefresh }: TriggerLogsTableProps) {
           {logs.map((log) => (
             <div key={log.id} className="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2.5 flex items-center gap-3">
               <span className={`w-2 h-2 rounded-full shrink-0 ${
-                log.outcome === "triggered" ? "bg-emerald-500" :
-                log.outcome === "skipped" ? "bg-amber-400" : "bg-red-500"
-              }`} />
+ log.outcome === "triggered" ? "bg-emerald-500" :
+ log.outcome === "skipped" ? "bg-amber-400" : "bg-red-500"
+ }`} />
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-medium text-slate-900 dark:text-slate-100 truncate">
                   {log.eventType}{log.eventAction ? ` · ${log.eventAction}` : ""}

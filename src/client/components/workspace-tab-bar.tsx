@@ -25,7 +25,7 @@ export function WorkspaceTabBar({
 
   return (
     <div
-      className={`flex items-center gap-0 border-b border-desktop-border ${className ?? ""}`.trim()}
+      className={`flex items-center gap-0 border-b border-slate-300 dark:border-slate-700 ${className ?? ""}`.trim()}
       data-testid="workspace-tab-bar"
     >
       <WorkspaceTabButton active={activeTab === "overview"} onClick={() => onTabChange("overview")}>
@@ -54,12 +54,12 @@ function WorkspaceTabButton({
     <Button
       type="button"
       size="xs"
-      variant="desktop-secondary"
+      variant="secondary"
       onClick={onClick}
       className={`rounded-none border-b-2 px-3 py-1.5 text-[12px] ${active
-          ? "border-b-desktop-accent bg-desktop-bg-active text-desktop-accent hover:bg-desktop-bg-active"
-          : "border-b-transparent bg-transparent text-desktop-text-secondary"
-        }`}
+ ? "border-b-desktop-accent bg-blue-100 dark:bg-blue-900 text-blue-500 hover:bg-blue-100 dark:bg-blue-900"
+ : "border-b-transparent bg-transparent text-slate-700 dark:text-slate-400"
+ }`}
     >
       {children}
     </Button>

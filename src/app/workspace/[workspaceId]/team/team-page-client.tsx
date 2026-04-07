@@ -219,8 +219,8 @@ export function TeamPageClient() {
 
   if (workspacesHook.loading && workspaceId !== "default") {
     return (
-      <div className="desktop-theme flex h-screen items-center justify-center bg-desktop-bg-primary">
-        <div className="flex items-center gap-3 text-desktop-text-secondary">
+      <div className=" flex h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
+        <div className="flex items-center gap-3 text-slate-700 dark:text-slate-400">
           <PieChart className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24"/>
           {t.team.loadingWorkspace}
         </div>
@@ -292,12 +292,12 @@ export function TeamPageClient() {
               </div>
               <div
                 className="mb-3 overflow-hidden pb-1"
-                onMouseEnter={() => setIsBenchPaused(true)}
+ onMouseEnter={() => setIsBenchPaused(true)}
                 onMouseLeave={() => setIsBenchPaused(false)}
               >
                 <div
                   className="flex w-max gap-2"
-                  style={shouldAutoScrollBench ? {
+ style={shouldAutoScrollBench ? {
                     animation: "teamBenchMarquee 24s linear infinite",
                     animationPlayState: isBenchPaused ? "paused" : "running",
                   } : undefined}
@@ -310,10 +310,10 @@ export function TeamPageClient() {
                       <div
                         key={`${specialist.id}-${index}`}
                         className={`flex w-[170px] shrink-0 items-center rounded-lg px-2.5 py-1.5 text-sm transition-colors ${
-                          isLead
-                            ? "bg-white/80 text-slate-900 dark:bg-white/8 dark:text-slate-100"
-                            : "bg-black/[0.03] text-slate-700 dark:bg-white/[0.03] dark:text-slate-200"
-                        }`}
+ isLead
+ ? "bg-white/80 text-slate-900 dark:bg-white/8 dark:text-slate-100"
+ : "bg-black/[0.03] text-slate-700 dark:bg-white/[0.03] dark:text-slate-200"
+ }`}
                         title={specialist.description ?? specialist.id}
                       >
                         <div className="min-w-0 flex-1">
@@ -369,7 +369,7 @@ export function TeamPageClient() {
                 type="button"
                 onClick={handleRefresh}
                 className="rounded-full border border-black/8 bg-white/90 px-3 py-1.5 text-[11px] font-medium text-slate-600 transition-colors hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
-              >
+ >
                 {t.common.refresh}
               </button>
             </div>
@@ -393,7 +393,7 @@ export function TeamPageClient() {
                     type="button"
                     onClick={() => router.push(`/workspace/${workspaceId}/team/${run.session.sessionId}`)}
                     className="w-full rounded-[18px] border border-black/6 bg-[#fbfaf7] px-4 py-3 text-left transition-colors hover:bg-white dark:border-white/8 dark:bg-white/[0.04] dark:hover:bg-white/[0.07]"
-                  >
+ >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
                         <div className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">

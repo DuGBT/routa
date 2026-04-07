@@ -74,10 +74,10 @@ export function SettingsPopupMenu({
       <button
         type="button"
         aria-label={t.settings.title}
-        className={`inline-flex items-center rounded-md border border-desktop-border text-xs font-medium transition-colors ${buttonClassName ?? "h-8 px-2 py-1"} ${
+        className={`inline-flex items-center rounded-md border border-slate-300 dark:border-slate-700 text-xs font-medium transition-colors ${buttonClassName ?? "h-8 px-2 py-1"} ${
           isActive
-            ? "bg-desktop-bg-active text-desktop-accent"
-            : "text-desktop-text-secondary hover:border-desktop-accent/40 hover:text-desktop-text-primary hover:bg-desktop-bg-active/60"
+            ? "bg-blue-100 dark:bg-blue-900 text-blue-500"
+            : "text-slate-700 dark:text-slate-400 hover:border-blue-500/40 hover:text-slate-900 dark:text-slate-200 hover:bg-blue-100 dark:bg-blue-900/60"
         }`}
       >
         <Settings className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.7}/>
@@ -89,25 +89,25 @@ export function SettingsPopupMenu({
         ) : null}
       </button>
       <div
-        className={`invisible absolute z-20 ${menuPositionClass} ${menuWidthClass} rounded-lg border border-desktop-border bg-desktop-bg-secondary/95 p-1 text-[11px] opacity-0 shadow-lg backdrop-blur transition-all duration-150 group-hover:visible group-hover:opacity-100 ${isTopbar ? "translate-y-1" : "translate-y-0"} group-hover:translate-y-0`}
+        className={`invisible absolute z-20 ${menuPositionClass} ${menuWidthClass} rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/95 p-1 text-[11px] opacity-0 shadow-lg backdrop-blur transition-all duration-150 group-hover:visible group-hover:opacity-100 ${isTopbar ? "translate-y-1" : "translate-y-0"} group-hover:translate-y-0`}
       >
         <Link
           href="/settings"
-          className="mb-1 block rounded-md border border-transparent px-2 py-1.5 font-semibold text-desktop-text-secondary transition-colors hover:bg-desktop-bg-active hover:text-desktop-text-primary hover:border-desktop-border"
-        >
+          className="mb-1 block rounded-md border border-transparent px-2 py-1.5 font-semibold text-slate-700 dark:text-slate-400 transition-colors hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200 hover:border-slate-300 dark:border-slate-700"
+ >
           {t.settings.title}
         </Link>
-        <div className="border-t border-desktop-border/70" />
+        <div className="border-t border-slate-300 dark:border-slate-700/70" />
         <div className="relative group/language">
           <button
             type="button"
-            className="mt-1 inline-flex w-full items-center justify-between rounded-md border border-transparent px-2 py-1.5 text-desktop-text-secondary transition-colors hover:bg-desktop-bg-active hover:text-desktop-text-primary hover:border-desktop-border"
-          >
+            className="mt-1 inline-flex w-full items-center justify-between rounded-md border border-transparent px-2 py-1.5 text-slate-700 dark:text-slate-400 transition-colors hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200 hover:border-slate-300 dark:border-slate-700"
+ >
             <span>{t.settings.language}</span>
             <ChevronRight className="h-3 w-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
           <div
-            className={`invisible absolute ${languageSubmenuPositionClass} z-30 min-w-24 rounded-md border border-desktop-border bg-desktop-bg-secondary/95 p-1 text-[11px] shadow-lg backdrop-blur opacity-0 transition-all duration-150 group-hover/language:visible group-hover/language:opacity-100`}
+            className={`invisible absolute ${languageSubmenuPositionClass} z-30 min-w-24 rounded-md border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/95 p-1 text-[11px] shadow-lg backdrop-blur opacity-0 transition-all duration-150 group-hover/language:visible group-hover/language:opacity-100`}
           >
             {SUPPORTED_LOCALES.map((item) => {
               const selected = item === locale;
@@ -119,10 +119,10 @@ export function SettingsPopupMenu({
                     setLocale(item);
                   }}
                   className={`flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 transition-colors ${
-                    selected
-                      ? "bg-desktop-bg-active text-desktop-text-primary"
-                      : "text-desktop-text-secondary hover:bg-desktop-bg-active/80"
-                  }`}
+ selected
+ ? "bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-slate-200"
+ : "text-slate-700 dark:text-slate-400 hover:bg-blue-100 dark:bg-blue-900/80"
+ }`}
                 >
                   <span>{LOCALE_LABELS[item]}</span>
                   {selected ? <Check className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/> : null}
@@ -134,13 +134,13 @@ export function SettingsPopupMenu({
         <div className="relative group/theme">
           <button
             type="button"
-            className="mt-1 inline-flex w-full items-center justify-between rounded-md border border-transparent px-2 py-1.5 text-desktop-text-secondary transition-colors hover:bg-desktop-bg-active hover:text-desktop-text-primary hover:border-desktop-border"
-          >
+            className="mt-1 inline-flex w-full items-center justify-between rounded-md border border-transparent px-2 py-1.5 text-slate-700 dark:text-slate-400 transition-colors hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200 hover:border-slate-300 dark:border-slate-700"
+ >
             <span>{t.settings.theme}</span>
             <ChevronRight className="h-3 w-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
           <div
-            className={`invisible absolute ${themeSubmenuPositionClass} z-30 min-w-28 rounded-md border border-desktop-border bg-desktop-bg-secondary/95 p-1 text-[11px] shadow-lg backdrop-blur opacity-0 transition-all duration-150 group-hover/theme:visible group-hover/theme:opacity-100`}
+            className={`invisible absolute ${themeSubmenuPositionClass} z-30 min-w-28 rounded-md border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/95 p-1 text-[11px] shadow-lg backdrop-blur opacity-0 transition-all duration-150 group-hover/theme:visible group-hover/theme:opacity-100`}
           >
             {THEME_OPTIONS.map((option) => {
               const active = themePreference === option;
@@ -152,8 +152,8 @@ export function SettingsPopupMenu({
                     setThemePreference(option);
                   }}
                   className={`mb-0.5 last:mb-0 flex w-full items-center justify-between rounded-md px-2 py-1.5 transition-colors ${
-                    active ? "bg-desktop-bg-active text-desktop-text-primary" : "text-desktop-text-secondary hover:bg-desktop-bg-active/80"
-                  }`}
+ active ? "bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-slate-200" : "text-slate-700 dark:text-slate-400 hover:bg-blue-100 dark:bg-blue-900/80"
+ }`}
                 >
                   <span className="inline-flex items-center gap-1.5">
                     {option === "light" ? (

@@ -171,8 +171,8 @@ export function DesktopSidebar({
     const active = isActive(item.href);
     const className = `relative flex items-center rounded-xl transition-colors ${
       active
-        ? "bg-desktop-bg-active text-desktop-accent"
-        : "text-desktop-text-secondary hover:bg-desktop-bg-active/70 hover:text-desktop-text-primary"
+        ? "bg-blue-100 dark:bg-blue-900 text-blue-500"
+        : "text-slate-700 dark:text-slate-400 hover:bg-blue-100 dark:bg-blue-900/70 hover:text-slate-900 dark:text-slate-200"
     } ${collapsed ? "h-10 w-10 justify-center" : "h-11 w-full gap-3 px-3 text-sm font-medium"}`;
 
     return (
@@ -182,7 +182,7 @@ export function DesktopSidebar({
         className={className}
         title={item.label}
       >
-        {active && <div className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-desktop-accent" />}
+        {active && <div className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-blue-500" />}
         {item.icon}
         {!collapsed && <span className="truncate">{item.label}</span>}
       </Link>
@@ -191,16 +191,16 @@ export function DesktopSidebar({
 
   return (
     <aside
-      className={`h-full shrink-0 flex flex-col border-r border-desktop-border bg-desktop-bg-secondary transition-[width] duration-200 ${
-        collapsed ? "w-14" : "w-48"
-      }`}
+      className={`h-full shrink-0 flex flex-col border-r border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 transition-[width] duration-200 ${
+ collapsed ? "w-14" : "w-48"
+ }`}
       data-testid="desktop-shell-sidebar"
     >
-      <div className={`border-b border-desktop-border px-2 py-2 ${collapsed ? "flex items-center justify-center" : "flex items-center justify-between gap-2"}`}>
+      <div className={`border-b border-slate-300 dark:border-slate-700 px-2 py-2 ${collapsed ? "flex items-center justify-center" : "flex items-center justify-between gap-2"}`}>
         {!collapsed ? (
           <div
-            className="flex items-center gap-1.5 rounded-xl px-2 py-1 text-sm font-semibold text-desktop-text-primary"
-            title="Routa"
+            className="flex items-center gap-1.5 rounded-xl px-2 py-1 text-sm font-semibold text-slate-900 dark:text-slate-200"
+ title="Routa"
           >
             <Image src="/logo.svg" alt="Routa" width={18} height={18} className="rounded-md" />
             <span>Routa</span>
@@ -209,9 +209,9 @@ export function DesktopSidebar({
         <button
           type="button"
           onClick={onToggleCollapse}
-          className={`flex items-center rounded-xl text-desktop-text-secondary transition-colors hover:bg-desktop-bg-active hover:text-desktop-text-primary ${
-            collapsed ? "h-10 w-10 justify-center" : "h-10 w-10 justify-center"
-          }`}
+          className={`flex items-center rounded-xl text-slate-700 dark:text-slate-400 transition-colors hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200 ${
+ collapsed ? "h-10 w-10 justify-center" : "h-10 w-10 justify-center"
+ }`}
           title={collapsed ? t.nav.openSidebar : t.nav.closeSidebar}
           aria-label={collapsed ? t.nav.openSidebar : t.nav.closeSidebar}
         >
@@ -230,23 +230,23 @@ export function DesktopSidebar({
           <>
             <Link
               href={topAction.href}
-              className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl text-desktop-text-secondary transition-colors hover:bg-desktop-bg-active hover:text-desktop-text-primary"
-              title={topAction.label}
+              className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl text-slate-700 dark:text-slate-400 transition-colors hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200"
+ title={topAction.label}
               aria-label={topAction.label}
             >
               {topAction.icon ?? (
                 <ChevronLeft className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
               )}
             </Link>
-            {!collapsed && <div className="mx-1 mb-2 border-t border-desktop-border" />}
+            {!collapsed && <div className="mx-1 mb-2 border-t border-slate-300 dark:border-slate-700" />}
           </>
         ) : null}
         {primaryItems.map(renderNavItem)}
-        {!collapsed && <div className="mx-1 my-2 border-t border-desktop-border" />}
+        {!collapsed && <div className="mx-1 my-2 border-t border-slate-300 dark:border-slate-700" />}
         {toolItems.map(renderNavItem)}
       </nav>
 
-      <div className={`${collapsed ? "mx-3" : "mx-2"} border-t border-desktop-border`} />
+      <div className={`${collapsed ? "mx-3" : "mx-2"} border-t border-slate-300 dark:border-slate-700`} />
 
       <div className={`py-3 ${collapsed ? "flex flex-col items-center gap-1" : "px-2 space-y-1"}`}>
         <SettingsPopupMenu
@@ -254,7 +254,7 @@ export function DesktopSidebar({
           showLabel={!collapsed}
           isActive={settingsActive}
           className="w-full"
-          buttonClassName={collapsed ? "h-10 w-10 px-0 py-0 justify-center" : "h-11 w-full gap-3 px-3 py-0 text-sm font-medium"}
+ buttonClassName={collapsed ? "h-10 w-10 px-0 py-0 justify-center" : "h-11 w-full gap-3 px-3 py-0 text-sm font-medium"}
         />
         {secondaryItems.map(renderNavItem)}
       </div>

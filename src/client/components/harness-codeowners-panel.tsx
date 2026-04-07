@@ -30,17 +30,17 @@ function ListBlock({
       ? "border-rose-200 bg-rose-50/60"
       : tone === "amber"
         ? "border-amber-200 bg-amber-50/60"
-        : "border-desktop-border bg-desktop-bg-primary/80";
+        : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80";
   if (items.length === 0) {
     return null;
   }
   const visibleRows = `${Math.min(items.length, rowLimit) * 1.5}rem`;
   return (
     <div className={`rounded-sm border px-3 py-2 ${border}`}>
-      <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{title}</div>
+      <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{title}</div>
       <ul
-        className="mt-1.5 list-inside list-disc space-y-0.5 overflow-y-auto font-mono text-[11px] text-desktop-text-primary"
-        style={{ maxHeight: visibleRows }}
+        className="mt-1.5 list-inside list-disc space-y-0.5 overflow-y-auto font-mono text-[11px] text-slate-900 dark:text-slate-200"
+ style={{ maxHeight: visibleRows }}
       >
         {items.map((path) => (
           <li key={path}>{path}</li>
@@ -111,23 +111,23 @@ export function HarnessCodeownersPanel({
 
           {triggerCorrelations.length > 0 ? (
             <div className="space-y-3">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">
                 Trigger Correlation
               </div>
               <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6">
                 {triggerCorrelations.map((correlation) => (
                   <div
                     key={correlation.triggerName}
-                    className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-2"
-                  >
+                    className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-2"
+ >
                     <div className="grid gap-1.5">
-                      <span className="font-medium text-desktop-text-primary">
+                      <span className="font-medium text-slate-900 dark:text-slate-200">
                         {formatTriggerLabel(correlation.triggerName)}
                       </span>
-                      <div className="grid gap-1 text-[10px] text-desktop-text-secondary">
+                      <div className="grid gap-1 text-[10px] text-slate-700 dark:text-slate-400">
                         <span className="inline-flex items-center gap-2">
-                          <span className="font-medium text-desktop-text-primary">Severity</span>
-                          <span className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2 py-0.5">
+                          <span className="font-medium text-slate-900 dark:text-slate-200">Severity</span>
+                          <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2 py-0.5">
                             {correlation.severity}
                           </span>
                         </span>
@@ -135,7 +135,7 @@ export function HarnessCodeownersPanel({
                         <span>{correlation.ownerGroupCount} owner groups</span>
                       </div>
                     </div>
-                    <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-desktop-text-secondary">
+                    <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-slate-700 dark:text-slate-400">
                       {correlation.hasOwnershipGap ? (
                         <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-amber-800">
                           ownership gap
@@ -152,8 +152,8 @@ export function HarnessCodeownersPanel({
                         {correlation.ownerGroups.map((owner) => (
                           <span
                             key={`${correlation.triggerName}-${owner}`}
-                            className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2 py-0.5 text-[10px] text-desktop-text-primary"
-                          >
+                            className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[10px] text-slate-900 dark:text-slate-200"
+ >
                             {owner}
                           </span>
                         ))}
@@ -183,18 +183,18 @@ export function HarnessCodeownersPanel({
 
           {owners.length > 0 ? (
             <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">Owner groups</div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">Owner groups</div>
               <div className="mt-2 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
                 {owners.map((o) => (
                   <div
                     key={o.name}
-                    className="rounded-sm border border-desktop-border bg-desktop-bg-primary px-3 py-2"
-                  >
+                    className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-2"
+ >
                     <div className="flex items-start justify-between gap-2">
-                      <span className="min-w-0 truncate text-[11px] font-medium text-desktop-text-primary">{o.name}</span>
-                      <span className="rounded bg-desktop-bg-secondary px-1.5 py-0.5 text-[10px] text-desktop-text-secondary">{o.kind}</span>
+                      <span className="min-w-0 truncate text-[11px] font-medium text-slate-900 dark:text-slate-200">{o.name}</span>
+                      <span className="rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-700 dark:text-slate-400">{o.kind}</span>
                     </div>
-                    <div className="mt-1 text-[10px] text-desktop-text-secondary">{o.matchedFileCount} files</div>
+                    <div className="mt-1 text-[10px] text-slate-700 dark:text-slate-400">{o.matchedFileCount} files</div>
                   </div>
                 ))}
               </div>
@@ -203,23 +203,23 @@ export function HarnessCodeownersPanel({
 
           {rules.length > 0 ? (
             <div
-              className="overflow-x-auto overflow-y-auto rounded-sm border border-desktop-border desktop-scrollbar-thin"
-              style={{ maxHeight: rulesTableMaxHeight }}
+              className="overflow-x-auto overflow-y-auto rounded-sm border border-slate-300 dark:border-slate-700 "
+ style={{ maxHeight: rulesTableMaxHeight }}
             >
               <table className="w-full min-w-[480px] border-collapse text-left text-[11px]">
                 <thead>
-                  <tr className="border-b border-desktop-border bg-desktop-bg-secondary/60">
-                    <th className="px-3 py-2 font-semibold text-desktop-text-secondary">Pattern</th>
-                    <th className="px-3 py-2 font-semibold text-desktop-text-secondary">Owners</th>
-                    <th className="px-3 py-2 font-semibold text-desktop-text-secondary">Line</th>
+                  <tr className="border-b border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/60">
+                    <th className="px-3 py-2 font-semibold text-slate-700 dark:text-slate-400">Pattern</th>
+                    <th className="px-3 py-2 font-semibold text-slate-700 dark:text-slate-400">Owners</th>
+                    <th className="px-3 py-2 font-semibold text-slate-700 dark:text-slate-400">Line</th>
                   </tr>
                 </thead>
                 <tbody>
                   {rules.map((rule) => (
-                    <tr key={`${rule.line}-${rule.pattern}`} className="border-b border-desktop-border/80">
-                      <td className="px-3 py-2 font-mono text-desktop-text-primary">{rule.pattern}</td>
-                      <td className="px-3 py-2 text-desktop-text-primary">{rule.owners.join(", ")}</td>
-                      <td className="px-3 py-2 text-desktop-text-secondary">{rule.line}</td>
+                    <tr key={`${rule.line}-${rule.pattern}`} className="border-b border-slate-300 dark:border-slate-700/80">
+                      <td className="px-3 py-2 font-mono text-slate-900 dark:text-slate-200">{rule.pattern}</td>
+                      <td className="px-3 py-2 text-slate-900 dark:text-slate-200">{rule.owners.join(", ")}</td>
+                      <td className="px-3 py-2 text-slate-700 dark:text-slate-400">{rule.line}</td>
                     </tr>
                   ))}
                 </tbody>

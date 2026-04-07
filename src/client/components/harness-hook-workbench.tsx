@@ -94,8 +94,8 @@ function toneStyles(tone: HookFlowNodeTone) {
       };
     default:
       return {
-        border: "border-desktop-border",
-        badge: "border-desktop-border bg-desktop-bg-secondary text-desktop-text-secondary",
+        border: "border-slate-300 dark:border-slate-700",
+        badge: "border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400",
         glow: "",
         line: "#94a3b8",
       };
@@ -162,13 +162,13 @@ function FlowNodeView({ data }: NodeProps<Node<FlowNodeData>>) {
   const heightClass = data.kind === "task" ? "min-h-[124px]" : "min-h-[132px]";
   return (
     <div className="relative">
-      <Handle id="left" type="target" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="right" type="source" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <div className={`${widthClass} ${heightClass} rounded-sm border bg-desktop-bg-primary px-4 py-3 ${tone.border} ${tone.glow}`}>
-        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">{data.kind}</div>
-        <div className="mt-1 text-[15px] font-semibold leading-6 text-desktop-text-primary">{data.title}</div>
+      <Handle id="left" type="target" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="right" type="source" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <div className={`${widthClass} ${heightClass} rounded-sm border bg-slate-50 dark:bg-slate-900 px-4 py-3 ${tone.border} ${tone.glow}`}>
+        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">{data.kind}</div>
+        <div className="mt-1 text-[15px] font-semibold leading-6 text-slate-900 dark:text-slate-200">{data.title}</div>
         {data.subtitle ? (
-          <div className="mt-1 text-[12px] leading-5 text-desktop-text-secondary">{data.subtitle}</div>
+          <div className="mt-1 text-[12px] leading-5 text-slate-700 dark:text-slate-400">{data.subtitle}</div>
         ) : null}
         {data.chips?.length ? (
           <div className="mt-3 flex flex-wrap gap-1.5">
@@ -192,10 +192,10 @@ function HookLifecycleRail() {
   const { activeEntry, dispatch, groupedEntries } = useWorkbenchContext();
 
   return (
-    <aside className="rounded-sm border border-desktop-border bg-desktop-bg-primary p-3">
-      <div className="flex items-center justify-between gap-3 border-b border-desktop-border pb-2">
-        <div className="text-[12px] font-semibold text-desktop-text-primary">Git hooks</div>
-        <div className="rounded-full border border-desktop-border bg-white/80 px-2.5 py-1 text-[10px] text-desktop-text-secondary">
+    <aside className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-3">
+      <div className="flex items-center justify-between gap-3 border-b border-slate-300 dark:border-slate-700 pb-2">
+        <div className="text-[12px] font-semibold text-slate-900 dark:text-slate-200">Git hooks</div>
+        <div className="rounded-full border border-slate-300 dark:border-slate-700 bg-white/80 px-2.5 py-1 text-[10px] text-slate-700 dark:text-slate-400">
           {groupedEntries.reduce((sum, group) => sum + group.entries.length, 0)} hooks
         </div>
       </div>
@@ -205,10 +205,10 @@ function HookLifecycleRail() {
           <section key={group.group}>
             <div className="flex items-center justify-between gap-3">
               <div>
-                <div className="text-[11px] font-semibold text-desktop-text-primary">{group.label}</div>
-                <div className="text-[10px] text-desktop-text-secondary">{group.description}</div>
+                <div className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{group.label}</div>
+                <div className="text-[10px] text-slate-700 dark:text-slate-400">{group.description}</div>
               </div>
-              <div className="rounded-full border border-desktop-border bg-desktop-bg-primary px-2 py-0.5 text-[10px] text-desktop-text-secondary">
+              <div className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2 py-0.5 text-[10px] text-slate-700 dark:text-slate-400">
                 {group.entries.length}
               </div>
             </div>
@@ -229,33 +229,33 @@ function HookLifecycleRail() {
                       dispatch({ type: "select-hook", hookName: entry.name });
                     }}
                     className={`w-full rounded-sm border px-3 py-3 text-left transition ${
-                      dimmed
-                        ? "cursor-not-allowed border-slate-200 bg-slate-50/90 text-slate-500 opacity-80"
-                        : selected
-                        ? "border-sky-300 bg-sky-50/80"
-                        : "border-desktop-border bg-white/85 hover:bg-desktop-bg-primary"
-                    }`}
+ dimmed
+ ? "cursor-not-allowed border-slate-200 bg-slate-50/90 text-slate-500 opacity-80"
+ : selected
+ ? "border-sky-300 bg-sky-50/80"
+ : "border-slate-300 dark:border-slate-700 bg-white/85 hover:bg-slate-50 dark:bg-slate-900"
+ }`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <div className={`text-[12px] font-semibold ${dimmed ? "text-slate-500" : "text-desktop-text-primary"}`}>{entry.name}</div>
-                        <div className={`mt-1 text-[10px] ${dimmed ? "text-slate-400" : "text-desktop-text-secondary"}`}>
+                        <div className={`text-[12px] font-semibold ${dimmed ? "text-slate-500" : "text-slate-900 dark:text-slate-200"}`}>{entry.name}</div>
+                        <div className={`mt-1 text-[10px] ${dimmed ? "text-slate-400" : "text-slate-700 dark:text-slate-400"}`}>
                           {entry.channelLabel} · {entry.blockingLabel} · {entry.bypassabilityLabel}
                         </div>
                       </div>
                       <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] ${
-                        entry.enabled
-                          ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                          : "border-slate-200 bg-slate-100 text-slate-500"
-                      }`}>
+ entry.enabled
+ ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+ : "border-slate-200 bg-slate-100 text-slate-500"
+ }`}>
                         {entry.enabled ? "enabled" : entry.configured ? "partial" : "missing"}
                       </span>
                     </div>
                     <div className="mt-2 flex flex-wrap gap-1.5">
-                      <span className={`rounded-full border px-2 py-0.5 text-[10px] ${dimmed ? "border-slate-200 bg-white text-slate-500" : "border-desktop-border bg-desktop-bg-primary text-desktop-text-secondary"}`}>
+                      <span className={`rounded-full border px-2 py-0.5 text-[10px] ${dimmed ? "border-slate-200 bg-white text-slate-500" : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400"}`}>
                         {entry.stats.taskCount} tasks
                       </span>
-                      <span className={`rounded-full border px-2 py-0.5 text-[10px] ${dimmed ? "border-slate-200 bg-white text-slate-500" : "border-desktop-border bg-desktop-bg-primary text-desktop-text-secondary"}`}>
+                      <span className={`rounded-full border px-2 py-0.5 text-[10px] ${dimmed ? "border-slate-200 bg-white text-slate-500" : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400"}`}>
                         {entry.phases.length} phases
                       </span>
                       {entry.stats.reviewGate ? (
@@ -336,11 +336,11 @@ function HookFlowCanvas() {
   }, [activeEntry, flowHeight]);
 
   return (
-    <section className="rounded-sm border border-desktop-border bg-desktop-bg-primary p-3">
-      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-desktop-border pb-2">
+    <section className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-3">
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-300 dark:border-slate-700 pb-2">
         <div className="min-w-0">
-          <div className="text-[12px] font-semibold text-desktop-text-primary">Hook → Task → Output</div>
-          <div className="mt-1 text-[11px] text-desktop-text-secondary">
+          <div className="text-[12px] font-semibold text-slate-900 dark:text-slate-200">Hook → Task → Output</div>
+          <div className="mt-1 text-[11px] text-slate-700 dark:text-slate-400">
             {activeEntry
               ? `${activeEntry.lifecycleLabel} lifecycle · ${activeEntry.hint}`
               : "Select a hook to inspect its flow topology."}
@@ -348,13 +348,13 @@ function HookFlowCanvas() {
         </div>
         {activeEntry ? (
           <div className="flex flex-wrap gap-2 text-[10px]">
-            <span className="rounded-full border border-desktop-border bg-white/80 px-2.5 py-1 text-desktop-text-secondary">
+            <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-white/80 px-2.5 py-1 text-slate-700 dark:text-slate-400">
               {activeEntry.channelLabel}
             </span>
-            <span className="rounded-full border border-desktop-border bg-white/80 px-2.5 py-1 text-desktop-text-secondary">
+            <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-white/80 px-2.5 py-1 text-slate-700 dark:text-slate-400">
               {activeEntry.stats.taskCount} tasks
             </span>
-            <span className="rounded-full border border-desktop-border bg-white/80 px-2.5 py-1 text-desktop-text-secondary">
+            <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-white/80 px-2.5 py-1 text-slate-700 dark:text-slate-400">
               {activeEntry.stats.hardGateCount} hard gates
             </span>
           </div>
@@ -362,7 +362,7 @@ function HookFlowCanvas() {
       </div>
 
       {activeEntry ? (
-        <div className="mt-4 overflow-hidden rounded-sm border border-desktop-border bg-desktop-bg-primary/80" style={{ height: flowHeight }}>
+        <div className="mt-4 overflow-hidden rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80" style={{ height: flowHeight }}>
           <ReactFlow
             nodes={flow.nodes}
             edges={flow.edges}
@@ -383,7 +383,7 @@ function HookFlowCanvas() {
           </ReactFlow>
         </div>
       ) : (
-        <div className="mt-4 rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-4 py-8 text-[12px] text-desktop-text-secondary">
+        <div className="mt-4 rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-4 py-8 text-[12px] text-slate-700 dark:text-slate-400">
           No hook selected.
         </div>
       )}
@@ -425,9 +425,9 @@ function HookInspector() {
 
   if (!activeEntry) {
     return (
-      <section className="rounded-sm border border-desktop-border bg-desktop-bg-primary/70 p-3">
-        <div className="border-b border-desktop-border pb-2 text-[12px] font-semibold text-desktop-text-primary">Hook details</div>
-        <div className="mt-3 rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-4 py-6 text-[12px] text-desktop-text-secondary">
+      <section className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-3">
+        <div className="border-b border-slate-300 dark:border-slate-700 pb-2 text-[12px] font-semibold text-slate-900 dark:text-slate-200">Hook details</div>
+        <div className="mt-3 rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-4 py-6 text-[12px] text-slate-700 dark:text-slate-400">
           Select a hook to inspect details.
         </div>
       </section>
@@ -435,19 +435,19 @@ function HookInspector() {
   }
 
   return (
-    <section className="rounded-sm border border-desktop-border bg-desktop-bg-primary/70 p-3">
-      <div className="flex items-start justify-between gap-3 border-b border-desktop-border pb-2">
+    <section className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-3">
+      <div className="flex items-start justify-between gap-3 border-b border-slate-300 dark:border-slate-700 pb-2">
         <div>
-          <h3 className="text-[12px] font-semibold text-desktop-text-primary">{activeEntry.name}</h3>
-          <div className="mt-1 text-[11px] text-desktop-text-secondary">
+          <h3 className="text-[12px] font-semibold text-slate-900 dark:text-slate-200">{activeEntry.name}</h3>
+          <div className="mt-1 text-[11px] text-slate-700 dark:text-slate-400">
             {activeEntry.channelLabel} · {activeEntry.blockingLabel} · {activeEntry.bypassabilityLabel}
           </div>
         </div>
         <span className={`rounded-full border px-2.5 py-1 text-[10px] ${
-          activeEntry.enabled
-            ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-            : "border-desktop-border bg-desktop-bg-secondary text-desktop-text-secondary"
-        }`}>
+ activeEntry.enabled
+ ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+ : "border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400"
+ }`}>
           {activeEntry.mode}
         </span>
       </div>
@@ -461,10 +461,10 @@ function HookInspector() {
               dispatch({ type: "select-tab", tab: tab.id });
             }}
             className={`rounded-full border px-3 py-1 text-[10px] font-medium transition ${
-              state.inspectorTab === tab.id
-                ? "border-sky-300 bg-sky-50 text-sky-700"
-                : "border-desktop-border bg-desktop-bg-primary text-desktop-text-secondary"
-            }`}
+ state.inspectorTab === tab.id
+ ? "border-sky-300 bg-sky-50 text-sky-700"
+ : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400"
+ }`}
           >
             {tab.label}
           </button>
@@ -482,31 +482,31 @@ function HookInspector() {
               ["Bypass", activeEntry.bypassabilityLabel],
               ["Source path", activeEntry.hookFile?.relativePath ?? "No hook file"],
             ].map(([label, value]) => (
-              <div key={label} className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">{label}</div>
-                <div className="mt-1 text-[12px] leading-5 text-desktop-text-primary">{value}</div>
+              <div key={label} className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">{label}</div>
+                <div className="mt-1 text-[12px] leading-5 text-slate-900 dark:text-slate-200">{value}</div>
               </div>
             ))}
           </div>
-          <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/85 px-4 py-3">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">Command</div>
-            <div className="mt-1 break-all font-mono text-[11px] text-desktop-text-primary">
+          <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/85 px-4 py-3">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">Command</div>
+            <div className="mt-1 break-all font-mono text-[11px] text-slate-900 dark:text-slate-200">
               {activeEntry.hookFile?.triggerCommand ?? "No command detected"}
             </div>
-            <div className="mt-2 text-[11px] text-desktop-text-secondary">
+            <div className="mt-2 text-[11px] text-slate-700 dark:text-slate-400">
               {activeEntry.hint}
             </div>
           </div>
           {activeEntry.phases.length ? (
-            <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/85 px-4 py-3">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">Runtime phases</div>
+            <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/85 px-4 py-3">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">Runtime phases</div>
               <div className="mt-2 flex flex-wrap gap-2">
                 {activeEntry.phases.map((phase) => (
                   <span key={phase} className={`rounded-full border px-2.5 py-1 text-[10px] ${
-                    phase === "review"
-                      ? "border-amber-200 bg-amber-50 text-amber-800"
-                      : "border-desktop-border bg-desktop-bg-secondary text-desktop-text-secondary"
-                  }`}>
+ phase === "review"
+ ? "border-amber-200 bg-amber-50 text-amber-800"
+ : "border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400"
+ }`}>
                     {formatPhaseLabel(phase)}
                   </span>
                 ))}
@@ -518,29 +518,29 @@ function HookInspector() {
 
       {state.inspectorTab === "inputs" ? (
         <div className="mt-4 space-y-3">
-          <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/85 px-4 py-3">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">Argv template</div>
+          <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/85 px-4 py-3">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">Argv template</div>
             <div className="mt-2 flex flex-wrap gap-2">
               {activeEntry.argvTemplate.length ? activeEntry.argvTemplate.map((value) => (
-                <span key={value} className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2.5 py-1 text-[10px] font-mono text-desktop-text-secondary">
+                <span key={value} className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-[10px] font-mono text-slate-700 dark:text-slate-400">
                   {value}
                 </span>
               )) : (
-                <span className="text-[11px] text-desktop-text-secondary">No argv payload.</span>
+                <span className="text-[11px] text-slate-700 dark:text-slate-400">No argv payload.</span>
               )}
             </div>
           </div>
-          <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/85 px-4 py-3">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">stdin template</div>
-            <div className="mt-1 font-mono text-[11px] text-desktop-text-primary">
+          <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/85 px-4 py-3">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">stdin template</div>
+            <div className="mt-1 font-mono text-[11px] text-slate-900 dark:text-slate-200">
               {activeEntry.stdinTemplate ?? "No stdin payload."}
             </div>
           </div>
-          <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/85 px-4 py-3">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">Environment</div>
+          <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/85 px-4 py-3">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">Environment</div>
             <div className="mt-2 flex flex-wrap gap-2">
               {activeEntry.envKeys.map((key) => (
-                <span key={key} className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2.5 py-1 text-[10px] font-mono text-desktop-text-secondary">
+                <span key={key} className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-[10px] font-mono text-slate-700 dark:text-slate-400">
                   {key}
                 </span>
               ))}
@@ -552,26 +552,26 @@ function HookInspector() {
       {state.inspectorTab === "tasks" ? (
         <div className="mt-4 space-y-3">
           {activeEntry.tasks.length ? activeEntry.tasks.map((task) => (
-            <div key={task.id} className="rounded-sm border border-desktop-border bg-desktop-bg-primary/85 px-4 py-3">
+            <div key={task.id} className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/85 px-4 py-3">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="text-[12px] font-semibold text-desktop-text-primary">{task.name}</div>
+                  <div className="text-[12px] font-semibold text-slate-900 dark:text-slate-200">{task.name}</div>
                   {task.command ? (
-                    <div className="mt-1 break-all font-mono text-[11px] text-desktop-text-secondary">{task.command}</div>
+                    <div className="mt-1 break-all font-mono text-[11px] text-slate-700 dark:text-slate-400">{task.command}</div>
                   ) : null}
                   {task.description ? (
-                    <div className="mt-2 text-[11px] leading-5 text-desktop-text-secondary">{task.description}</div>
+                    <div className="mt-2 text-[11px] leading-5 text-slate-700 dark:text-slate-400">{task.description}</div>
                   ) : null}
                 </div>
                 <div className="flex flex-wrap gap-2 text-[10px]">
                   <span className={`rounded-full border px-2.5 py-1 ${
-                    task.resolved
-                      ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                      : "border-amber-200 bg-amber-50 text-amber-800"
-                  }`}>
+ task.resolved
+ ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+ : "border-amber-200 bg-amber-50 text-amber-800"
+ }`}>
                     {task.resolved ? "resolved" : "unresolved"}
                   </span>
-                  <span className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2.5 py-1 text-desktop-text-secondary">
+                  <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-slate-700 dark:text-slate-400">
                     {task.fileScope}
                   </span>
                   {task.hardGate ? (
@@ -582,11 +582,11 @@ function HookInspector() {
                 </div>
               </div>
               {task.sourceFile ? (
-                <div className="mt-3 font-mono text-[10px] text-desktop-text-secondary">{task.sourceFile}</div>
+                <div className="mt-3 font-mono text-[10px] text-slate-700 dark:text-slate-400">{task.sourceFile}</div>
               ) : null}
             </div>
           )) : (
-            <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/85 px-4 py-5 text-[12px] text-desktop-text-secondary">
+            <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/85 px-4 py-5 text-[12px] text-slate-700 dark:text-slate-400">
               This hook does not expose runtime metrics yet. Use the raw script tab to inspect the executable logic.
             </div>
           )}
@@ -608,10 +608,10 @@ function HookInspector() {
                   dispatch({ type: "select-script-tab", tab: tab.id as ScriptTab });
                 }}
                 className={`rounded-full border px-3 py-1 text-[10px] font-medium transition ${
-                  state.scriptTab === tab.id
-                    ? "border-sky-300 bg-sky-50 text-sky-700"
-                    : "border-desktop-border bg-desktop-bg-primary text-desktop-text-secondary"
-                }`}
+ state.scriptTab === tab.id
+ ? "border-sky-300 bg-sky-50 text-sky-700"
+ : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400"
+ }`}
               >
                 {tab.label}
               </button>
@@ -623,7 +623,7 @@ function HookInspector() {
             showHeader={false}
             maxHeight="420px"
             className="rounded-sm"
-          />
+ />
         </div>
       ) : null}
     </section>
@@ -678,10 +678,10 @@ export function HarnessHookWorkbench({
     <WorkbenchContext.Provider value={contextValue}>
       <section
         className={embedded
-          ? "space-y-0"
-          : compactMode
-            ? "rounded-sm border border-desktop-border bg-desktop-bg-primary/70 p-4"
-            : "rounded-sm border border-desktop-border bg-desktop-bg-secondary/40 p-5"}
+ ? "space-y-0"
+ : compactMode
+ ? "rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-4"
+ : "rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/40 p-5"}
       >
         {unsupportedMessage ? (
           <HarnessUnsupportedState className="rounded-sm border border-amber-200 bg-amber-50 px-4 py-4 text-[11px] text-amber-800" />
@@ -698,7 +698,7 @@ export function HarnessHookWorkbench({
         ) : null}
 
         {!unsupportedMessage && entries.length === 0 ? (
-          <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-4 py-6 text-[12px] text-desktop-text-secondary">
+          <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-4 py-6 text-[12px] text-slate-700 dark:text-slate-400">
             No hook metadata found for the selected repository.
           </div>
         ) : null}

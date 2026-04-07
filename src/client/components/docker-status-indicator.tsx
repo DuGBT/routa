@@ -61,7 +61,7 @@ export function DockerStatusIndicator({ compact = false, className = "" }: Docke
       ? "border-emerald-200 text-emerald-700 bg-emerald-50 dark:border-emerald-800/60 dark:text-emerald-300 dark:bg-emerald-900/20"
       : "border-amber-200 text-amber-700 bg-amber-50 hover:bg-amber-100 dark:border-amber-800/60 dark:text-amber-300 dark:bg-amber-900/20 dark:hover:bg-amber-900/30";
   const compactToneClass = isChecking
-    ? "text-desktop-text-tertiary"
+    ? "text-slate-400"
     : available
       ? "text-emerald-500"
       : "text-amber-500";
@@ -84,8 +84,8 @@ export function DockerStatusIndicator({ compact = false, className = "" }: Docke
         type="button"
         onClick={isRetryable ? () => void refresh() : undefined}
         className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] transition-colors ${
-          compact ? "border-0" : "border"
-        } ${
+ compact ? "border-0" : "border"
+ } ${
           compact ? "bg-transparent" : toneClass
         } ${
           compact ? compactToneClass : ""

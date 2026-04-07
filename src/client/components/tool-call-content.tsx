@@ -34,7 +34,7 @@ function JsonNode({ value, depth = 0 }: { value: unknown; depth?: number }) {
         <button
           onClick={() => setCollapsed((current) => !current)}
           className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 font-mono"
-        >
+ >
           {collapsed ? `[…${value.length}]` : "["}
         </button>
         {!collapsed && (
@@ -63,7 +63,7 @@ function JsonNode({ value, depth = 0 }: { value: unknown; depth?: number }) {
         <button
           onClick={() => setCollapsed((current) => !current)}
           className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 font-mono"
-        >
+ >
           {collapsed ? `{…${entries.length}}` : "{"}
         </button>
         {!collapsed && (
@@ -256,7 +256,7 @@ export function ToolOutputView({
           <button
             onClick={() => setRichTextExpanded((current) => !current)}
             className="flex items-center gap-1.5 text-[9px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider hover:text-slate-600 dark:hover:text-slate-300"
-          >
+ >
             <ChevronRight className={`w-3 h-3 transition-transform ${richTextExpanded ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             {t.toolCallContent.outputRendered}
           </button>
@@ -267,13 +267,13 @@ export function ToolOutputView({
             <MarkdownViewer
               content={richTextContent}
               className="text-xs prose prose-sm dark:prose-invert max-w-none"
-            />
+ />
           </div>
         ) : (
           <div
             onClick={() => setRichTextExpanded(true)}
             className="px-3 py-2 text-[10px] text-slate-500 dark:text-slate-400 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 line-clamp-3"
-          >
+ >
             {richTextContent.slice(0, 200).replace(/\n/g, " ")}
             {richTextContent.length > 200 && "…"}
           </div>
@@ -322,7 +322,7 @@ export function ToolOutputView({
           language="auto"
           variant="simple"
           className="!border-0 !rounded-none"
-          wordWrap={true}
+ wordWrap={true}
         />
       </div>
     );
@@ -338,30 +338,30 @@ export function ToolOutputView({
           <button
             onClick={() => setMode("code")}
             className={`text-[9px] px-1.5 py-0.5 rounded transition-colors ${
-              mode === "code"
-                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-            }`}
+ mode === "code"
+ ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+ : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+ }`}
           >
             {t.toolCallContent.codeTab}
           </button>
           <button
             onClick={() => setMode("tree")}
             className={`text-[9px] px-1.5 py-0.5 rounded transition-colors ${
-              mode === "tree"
-                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-            }`}
+ mode === "tree"
+ ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+ : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+ }`}
           >
             {t.toolCallContent.treeTab}
           </button>
           <button
             onClick={() => setMode("raw")}
             className={`text-[9px] px-1.5 py-0.5 rounded transition-colors ${
-              mode === "raw"
-                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-            }`}
+ mode === "raw"
+ ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+ : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+ }`}
           >
             {t.toolCallContent.rawTab}
           </button>
@@ -377,7 +377,7 @@ export function ToolOutputView({
           language="json"
           variant={isLarge ? "rich" : "simple"}
           className="!border-0 !rounded-none"
-          wordWrap={true}
+ wordWrap={true}
           showHeader={false}
         />
       ) : (

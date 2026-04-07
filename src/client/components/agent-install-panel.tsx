@@ -320,7 +320,7 @@ export function AgentInstallPanel({ embedded = false }: AgentInstallPanelProps) 
               onClick={() => fetchAgents(true)}
               disabled={loading}
               className="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-50"
-            >
+ >
               {loading ? `${t.common.loading}...` : t.common.refresh}
             </button>
           </div>
@@ -334,7 +334,7 @@ export function AgentInstallPanel({ embedded = false }: AgentInstallPanelProps) 
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t.agents.searchAgents}
             className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2 pl-9 pr-4 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100"
-          />
+ />
         </div>
       </div>
 
@@ -468,12 +468,12 @@ function AgentCard({
                 <span
                   key={dt}
                   className={`px-1 py-0.5 rounded ${
-                    (dt === "npx" && runtimeAvailability.npx) ||
-                    (dt === "uvx" && runtimeAvailability.uvx) ||
-                    dt === "binary"
-                      ? "bg-blue-50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
-                      : "bg-slate-100 text-slate-400 line-through dark:bg-slate-700"
-                  }`}
+ (dt === "npx" && runtimeAvailability.npx) ||
+ (dt === "uvx" && runtimeAvailability.uvx) ||
+ dt === "binary"
+ ? "bg-blue-50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
+ : "bg-slate-100 text-slate-400 line-through dark:bg-slate-700"
+ }`}
                 >
                   {dt}
                 </span>
@@ -489,7 +489,7 @@ function AgentCard({
               onClick={() => onUninstall(agent.id)}
               disabled={installing}
               className="rounded-md border border-red-200 px-3 py-1.5 text-xs font-medium text-red-700 transition-colors hover:bg-red-50 disabled:opacity-50 dark:border-red-800 dark:text-red-300 dark:hover:bg-red-950/20"
-            >
+ >
               {installing ? "..." : t.agents.uninstall}
             </button>
           ) : (
@@ -497,7 +497,7 @@ function AgentCard({
               onClick={() => onInstall(agent.id, availableDistType ?? undefined)}
               disabled={installing || !canInstall}
               className="rounded-md bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-            >
+ >
               {installing ? t.agents.installing : canInstall ? t.agents.install : t.common.unavailable}
             </button>
           )}
@@ -507,7 +507,7 @@ function AgentCard({
               target="_blank"
               rel="noopener noreferrer"
               className="p-1.5 text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-slate-300"
-              title={t.agents.viewRepository}
+ title={t.agents.viewRepository}
             >
               <GithubIcon className="w-4 h-4" />
             </a>

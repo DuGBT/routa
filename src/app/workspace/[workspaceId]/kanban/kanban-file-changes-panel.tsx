@@ -94,12 +94,12 @@ export function KanbanFileChangesPanel({
         <>
           <div
             className="absolute inset-0 z-20 bg-slate-900/10 backdrop-blur-[1px] dark:bg-black/20"
-            onClick={onClose}
+ onClick={onClose}
             data-testid="kanban-file-changes-backdrop"
           />
           <aside
             className="absolute inset-y-0 right-0 z-30 flex h-full w-[22rem] flex-col overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-2xl dark:border-[#1c1f2e] dark:bg-[#12141c]"
-            data-testid="kanban-file-changes-panel"
+ data-testid="kanban-file-changes-panel"
           >
             <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 dark:border-[#191c28]">
               <div className="min-w-0">
@@ -118,7 +118,7 @@ export function KanbanFileChangesPanel({
                   type="button"
                   onClick={onClose}
                   className="rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#191c28]"
-                >
+ >
                   {t.kanban.hide}
                 </button>
               </div>
@@ -144,12 +144,12 @@ export function KanbanFileChangesPanel({
                       <section
                         key={repo.codebaseId}
                         className="rounded-2xl border border-slate-200/70 bg-slate-50/70 dark:border-[#202433] dark:bg-[#0d1018]"
-                      >
+ >
                         <button
                           type="button"
                           onClick={() => setExpandedRepos((current) => ({ ...current, [repo.codebaseId]: !expanded }))}
                           className="flex w-full items-start justify-between gap-3 px-3.5 py-3 text-left"
-                        >
+ >
                           <div className="min-w-0">
                             <div className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">
                               {repo.label}
@@ -186,7 +186,7 @@ export function KanbanFileChangesPanel({
                                     type="button"
                                     onClick={() => setShowAllRepos((current) => ({ ...current, [repo.codebaseId]: !showAll }))}
                                     className="w-full rounded-xl border border-slate-200 px-3 py-2 text-[11px] font-medium text-slate-600 transition hover:bg-white dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#12141c]"
-                                  >
+ >
                                     {showAll ? t.kanban.showLess : t.kanban.showAllFiles.replace('{count}', String(repo.files.length))}
                                   </button>
                                 )}

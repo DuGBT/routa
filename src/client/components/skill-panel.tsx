@@ -77,7 +77,7 @@ export function SkillPanel({ skillsHook: externalHook }: SkillPanelProps) {
         <button
           onClick={() => setCollapsed((v) => !v)}
           className="flex items-center gap-1.5 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
-        >
+ >
           <ChevronRight className={`w-3 h-3 text-slate-400 transition-transform ${collapsed ? "" : "rotate-90"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           <Lightbulb className="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{t.story.skills}</span>
@@ -119,14 +119,14 @@ export function SkillPanel({ skillsHook: externalHook }: SkillPanelProps) {
                     onClick={() => handleSkillClick(skill.name)}
                     title={skill.description}
                     className={`group w-full text-left px-2.5 py-2 mb-0.5 rounded-md transition-all duration-150 ${expandedSkill === skill.name
-                      ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 ring-1 ring-blue-200 dark:ring-blue-800/50"
-                      : "hover:bg-slate-100/80 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300"
-                      }`}
+ ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 ring-1 ring-blue-200 dark:ring-blue-800/50"
+ : "hover:bg-slate-100/80 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300"
+ }`}
                   >
                     <div className="flex items-center gap-1.5">
                       <ChevronRight className={`w-3 h-3 shrink-0 transition-transform duration-150 ${expandedSkill === skill.name
-        ? "rotate-90 text-blue-500 dark:text-blue-400"
-        : "text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-300"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
+ ? "rotate-90 text-blue-500 dark:text-blue-400"
+ : "text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-300"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                       <span className="text-xs font-medium truncate">
                         /{skill.name}
                       </span>
@@ -159,7 +159,7 @@ export function SkillPanel({ skillsHook: externalHook }: SkillPanelProps) {
                           <MarkdownViewer
                             content={loadedSkill.content}
                             className="px-3 py-2 text-[11px] leading-relaxed prose-compact"
-                          />
+ />
                         </div>
                       )}
                     </div>
@@ -350,7 +350,7 @@ function SkillCatalogModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
+ onClick={onClose}
       />
 
       <div className="relative w-full max-w-lg mx-4 bg-white dark:bg-[#1e2130] rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
@@ -363,7 +363,7 @@ function SkillCatalogModal({
             <button
               onClick={onClose}
               className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-            >
+ >
               <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             </button>
           </div>
@@ -373,9 +373,9 @@ function SkillCatalogModal({
             <button
               onClick={() => handleSwitchCatalog("skillssh")}
               className={`flex-1 px-3 py-1.5 text-[11px] font-medium rounded-md transition-colors ${catalogType === "skillssh"
-                ? "bg-white dark:bg-[#1e2130] text-amber-700 dark:text-amber-400 shadow-sm"
-                : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-                }`}
+ ? "bg-white dark:bg-[#1e2130] text-amber-700 dark:text-amber-400 shadow-sm"
+ : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+ }`}
             >
               <span className="flex items-center justify-center gap-1.5">
                 <Search className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
@@ -385,9 +385,9 @@ function SkillCatalogModal({
             <button
               onClick={() => handleSwitchCatalog("github")}
               className={`flex-1 px-3 py-1.5 text-[11px] font-medium rounded-md transition-colors ${catalogType === "github"
-                ? "bg-white dark:bg-[#1e2130] text-slate-900 dark:text-slate-100 shadow-sm"
-                : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-                }`}
+ ? "bg-white dark:bg-[#1e2130] text-slate-900 dark:text-slate-100 shadow-sm"
+ : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+ }`}
             >
               <span className="flex items-center justify-center gap-1.5">
                 <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
@@ -411,7 +411,7 @@ function SkillCatalogModal({
                 onChange={(e) => handleSearch(e.target.value)}
                 placeholder={t.skills.searchSkills}
                 className="flex-1 px-2.5 py-2.5 bg-transparent text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 outline-none"
-                onKeyDown={(e) => {
+ onKeyDown={(e) => {
                   if (e.key === "Escape") onClose();
                 }}
               />
@@ -430,7 +430,7 @@ function SkillCatalogModal({
                     onChange={(e) => setGithubRepo(e.target.value)}
                     placeholder="owner/repo"
                     className="flex-1 px-1.5 py-2 bg-transparent text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 outline-none font-mono"
-                    onKeyDown={(e) => {
+ onKeyDown={(e) => {
                       if (e.key === "Enter") listGithubCatalog(githubRepo, githubPath);
                       if (e.key === "Escape") onClose();
                     }}
@@ -440,7 +440,7 @@ function SkillCatalogModal({
                   onClick={() => listGithubCatalog(githubRepo, githubPath)}
                   disabled={catalogLoading || !githubRepo.trim()}
                   className="px-3 py-2 text-xs font-medium text-white bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-500 rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
-                >
+ >
                   {catalogLoading ? (
                     <PieChart className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24"/>
                   ) : (
@@ -463,9 +463,9 @@ function SkillCatalogModal({
                       listGithubCatalog(preset.repo, preset.path);
                     }}
                     className={`px-1.5 py-0.5 text-[10px] font-mono rounded transition-colors ${githubRepo === preset.repo && githubPath === preset.path
-                      ? "text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/30"
-                      : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
-                      }`}
+ ? "text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/30"
+ : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
+ }`}
                   >
                     {preset.label}
                   </button>
@@ -498,11 +498,11 @@ function SkillCatalogModal({
                     <label
                       key={skillKey}
                       className={`flex items-center gap-2 px-2.5 py-2 rounded-md cursor-pointer transition-colors ${skill.installed
-                        ? "bg-emerald-50/50 dark:bg-emerald-900/10 opacity-60"
-                        : isSelected(skill)
-                          ? "bg-amber-50 dark:bg-amber-900/20"
-                          : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
-                        }`}
+ ? "bg-emerald-50/50 dark:bg-emerald-900/10 opacity-60"
+ : isSelected(skill)
+ ? "bg-amber-50 dark:bg-amber-900/20"
+ : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
+ }`}
                     >
                       <input
                         type="checkbox"
@@ -510,11 +510,11 @@ function SkillCatalogModal({
                         disabled={skill.installed}
                         onChange={() => toggleSkill(skill)}
                         className="w-3.5 h-3.5 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 disabled:opacity-50 shrink-0"
-                      />
+ />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5">
                           <span className={`text-xs font-medium truncate ${skill.installed ? "text-slate-400" : "text-slate-800 dark:text-slate-200"
-                            }`}>
+ }`}>
                             {skill.name}
                           </span>
                           {skill.installed && (
@@ -549,11 +549,11 @@ function SkillCatalogModal({
                   <label
                     key={skill.name}
                     className={`flex items-center gap-2 px-2.5 py-2 rounded-md cursor-pointer transition-colors ${skill.installed
-                      ? "bg-emerald-50/50 dark:bg-emerald-900/10 opacity-60"
-                      : githubSelected.has(skill.name)
-                        ? "bg-blue-50 dark:bg-blue-900/20"
-                        : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
-                      }`}
+ ? "bg-emerald-50/50 dark:bg-emerald-900/10 opacity-60"
+ : githubSelected.has(skill.name)
+ ? "bg-blue-50 dark:bg-blue-900/20"
+ : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
+ }`}
                   >
                     <input
                       type="checkbox"
@@ -561,10 +561,10 @@ function SkillCatalogModal({
                       disabled={skill.installed}
                       onChange={() => toggleGithubSkill(skill.name)}
                       className="w-3.5 h-3.5 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500 disabled:opacity-50 shrink-0"
-                    />
+ />
                     <div className="flex-1 min-w-0">
                       <span className={`text-xs font-medium ${skill.installed ? "text-slate-400" : "text-slate-800 dark:text-slate-200"
-                        }`}>
+ }`}>
                         {skill.name}
                       </span>
                     </div>
@@ -592,7 +592,7 @@ function SkillCatalogModal({
                       <span
                         key={name}
                         className="px-1.5 py-0.5 text-[10px] font-mono text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/30 rounded"
-                      >
+ >
                         {name}
                       </span>
                     ))}
@@ -626,7 +626,7 @@ function SkillCatalogModal({
             <button
               onClick={onClose}
               className="px-3 py-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 rounded-md transition-colors"
-            >
+ >
               {t.common.close}
             </button>
             {totalSelected > 0 && (
@@ -634,9 +634,9 @@ function SkillCatalogModal({
                 onClick={handleInstall}
                 disabled={catalogInstalling}
                 className={`px-4 py-1.5 text-xs font-medium text-white rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 ${catalogType === "skillssh"
-                  ? "bg-amber-600 hover:bg-amber-700"
-                  : "bg-blue-600 hover:bg-blue-700"
-                  }`}
+ ? "bg-amber-600 hover:bg-amber-700"
+ : "bg-blue-600 hover:bg-blue-700"
+ }`}
               >
                 {catalogInstalling ? (
                   <>
@@ -705,7 +705,7 @@ function SkillCloneModal({
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
+ onClick={onClose}
       />
 
       {/* Modal */}
@@ -715,7 +715,7 @@ function SkillCloneModal({
           <div className="flex items-center gap-2">
             <svg
               className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
-              viewBox="0 0 24 24"
+ viewBox="0 0 24 24"
               fill="currentColor"
             >
               <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
@@ -727,7 +727,7 @@ function SkillCloneModal({
           <button
             onClick={onClose}
             className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-          >
+ >
             <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
         </div>
@@ -762,7 +762,7 @@ function SkillCloneModal({
                 }}
                 placeholder="vercel-labs/agent-skills"
                 className="flex-1 px-1.5 py-2.5 bg-transparent text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 outline-none font-mono"
-                onKeyDown={(e) => {
+ onKeyDown={(e) => {
                   if (e.key === "Enter" && url.trim()) handleClone();
                   if (e.key === "Escape") onClose();
                 }}
@@ -786,7 +786,7 @@ function SkillCloneModal({
                   setResult(null);
                 }}
                 className="px-1.5 py-0.5 text-[10px] font-mono text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
-              >
+ >
                 {example}
               </button>
             ))}
@@ -812,7 +812,7 @@ function SkillCloneModal({
                   <span
                     key={name}
                     className="px-1.5 py-0.5 text-[10px] font-mono text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/30 rounded"
-                  >
+ >
                     /{name}
                   </span>
                 ))}
@@ -826,7 +826,7 @@ function SkillCloneModal({
           <button
             onClick={onClose}
             className="px-3 py-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 rounded-md transition-colors"
-          >
+ >
             {result ? t.common.close : t.common.cancel}
           </button>
           {!result && (
@@ -834,7 +834,7 @@ function SkillCloneModal({
               onClick={handleClone}
               disabled={!url.trim() || cloning}
               className="px-4 py-1.5 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5"
-            >
+ >
               {cloning ? (
                 <>
                   <PieChart className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24"/>
@@ -936,7 +936,7 @@ function SkillUploadModal({
           <button
             onClick={onClose}
             className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-          >
+ >
             <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
         </div>
@@ -954,18 +954,18 @@ function SkillUploadModal({
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${dragOver
-              ? "border-blue-400 bg-blue-50 dark:bg-blue-900/10"
-              : selectedFile
-                ? "border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/10"
-                : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
-              }`}
+ ? "border-blue-400 bg-blue-50 dark:bg-blue-900/10"
+ : selectedFile
+ ? "border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/10"
+ : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+ }`}
           >
             <input
               ref={fileInputRef}
               type="file"
               accept=".zip"
               className="hidden"
-              onChange={(e) => {
+ onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) handleFileSelect(file);
               }}
@@ -1009,14 +1009,14 @@ function SkillUploadModal({
           <button
             onClick={onClose}
             className="px-3 py-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 rounded-md transition-colors"
-          >
+ >
             {t.common.cancel}
           </button>
           <button
             onClick={handleUpload}
             disabled={!selectedFile || uploading || success}
             className="px-4 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
+ >
             {uploading ? t.skills.uploading : success ? t.skills.done : t.skills.uploadAction}
           </button>
         </div>

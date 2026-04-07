@@ -138,7 +138,7 @@ function CompactDisclosure({
     <details
       open={defaultOpen || undefined}
       className="group border-t border-slate-200/70 pt-2 dark:border-slate-700"
-    >
+ >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-1.5 [&::-webkit-details-marker]:hidden">
         <div className="min-w-0">
           <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400 dark:text-slate-500">
@@ -178,9 +178,9 @@ function AcceptanceCriteriaList({
         <li
           key={criterion.id}
           className={joinClasses(
-            "border-b border-slate-200/70 last:border-b-0 dark:border-slate-700",
-            compact ? "py-1.5" : "py-2",
-          )}
+ "border-b border-slate-200/70 last:border-b-0 dark:border-slate-700",
+ compact ? "py-1.5" : "py-2",
+ )}
         >
           <div className={joinClasses("flex items-start gap-3", compact ? "text-[13px] leading-6" : "text-sm leading-6")}>
             <span className="shrink-0 font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
@@ -191,11 +191,11 @@ function AcceptanceCriteriaList({
             </span>
             <span
               className={joinClasses(
-                "shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em]",
-                criterion.testable
-                  ? "text-emerald-600 dark:text-emerald-300"
-                  : "text-rose-600 dark:text-rose-300",
-              )}
+ "shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em]",
+ criterion.testable
+ ? "text-emerald-600 dark:text-emerald-300"
+ : "text-rose-600 dark:text-rose-300",
+ )}
             >
               {criterion.testable ? testableLabel : failLabel}
             </span>
@@ -217,9 +217,9 @@ export function CanonicalStoryRenderer({
     return (
       <div
         className={joinClasses(
-          "canonical-story-renderer not-prose rounded-2xl border border-rose-200 bg-rose-50/80 p-3 dark:border-rose-900/40 dark:bg-rose-900/10",
-          className,
-        )}
+ "canonical-story-renderer not-prose rounded-2xl border border-rose-200 bg-rose-50/80 p-3 dark:border-rose-900/40 dark:bg-rose-900/10",
+ className,
+ )}
         data-testid="canonical-story-renderer-invalid"
       >
         <div className="flex flex-wrap items-center gap-2">
@@ -255,9 +255,9 @@ export function CanonicalStoryRenderer({
     return (
       <div
         className={joinClasses(
-          "canonical-story-renderer not-prose space-y-3",
-          className,
-        )}
+ "canonical-story-renderer not-prose space-y-3",
+ className,
+ )}
         data-testid="canonical-story-renderer"
       >
         <div className="space-y-2 border-b border-slate-200/70 pb-2.5 dark:border-slate-700">
@@ -311,19 +311,19 @@ export function CanonicalStoryRenderer({
               <div
                 key={label}
                 className="border-b border-slate-200/70 py-2.5 last:border-b-0 dark:border-slate-700"
-              >
+ >
                 <div className="flex items-center justify-between gap-2">
                   <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
                     {label}
                   </div>
                   <span className={joinClasses(
-                    "text-[10px] font-semibold uppercase tracking-[0.14em]",
-                    check.status === "pass"
-                      ? "text-emerald-600 dark:text-emerald-300"
-                      : check.status === "warning"
-                        ? "text-amber-600 dark:text-amber-300"
-                        : "text-rose-600 dark:text-rose-300",
-                  )}>
+ "text-[10px] font-semibold uppercase tracking-[0.14em]",
+ check.status === "pass"
+ ? "text-emerald-600 dark:text-emerald-300"
+ : check.status === "warning"
+ ? "text-amber-600 dark:text-amber-300"
+ : "text-rose-600 dark:text-rose-300",
+ )}>
                     {formatStatus(check.status, t)}
                   </span>
                 </div>
@@ -368,9 +368,9 @@ export function CanonicalStoryRenderer({
   return (
     <div
       className={joinClasses(
-        "canonical-story-renderer not-prose space-y-4",
-        className,
-      )}
+ "canonical-story-renderer not-prose space-y-4",
+ className,
+ )}
       data-testid="canonical-story-renderer"
     >
       <div className="flex flex-col gap-4">
@@ -421,19 +421,19 @@ export function CanonicalStoryRenderer({
               <div
                 key={label}
                 className="border-b border-slate-200/70 py-3 last:border-b-0 dark:border-slate-700"
-              >
+ >
                 <div className="flex items-center justify-between gap-2">
                   <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
                     {label}
                   </div>
                   <span className={joinClasses(
-                    "text-[11px] font-semibold uppercase tracking-wide",
-                    check.status === "pass"
-                      ? "text-emerald-600 dark:text-emerald-300"
-                      : check.status === "warning"
-                        ? "text-amber-600 dark:text-amber-300"
-                        : "text-rose-600 dark:text-rose-300",
-                  )}>
+ "text-[11px] font-semibold uppercase tracking-wide",
+ check.status === "pass"
+ ? "text-emerald-600 dark:text-emerald-300"
+ : check.status === "warning"
+ ? "text-amber-600 dark:text-amber-300"
+ : "text-rose-600 dark:text-rose-300",
+ )}>
                     {formatStatus(check.status, t)}
                   </span>
                 </div>

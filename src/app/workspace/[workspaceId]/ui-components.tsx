@@ -11,10 +11,10 @@ export function TabButton({ active, onClick, children }: { active: boolean; onCl
     <button
       onClick={onClick}
       className={`px-3.5 py-2 text-[13px] font-medium border-b-2 transition-colors ${
-        active
-          ? "text-slate-900 dark:text-slate-100 border-amber-500"
-          : "text-slate-400 dark:text-slate-500 border-transparent hover:text-slate-600 dark:hover:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600"
-      }`}
+ active
+ ? "text-slate-900 dark:text-slate-100 border-amber-500"
+ : "text-slate-400 dark:text-slate-500 border-transparent hover:text-slate-600 dark:hover:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600"
+ }`}
     >
       {children}
     </button>
@@ -214,7 +214,7 @@ export function OverlayModal({
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
       <div
         className="relative w-full max-w-5xl h-[80vh] bg-white dark:bg-[#12141c] border border-slate-200 dark:border-[#1c1f2e] rounded-xl shadow-2xl overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
+ onClick={(e) => e.stopPropagation()}
       >
         <div className="h-11 px-4 border-b border-slate-100 dark:border-[#191c28] flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -224,7 +224,7 @@ export function OverlayModal({
               target="_blank"
               rel="noopener noreferrer"
               className="text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-            >
+ >
               Open in new tab
             </a>
           </div>
@@ -232,7 +232,7 @@ export function OverlayModal({
             type="button"
             onClick={onClose}
             className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-[#191c28] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-            title={closeLabel ?? "Close (Esc)"}
+ title={closeLabel ?? "Close (Esc)"}
             aria-label={closeLabel ?? "Close"}
           >
             <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>

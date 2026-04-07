@@ -261,7 +261,7 @@ function EventCard({ event }: { event: AGUIBaseEvent }) {
       <button
         onClick={() => setExpanded(!expanded)}
         className="flex items-center gap-2 w-full text-left"
-      >
+ >
         <span className={`font-mono font-semibold ${color.text}`}>{event.type}</span>
         <span className="text-slate-400 truncate flex-1">{summaryParts.join(" | ")}</span>
         <span className="text-slate-400 shrink-0">{ts}</span>
@@ -329,7 +329,7 @@ function AGUIReasoningBubble({ message }: { message: AssembledMessage }) {
     <button
       onClick={() => setExpanded(!expanded)}
       className="group my-1 flex w-full items-start gap-2 rounded-lg border border-slate-100/50 bg-slate-50/50 px-3 py-1.5 text-left transition-colors hover:bg-slate-100/70 dark:border-slate-800/20 dark:bg-slate-900/10 dark:hover:bg-slate-900/20"
-    >
+ >
       <span className="shrink-0 pt-0.5 text-[10px] text-slate-500">💭</span>
       <p className={`text-[11px] text-slate-500 dark:text-slate-400 italic leading-relaxed ${expanded ? "" : "line-clamp-2"}`}>
         {message.content}
@@ -351,7 +351,7 @@ function AGUIToolCard({ tool }: { tool: ToolCallGroup }) {
       <button
         onClick={() => setExpanded(!expanded)}
         className="group flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50/50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-800/30 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors w-full text-left"
-      >
+ >
         <span className="text-[10px]">🔧</span>
         <span className="text-[11px] font-medium text-amber-700 dark:text-amber-300">{tool.toolName}</span>
         <span className={`text-[10px] ${hasResult ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}`}>
@@ -392,7 +392,7 @@ function AGUICustomCard({ event }: { event: AGUIBaseEvent }) {
       <button
         onClick={() => setExpanded(!expanded)}
         className="group flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-50/50 dark:bg-slate-900/10 border border-slate-100 dark:border-slate-800/30 hover:bg-slate-50 dark:hover:bg-slate-900/20 transition-colors w-full text-left"
-      >
+ >
         <span className="text-[10px] text-slate-500">⚙</span>
         <span className="text-[10px] font-medium text-slate-600 dark:text-slate-400">{name}</span>
         <ChevronRight className={`w-2.5 h-2.5 text-slate-400 ml-auto transition-transform ${expanded ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
@@ -459,9 +459,9 @@ export function AGUITracePanel({ sessionId, traces }: AGUITracePanelProps) {
               key={mode}
               onClick={() => setViewMode(mode)}
               className={`px-2 py-1 rounded-md text-[10px] font-semibold transition-all ${viewMode === mode
-                ? "bg-blue-500 text-white shadow-sm"
-                : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
-                }`}
+ ? "bg-blue-500 text-white shadow-sm"
+ : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+ }`}
             >
               {mode === "chat" ? t.trace.chat : mode === "events" ? t.trace.events : t.trace.split}
             </button>

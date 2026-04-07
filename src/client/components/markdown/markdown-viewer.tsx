@@ -211,7 +211,7 @@ export function MarkdownViewer({
               content={seg.content}
               isStreaming={false}
               className=""
-              onFileClick={onFileClick}
+ onFileClick={onFileClick}
               hideCanonicalStory={hideCanonicalStory}
             />
           );

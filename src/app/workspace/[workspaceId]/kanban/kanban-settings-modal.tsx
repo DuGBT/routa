@@ -343,10 +343,10 @@ function SpecialistCategoryTabs({
           type="button"
           onClick={() => onChange(option.id)}
           className={`shrink-0 whitespace-nowrap rounded-full border px-2.5 py-1 text-[11px] font-medium transition ${
-            category === option.id
-              ? "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"
-              : "border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:text-slate-700 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-400 dark:hover:border-slate-600 dark:hover:text-slate-200"
-          }`}
+ category === option.id
+ ? "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"
+ : "border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:text-slate-700 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-400 dark:hover:border-slate-600 dark:hover:text-slate-200"
+ }`}
         >
           {option.label}
         </button>
@@ -762,7 +762,7 @@ export function KanbanSettingsModal({
                   type="button"
                   onClick={() => setShowRuntimeSettings((current) => !current)}
                   className="inline-flex items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-slate-700 transition hover:bg-white dark:border-slate-700 dark:text-slate-200 dark:hover:bg-[#111722]"
-                >
+ >
                   {showRuntimeSettings ? t.kanban.hideRuntime : t.kanban.runtime}
                 </button>
               </div>
@@ -784,7 +784,7 @@ export function KanbanSettingsModal({
                               value={sessionConcurrencyLimit}
                               onChange={(event) => setSessionConcurrencyLimit(Math.max(1, Number.parseInt(event.target.value || "1", 10) || 1))}
                               className="h-9 w-18 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-900 outline-none transition focus:border-amber-400 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-100"
-                            />
+ />
                           </label>
                         </div>
                         <p className="mt-1.5 max-w-[240px] text-xs leading-5 text-slate-500 dark:text-slate-400">
@@ -824,7 +824,7 @@ export function KanbanSettingsModal({
                                 inactivityTimeoutMinutes: Math.max(1, Number.parseInt(event.target.value || "10", 10) || 10),
                               }))}
                               className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none transition focus:border-amber-400 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-100"
-                            />
+ />
                           </label>
                           <label className="space-y-1 text-xs font-medium text-slate-600 dark:text-slate-300">
                             <span>{t.kanban.retries}</span>
@@ -839,7 +839,7 @@ export function KanbanSettingsModal({
                                 maxRecoveryAttempts: Math.max(0, Number.parseInt(event.target.value || "0", 10) || 0),
                               }))}
                               className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none transition focus:border-amber-400 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-100"
-                            />
+ />
                           </label>
                           <label className="space-y-1 text-xs font-medium text-slate-600 dark:text-slate-300">
                             <span>{t.kanban.completion}</span>
@@ -852,7 +852,7 @@ export function KanbanSettingsModal({
                               }))}
                               disabled={devSessionSupervision.mode !== "ralph_loop"}
                               className="disabled:cursor-not-allowed"
-                            >
+ >
                               <option value="turn_complete">{t.kanban.turnComplete}</option>
                               <option value="completion_summary">{t.kanban.completionSummary}</option>
                               <option value="verification_report">{t.kanban.verificationReport}</option>
@@ -878,7 +878,7 @@ export function KanbanSettingsModal({
                       type="button"
                       onClick={handleAddStage}
                       className="rounded-md border border-slate-300 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700 transition hover:bg-white dark:border-slate-700 dark:text-slate-200 dark:hover:bg-[#111722]"
-                    >
+ >
                       {t.kanban.addStage}
                     </button>
                   </div>
@@ -892,16 +892,16 @@ export function KanbanSettingsModal({
                         <div
                           key={column.id}
                           className={`min-w-0 rounded-[10px] border px-2 py-1 transition ${
-                            active
-                              ? "border-slate-900 bg-slate-900 text-white shadow-lg shadow-slate-900/10 dark:border-amber-400/40 dark:bg-slate-900"
-                              : "border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-[#111722] dark:hover:border-slate-700"
-                          }`}
+ active
+ ? "border-slate-900 bg-slate-900 text-white shadow-lg shadow-slate-900/10 dark:border-amber-400/40 dark:bg-slate-900"
+ : "border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-[#111722] dark:hover:border-slate-700"
+ }`}
                         >
                           <button
                             type="button"
                             onClick={() => setSelectedColumnId(column.id)}
                             className="block w-full min-w-0 text-left"
-                          >
+ >
                             <div className="flex min-w-0 items-start justify-between gap-2">
                               <div className="min-w-0">
                                 <div className={`text-[12px] font-semibold ${active ? "text-white" : "text-slate-900 dark:text-slate-100"}`}>{column.name}</div>
@@ -918,10 +918,10 @@ export function KanbanSettingsModal({
                               </div>
                               <div
                                 className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.18em] ${
-                                  active
-                                    ? "bg-white/10 text-slate-200"
-                                    : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
-                                }`}
+ active
+ ? "bg-white/10 text-slate-200"
+ : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+ }`}
                               >
                                 {getAutomationTransportLabel(column, automation)}
                               </div>
@@ -929,10 +929,10 @@ export function KanbanSettingsModal({
                           </button>
                           <div
                             className={`mt-1 flex items-center justify-between rounded-md border px-2 py-0.5 ${
-                              active
-                                ? "border-white/15 bg-white/5"
-                                : "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-[#0b1119]"
-                            }`}
+ active
+ ? "border-white/15 bg-white/5"
+ : "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-[#0b1119]"
+ }`}
                           >
                             <div className="flex items-center gap-3">
                               <label className="flex items-center gap-1.5">
@@ -945,7 +945,7 @@ export function KanbanSettingsModal({
                                   checked={visible}
                                   onChange={(event) => updateColumnVisibility(column, event.target.checked)}
                                   className="h-4 w-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500"
-                                />
+ />
                               </label>
                               <label className="flex items-center gap-1.5">
                                   <span className={`text-[9px] font-semibold uppercase tracking-[0.16em] ${active ? "text-slate-300" : "text-slate-500 dark:text-slate-400"}`}>{t.kanban.automation}</span>
@@ -956,7 +956,7 @@ export function KanbanSettingsModal({
                                   disabled={isManualOnlyColumn(column)}
                                   onChange={(event) => toggleColumnAutomation(column, event.target.checked)}
                                   className="h-4 w-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500"
-                                />
+ />
                               </label>
                             </div>
                             <div className="flex items-center gap-1">
@@ -966,7 +966,7 @@ export function KanbanSettingsModal({
                                 disabled={sortedColumns[0]?.id === column.id}
                                 onClick={() => moveColumn(column.id, "up")}
                                 className="rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40 dark:text-slate-400"
-                              >
+ >
                                 Up
                               </button>
                               <button
@@ -975,7 +975,7 @@ export function KanbanSettingsModal({
                                 disabled={sortedColumns[sortedColumns.length - 1]?.id === column.id}
                                 onClick={() => moveColumn(column.id, "down")}
                                 className="rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40 dark:text-slate-400"
-                              >
+ >
                                 Down
                               </button>
                               <button
@@ -984,7 +984,7 @@ export function KanbanSettingsModal({
                                 disabled={sortedColumns.length <= 1}
                                 onClick={() => handleDeleteStage(column.id)}
                                 className="rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-rose-500 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-40 dark:text-rose-300 dark:hover:bg-rose-500/10"
-                              >
+ >
                                 {t.kanban.del}
                               </button>
                             </div>
@@ -1015,7 +1015,7 @@ export function KanbanSettingsModal({
                           name: event.target.value,
                         }))}
                         className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-amber-400 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-100"
-                      />
+ />
                     </label>
                     <label className="w-40 shrink-0 space-y-1 text-sm font-medium">
                       <span className="text-slate-700 dark:text-slate-300">{t.kanban.stageType}</span>
@@ -1024,7 +1024,7 @@ export function KanbanSettingsModal({
                         value={selectedColumn.stage}
                         onChange={(event) => handleStageTypeChange(selectedColumn.id, event.target.value)}
                         className="h-10"
-                      >
+ >
                         {STAGE_TYPE_OPTIONS.map((option) => (
                           <option key={option.value} value={option.value}>
                             {option.label}
@@ -1042,7 +1042,7 @@ export function KanbanSettingsModal({
                           width: event.target.value as "compact" | "standard" | "wide",
                         }))}
                         className="h-10"
-                      >
+ >
                         <option value="compact">{t.kanban.compact}</option>
                         <option value="standard">{t.kanban.standard}</option>
                         <option value="wide">{t.kanban.wide}</option>
@@ -1054,7 +1054,7 @@ export function KanbanSettingsModal({
                         checked={selectedColumn.visible !== false}
                         onChange={(event) => updateColumnVisibility(selectedColumn, event.target.checked)}
                         className="h-4 w-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500"
-                      />
+ />
                       <span>{t.kanban.visibleOnBoard}</span>
                     </label>
 
@@ -1102,14 +1102,14 @@ export function KanbanSettingsModal({
                       onChange={(event) => handleKanbanExportWorkspaceChange(event.target.value)}
                       placeholder={board.workspaceId || "default"}
                       className="h-8 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-amber-400 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-100 sm:w-32"
-                      aria-label="Kanban YAML workspace ID"
+ aria-label="Kanban YAML workspace ID"
                     />
                     <button
                       type="button"
                       onClick={() => void handleExportKanbanYaml()}
                       disabled={isExportingKanbanYaml}
                       className="rounded-md border border-slate-300 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700 transition hover:bg-white disabled:opacity-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-[#111722]"
-                    >
+ >
                       {isExportingKanbanYaml ? t.kanban.exportingYaml : t.kanban.exportYaml}
                     </button>
                     <input
@@ -1117,7 +1117,7 @@ export function KanbanSettingsModal({
                       type="file"
                       accept=".yaml,.yml,text/yaml,application/yaml"
                       className="hidden"
-                      onChange={(event) => {
+ onChange={(event) => {
                         const file = event.target.files?.[0];
                         if (file) {
                           void handleImportKanbanYaml(file);
@@ -1129,7 +1129,7 @@ export function KanbanSettingsModal({
                       onClick={() => kanbanImportInputRef.current?.click()}
                       disabled={isImportingKanbanYaml}
                       className="rounded-md border border-slate-300 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700 transition hover:bg-white disabled:opacity-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-[#111722]"
-                    >
+ >
                       {isImportingKanbanYaml ? t.kanban.importingYaml : t.kanban.importYaml}
                     </button>
                   </div>
@@ -1154,21 +1154,21 @@ export function KanbanSettingsModal({
                   onClick={() => void handleClearAll()}
                   disabled={saving || clearingAll}
                   className="mr-auto rounded-xl border border-rose-200 px-4 py-1.5 text-sm font-medium text-rose-600 transition hover:bg-rose-50 disabled:opacity-50 dark:border-rose-500/30 dark:text-rose-300 dark:hover:bg-rose-500/10"
-                >
+ >
                   {clearingAll ? t.kanban.clearingAll : t.kanban.clearAllCards}
                 </button>
                 <button
                   onClick={onClose}
                   disabled={saving || clearingAll}
                   className="rounded-xl border border-slate-200 px-4 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-white disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#111722]"
-                >
+ >
                   {t.kanban.cancel}
                 </button>
                 <button
                   onClick={() => void handleSave()}
                   disabled={saving || clearingAll}
                   className="rounded-xl bg-slate-900 px-5 py-1.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50 dark:bg-amber-500 dark:text-slate-950 dark:hover:bg-amber-400"
-                >
+ >
                   {saving ? t.workspace.saving : t.kanban.saveBoardSettings}
                 </button>
               </div>
@@ -1245,7 +1245,7 @@ function ColumnAutomationWorkspace({
                 type="button"
                 onClick={applyDefaultAutomation}
                 className="rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-slate-700 transition hover:bg-white dark:border-slate-700 dark:text-slate-200 dark:hover:bg-[#111722]"
-              >
+ >
                 {t.kanban.defaults}
               </button>
             </div>
@@ -1459,7 +1459,7 @@ function ColumnAutomationWorkspace({
                                   return nextSteps;
                                 }))}
                                 className="rounded-md border border-slate-200 px-2 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#0b1119]"
-                              >
+ >
                                 Up
                               </button>
                               <button
@@ -1472,7 +1472,7 @@ function ColumnAutomationWorkspace({
                                   return nextSteps;
                                 }))}
                                 className="rounded-md border border-slate-200 px-2 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#0b1119]"
-                              >
+ >
                                 Down
                               </button>
                               <button
@@ -1484,7 +1484,7 @@ function ColumnAutomationWorkspace({
                                   return nextSteps.length > 0 ? nextSteps : [createEmptyAutomationStep(0)];
                                 }))}
                                 className="rounded-md border border-rose-200 px-2 py-1 text-xs font-medium text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-rose-500/30 dark:text-rose-300 dark:hover:bg-rose-500/10"
-                              >
+ >
                                 Remove
                               </button>
                             </div>
@@ -1498,7 +1498,7 @@ function ColumnAutomationWorkspace({
                         type="button"
                         onClick={() => onUpdate(updateAutomationSteps(automation, (steps) => [...steps, createEmptyAutomationStep(steps.length)]))}
                         className="rounded-md border border-slate-300 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-slate-700 transition hover:border-slate-400 hover:bg-white dark:border-slate-700 dark:text-slate-200 dark:hover:bg-[#0b1119]"
-                      >
+ >
                         {t.kanban.addStep}
                       </button>
                     </div>
@@ -1509,10 +1509,10 @@ function ColumnAutomationWorkspace({
                           <label
                             key={artifact.id}
                             className={`flex cursor-pointer flex-col gap-1.5 rounded-lg border px-3 py-2.5 transition ${
-                              checked
-                                ? "border-amber-300 bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10"
-                                : "border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-[#111722] dark:hover:border-slate-700"
-                            }`}
+ checked
+ ? "border-amber-300 bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10"
+ : "border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-[#111722] dark:hover:border-slate-700"
+ }`}
                           >
                             <div className="flex items-center justify-between gap-3">
                               <span className="text-[13px] font-semibold text-slate-900 dark:text-slate-100">{artifact.label}</span>
@@ -1532,7 +1532,7 @@ function ColumnAutomationWorkspace({
                                   });
                                 }}
                                 className="h-4 w-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500"
-                              />
+ />
                             </div>
                             <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">{artifact.hint}</p>
                           </label>
@@ -1553,10 +1553,10 @@ function ColumnAutomationWorkspace({
                             <label
                               key={field}
                               className={`flex cursor-pointer flex-col gap-1.5 rounded-lg border px-3 py-2.5 transition ${
-                                checked
-                                  ? "border-sky-300 bg-sky-50 dark:border-sky-500/30 dark:bg-sky-500/10"
-                                  : "border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-[#0b1119] dark:hover:border-slate-700"
-                              }`}
+ checked
+ ? "border-sky-300 bg-sky-50 dark:border-sky-500/30 dark:bg-sky-500/10"
+ : "border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-[#0b1119] dark:hover:border-slate-700"
+ }`}
                             >
                               <div className="flex items-center justify-between gap-3">
                                 <span className="text-[13px] font-semibold text-slate-900 dark:text-slate-100">{getTaskFieldLabel(field, t)}</span>
@@ -1576,7 +1576,7 @@ function ColumnAutomationWorkspace({
                                     });
                                   }}
                                   className="h-4 w-4 rounded border-slate-300 text-sky-500 focus:ring-sky-500"
-                                />
+ />
                               </div>
                               <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">{getTaskFieldHint(field, t)}</p>
                             </label>
@@ -1590,7 +1590,7 @@ function ColumnAutomationWorkspace({
                         checked={automation.autoAdvanceOnSuccess ?? false}
                         onChange={(event) => onUpdate({ ...automation, autoAdvanceOnSuccess: event.target.checked })}
                         className="mt-1 h-4 w-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500"
-                      />
+ />
                       <span>
                         <span className="block text-[13px] font-semibold text-slate-900 dark:text-slate-100">{t.kanban.autoAdvanceOnSuccess}</span>
                         <span className="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">
@@ -1608,7 +1608,7 @@ function ColumnAutomationWorkspace({
               type="button"
               onClick={applyDefaultAutomation}
               className="rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-slate-700 transition hover:bg-white dark:border-slate-700 dark:text-slate-200 dark:hover:bg-[#111722]"
-              >
+ >
                 Defaults
               </button>
             </div>

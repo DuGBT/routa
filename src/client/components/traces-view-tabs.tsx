@@ -13,8 +13,8 @@ interface TracesViewTabsProps {
 }
 
 const TAB_DEFINITIONS: Array<{ key: TraceViewTab; label: string; color: string }> = [
-  { key: "chat", label: "traces:chat", color: "bg-desktop-trace-chat" },
-  { key: "event-bridge", label: "traces:traceTab", color: "bg-desktop-trace-event-bridge" },
+  { key: "chat", label: "traces:chat", color: "bg-blue-500" },
+  { key: "event-bridge", label: "traces:traceTab", color: "bg-amber-500" },
 ];
 
 export function TracesViewTabs({ activeTab, onTabChange, className }: TracesViewTabsProps) {
@@ -22,8 +22,8 @@ export function TracesViewTabs({ activeTab, onTabChange, className }: TracesView
   return (
     <div className={className ?? ""}>
       <div
-        className="inline-flex items-center rounded-md border border-desktop-border bg-desktop-bg-secondary p-0.5"
-        data-testid="traces-view-tabs"
+        className="inline-flex items-center rounded-md border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 p-0.5"
+ data-testid="traces-view-tabs"
       >
         {TAB_DEFINITIONS.map(({ key, label: _label, color }) => (
           <Button
@@ -33,9 +33,9 @@ export function TracesViewTabs({ activeTab, onTabChange, className }: TracesView
             size="xs"
             onClick={() => onTabChange(key)}
             className={`rounded-none px-3 py-1.5 text-[11px] font-semibold tracking-wide transition-all ${
-              activeTab === key
-                ? `${color} text-desktop-accent-text`
-                : "text-desktop-text-secondary hover:bg-desktop-bg-active/70 hover:text-desktop-text-primary"
+ activeTab === key
+ ? `${color} text-white`
+                : "text-slate-700 dark:text-slate-400 hover:bg-blue-100 dark:bg-blue-900/70 hover:text-slate-900 dark:text-slate-200"
             }`}
           >
             {key === "chat" ? t.traces.chat : t.traces.traceTab}

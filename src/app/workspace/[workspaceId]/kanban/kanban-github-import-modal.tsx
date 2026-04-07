@@ -219,9 +219,9 @@ export function KanbanGitHubImportModal({
             type="button"
             onClick={() => setActiveTab("issues")}
             className={`px-4 py-2 text-sm font-medium transition-colors ${activeTab === "issues"
-              ? "border-b-2 border-amber-500 text-amber-600 dark:text-amber-400"
-              : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-            }`}
+ ? "border-b-2 border-amber-500 text-amber-600 dark:text-amber-400"
+ : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+ }`}
           >
             {t.kanbanImport.tabIssues}
           </button>
@@ -229,9 +229,9 @@ export function KanbanGitHubImportModal({
             type="button"
             onClick={() => setActiveTab("pulls")}
             className={`px-4 py-2 text-sm font-medium transition-colors ${activeTab === "pulls"
-              ? "border-b-2 border-purple-500 text-purple-600 dark:text-purple-400"
-              : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-            }`}
+ ? "border-b-2 border-purple-500 text-purple-600 dark:text-purple-400"
+ : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+ }`}
           >
             {t.kanbanImport.tabPulls}
           </button>
@@ -245,7 +245,7 @@ export function KanbanGitHubImportModal({
             value={selectedCodebaseId}
             onChange={(event) => setSelectedCodebaseId(event.target.value)}
             className="min-w-[220px] rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-200"
-          >
+ >
             {codebases.map((codebase) => (
               <option key={codebase.id} value={codebase.id}>
                 {codebase.label ?? codebase.repoPath.split("/").pop() ?? codebase.repoPath}
@@ -261,7 +261,7 @@ export function KanbanGitHubImportModal({
             type="button"
             onClick={() => setReloadNonce((current) => current + 1)}
             className="rounded-lg border border-slate-200 px-3 py-2 text-xs text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#191c28]"
-          >
+ >
             {t.common.refresh}
           </button>
         </div>
@@ -276,14 +276,14 @@ export function KanbanGitHubImportModal({
                 type="button"
                 onClick={() => setSelectedItemIds(currentSelectableIds)}
                 className="text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300"
-              >
+ >
                 {t.kanbanImport.selectAll}
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedItemIds([])}
                 className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-              >
+ >
                 {t.kanbanImport.clearSelection}
               </button>
             </div>
@@ -313,9 +313,9 @@ export function KanbanGitHubImportModal({
                     <label
                       key={issue.id}
                       className={`flex gap-3 px-4 py-3 transition-colors ${imported
-                        ? "bg-slate-50/70 dark:bg-[#161925]"
-                        : "hover:bg-slate-50 dark:hover:bg-[#161925]"
-                      }`}
+ ? "bg-slate-50/70 dark:bg-[#161925]"
+ : "hover:bg-slate-50 dark:hover:bg-[#161925]"
+ }`}
                     >
                       <input
                         type="checkbox"
@@ -330,7 +330,7 @@ export function KanbanGitHubImportModal({
                           });
                         }}
                         className="mt-1 h-4 w-4 rounded border-slate-300"
-                      />
+ />
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <a
@@ -338,13 +338,13 @@ export function KanbanGitHubImportModal({
                             target="_blank"
                             rel="noreferrer"
                             className="text-sm font-medium text-slate-900 hover:text-amber-600 dark:text-slate-100 dark:hover:text-amber-300"
-                          >
+ >
                             #{issue.number} {issue.title}
                           </a>
                           <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${issue.state === "open"
-                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
-                            : "bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                          }`}>
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
+ : "bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+ }`}>
                             {issue.state === "open" ? t.kanbanImport.stateOpen : t.kanbanImport.stateClosed}
                           </span>
                           {imported && (
@@ -387,9 +387,9 @@ export function KanbanGitHubImportModal({
                     <label
                       key={pull.id}
                       className={`flex gap-3 px-4 py-3 transition-colors ${imported
-                        ? "bg-slate-50/70 dark:bg-[#161925]"
-                        : "hover:bg-slate-50 dark:hover:bg-[#161925]"
-                      }`}
+ ? "bg-slate-50/70 dark:bg-[#161925]"
+ : "hover:bg-slate-50 dark:hover:bg-[#161925]"
+ }`}
                     >
                       <input
                         type="checkbox"
@@ -404,7 +404,7 @@ export function KanbanGitHubImportModal({
                           });
                         }}
                         className="mt-1 h-4 w-4 rounded border-slate-300"
-                      />
+ />
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <a
@@ -412,7 +412,7 @@ export function KanbanGitHubImportModal({
                             target="_blank"
                             rel="noreferrer"
                             className="text-sm font-medium text-slate-900 hover:text-purple-600 dark:text-slate-100 dark:hover:text-purple-300"
-                          >
+ >
                             #{pull.number} {pull.title}
                           </a>
                           {pull.draft && (
@@ -426,9 +426,9 @@ export function KanbanGitHubImportModal({
                             </span>
                           ) : (
                             <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${pull.state === "open"
-                              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
-                              : "bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                            }`}>
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
+ : "bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+ }`}>
                               {pull.state === "open" ? t.kanbanImport.stateOpen : t.kanbanImport.stateClosed}
                             </span>
                           )}
@@ -471,7 +471,7 @@ export function KanbanGitHubImportModal({
             onClick={onClose}
             disabled={submitting}
             className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-300"
-          >
+ >
             {t.common.cancel}
           </button>
           <button
@@ -500,9 +500,9 @@ export function KanbanGitHubImportModal({
             }}
             disabled={!canImport || submitting}
             className={`rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50 ${activeTab === "pulls"
-              ? "bg-purple-500 hover:bg-purple-600"
-              : "bg-amber-500 hover:bg-amber-600"
-            }`}
+ ? "bg-purple-500 hover:bg-purple-600"
+ : "bg-amber-500 hover:bg-amber-600"
+ }`}
           >
             {submitting ? t.kanbanImport.importing : t.kanbanImport.importSelected}
           </button>

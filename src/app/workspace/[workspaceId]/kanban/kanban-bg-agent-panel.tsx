@@ -344,7 +344,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
     <>
       <section
         className="shrink-0 rounded-2xl border border-slate-200/70 bg-white px-4 py-4 dark:border-[#1c1f2e] dark:bg-[#12141c]"
-        data-testid="kanban-bg-agent-panel"
+ data-testid="kanban-bg-agent-panel"
       >
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
@@ -365,7 +365,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                 type="button"
                 onClick={() => void fetchPanelData()}
                 className="rounded-lg border border-slate-200 px-3 py-2 text-[12px] font-medium text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#191c28]"
-              >
+ >
                 {loading ? t.common.loading : t.common.refresh}
               </button>
               <button
@@ -376,7 +376,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                 }}
                 data-testid="kanban-bg-agent-add-btn"
                 className="rounded-lg bg-amber-500 px-3 py-2 text-[12px] font-medium text-white transition-colors hover:bg-amber-600"
-              >
+ >
                 {t.kanbanBgAgent.addBgAgent}
               </button>
             </div>
@@ -434,7 +434,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                             <article
                               key={route.routeKey}
                               className="rounded-2xl border border-slate-200/70 bg-gradient-to-br from-white via-white to-slate-50 px-4 py-3 dark:border-[#252838] dark:from-[#151822] dark:via-[#12141c] dark:to-[#0d1018]"
-                            >
+ >
                               <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
                                   <div className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-200">
@@ -448,9 +448,9 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                                 </div>
                                 <span
                                   className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] ${linked
-                                    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
-                                    : "bg-slate-100 text-slate-600 dark:bg-[#20242f] dark:text-slate-300"
-                                    }`}
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
+ : "bg-slate-100 text-slate-600 dark:bg-[#20242f] dark:text-slate-300"
+ }`}
                                 >
                                   {linked ? t.kanbanBgAgent.linked : t.kanbanBgAgent.external}
                                 </span>
@@ -496,7 +496,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                             key={agent.key}
                             data-testid="kanban-bg-agent-card"
                             className="rounded-2xl border border-slate-200/70 bg-gradient-to-br from-white via-white to-slate-50 px-4 py-3 dark:border-[#252838] dark:from-[#151822] dark:via-[#12141c] dark:to-[#0d1018]"
-                          >
+ >
                             <div className="flex items-start justify-between gap-3">
                               <div className="min-w-0">
                                 <div className="flex flex-wrap items-center gap-2">
@@ -570,7 +570,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                 type="button"
                 onClick={() => setShowCreateModal(false)}
                 className="rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-[#191c28] dark:hover:text-slate-300"
-                aria-label="Close background agent modal"
+ aria-label="Close background agent modal"
               >
                 <X className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
               </button>
@@ -586,7 +586,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                   onChange={(event) => setCreateForm((current) => ({ ...current, name: event.target.value }))}
                   placeholder={t.kanbanBgAgent.agentNamePlaceholder}
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] text-slate-800 placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 dark:border-[#252838] dark:bg-[#0d1018] dark:text-slate-100 dark:placeholder:text-slate-500"
-                />
+ />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -596,7 +596,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                     value={createForm.role}
                     onChange={(event) => setCreateForm((current) => ({ ...current, role: event.target.value }))}
                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] text-slate-800 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 dark:border-[#252838] dark:bg-[#0d1018] dark:text-slate-100"
-                  >
+ >
                     <option value="DEVELOPER">DEVELOPER</option>
                     <option value="CRAFTER">CRAFTER</option>
                     <option value="GATE">GATE</option>
@@ -609,7 +609,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                     value={createForm.modelTier}
                     onChange={(event) => setCreateForm((current) => ({ ...current, modelTier: event.target.value }))}
                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] text-slate-800 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 dark:border-[#252838] dark:bg-[#0d1018] dark:text-slate-100"
-                  >
+ >
                     <option value="FAST">FAST</option>
                     <option value="BALANCED">BALANCED</option>
                     <option value="SMART">SMART</option>
@@ -629,7 +629,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                 type="button"
                 onClick={() => setShowCreateModal(false)}
                 className="rounded-lg px-3 py-2 text-[12px] font-medium text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-[#191c28]"
-              >
+ >
                 {t.common.cancel}
               </button>
               <button
@@ -638,7 +638,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                 disabled={creating}
                 data-testid="kanban-bg-agent-submit-btn"
                 className="rounded-lg bg-amber-500 px-3 py-2 text-[12px] font-medium text-white transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-60"
-              >
+ >
                 {creating ? t.kanbanBgAgent.creating : t.kanbanBgAgent.createAgent}
               </button>
             </div>

@@ -380,20 +380,20 @@ export function ChatPanel({
             <button
               onClick={() => setViewMode("chat")}
               className={`px-3 py-1 text-[11px] font-medium rounded-md transition-colors ${
-                viewMode === "chat"
-                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-              }`}
+ viewMode === "chat"
+ ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm"
+ : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+ }`}
             >
               {t.chat.viewToggle.chat}
             </button>
             <button
               onClick={() => setViewMode("trace")}
               className={`px-3 py-1 text-[11px] font-medium rounded-md transition-colors ${
-                viewMode === "trace"
-                  ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-              }`}
+ viewMode === "trace"
+ ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm"
+ : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+ }`}
             >
               {t.chat.viewToggle.trace}
             </button>
@@ -427,7 +427,7 @@ export function ChatPanel({
                 <button
                   onClick={clearAuthError}
                   className="shrink-0 p-1 rounded hover:bg-amber-100 dark:hover:bg-amber-800/30 transition-colors"
-                  title={t.common.dismiss}
+ title={t.common.dismiss}
                 >
                   <X className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                 </button>
@@ -445,7 +445,7 @@ export function ChatPanel({
                       <div
                         key={method.id}
                         className="flex items-start gap-2 p-2 rounded-md bg-amber-100/50 dark:bg-amber-800/20"
-                      >
+ >
                         <KeyRound className="w-4 h-4 mt-0.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                         <div className="min-w-0">
                           <div className="text-xs font-medium text-amber-800 dark:text-amber-200">
@@ -608,7 +608,7 @@ export function ChatPanel({
                       });
                     }}
                     className="shrink-0 rounded p-0.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
-                    title={t.common.copyToClipboard}
+ title={t.common.copyToClipboard}
                     aria-label={t.common.copyToClipboard}
                   >
                     {copiedRepoPath ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}

@@ -260,11 +260,11 @@ function WorkflowCard({
       type="button"
       onClick={onSelect}
       className={cx(
-        "w-full rounded-sm border px-3 py-2.5 text-left transition-all",
-        selected
-          ? "border-sky-300 bg-sky-50/70"
-          : "border-slate-200/80 bg-white/95 hover:border-slate-300 hover:bg-slate-50/80",
-      )}
+ "w-full rounded-sm border px-3 py-2.5 text-left transition-all",
+ selected
+ ? "border-sky-300 bg-sky-50/70"
+ : "border-slate-200/80 bg-white/95 hover:border-slate-300 hover:bg-slate-50/80",
+ )}
     >
       <div className="flex items-start justify-between gap-3">
         <h4 className="min-w-0 truncate pr-2 text-[15px] font-semibold tracking-[-0.02em] text-slate-900">{flow.name}</h4>
@@ -346,9 +346,9 @@ function FlowCanvas({
       <div className="mt-3 overflow-x-auto pb-1">
         <div className="flex min-w-max items-start gap-3">
           <div className={cx(
-            "shrink-0 rounded-sm border border-sky-200/80 bg-sky-50/60 p-3.5",
-            compactMode ? "w-44" : "w-52",
-          )}>
+ "shrink-0 rounded-sm border border-sky-200/80 bg-sky-50/60 p-3.5",
+ compactMode ? "w-44" : "w-52",
+ )}>
             <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-sky-700">Trigger source</div>
             <div className="mt-2.5 space-y-1.5">
               {eventTokens.map((token) => (
@@ -374,11 +374,11 @@ function FlowCanvas({
                       type="button"
                       onClick={() => onJobSelect(job.id)}
                       className={cx(
-                        "w-full rounded-sm border px-3 py-2.5 text-left transition-all",
-                        selected
-                          ? "border-sky-300 bg-sky-50/80"
-                          : "border-slate-200 bg-white/92 hover:border-slate-300",
-                      )}
+ "w-full rounded-sm border px-3 py-2.5 text-left transition-all",
+ selected
+ ? "border-sky-300 bg-sky-50/80"
+ : "border-slate-200 bg-white/92 hover:border-slate-300",
+ )}
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
@@ -554,14 +554,14 @@ function WorkflowDetailDialog({
         type="button"
         aria-label="Close workflow detail"
         className="absolute inset-0 bg-slate-950/28 backdrop-blur-[2px]"
-        onClick={onClose}
+ onClick={onClose}
       />
       <div
         role="dialog"
         aria-modal="true"
         aria-label={`${flow.name} pipeline detail`}
         className="relative z-10 flex max-h-[88vh] w-full max-w-[1360px] flex-col overflow-hidden rounded-sm border border-slate-200/80 bg-white/98 shadow-[0_16px_48px_rgba(15,23,42,0.18)]"
-      >
+ >
         <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200/80 px-4 py-3.5">
           <div className="min-w-0">
             <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Pipeline detail</div>
@@ -590,7 +590,7 @@ function WorkflowDetailDialog({
               type="button"
               onClick={onClose}
               className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition-colors hover:border-slate-300 hover:text-slate-700"
-            >
+ >
               <X className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}/>
             </button>
           </div>
@@ -701,7 +701,7 @@ export function HarnessGitHubActionsFlowGallery({
                   });
                 }}
                 className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors hover:bg-slate-50/80"
-              >
+ >
                 <span className="flex min-w-0 items-center gap-2">
                   <span className="inline-flex h-7 w-7 items-center justify-center rounded-sm border border-slate-200 bg-white/90 text-slate-600">
                     <CategoryIcon category={category.key} />

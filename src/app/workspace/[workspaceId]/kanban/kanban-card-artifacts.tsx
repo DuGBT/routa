@@ -201,9 +201,9 @@ export function KanbanCardArtifacts({
               <span
                 key={type}
                 className={`inline-flex items-center gap-1 rounded-full border ${present
-                  ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-900/10 dark:text-emerald-300"
-                  : "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/40 dark:bg-amber-900/10 dark:text-amber-300"
-                  } ${compact ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-1 text-[11px]"}`}
+ ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-900/10 dark:text-emerald-300"
+ : "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/40 dark:bg-amber-900/10 dark:text-amber-300"
+ } ${compact ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-1 text-[11px]"}`}
               >
                 {present ? t.kanban.readyLabel : t.kanban.missingLabel} {formatArtifactTypeLabel(type, artifactLabels)}
               </span>
@@ -244,7 +244,7 @@ export function KanbanCardArtifacts({
                 <article
                   key={artifact.id}
                   className="space-y-2 border-b border-slate-200/80 py-2.5 last:border-b-0 dark:border-slate-700/60"
-                >
+ >
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
@@ -283,7 +283,7 @@ export function KanbanCardArtifacts({
                       height={800}
                       unoptimized
                       className="mt-3 max-h-56 w-full border border-slate-200 object-cover dark:border-slate-700"
-                    />
+ />
                   ) : artifact.type === "code_diff" && artifact.content ? (
                     <div className="mt-3 space-y-2">
                       {diffChunks.map((chunk, index) => (
@@ -291,7 +291,7 @@ export function KanbanCardArtifacts({
                           key={`${artifact.id}-${chunk.filename}-${index}`}
                           open
                           className="group border border-slate-200 dark:border-slate-700"
-                        >
+ >
                           <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-xs text-slate-600 dark:text-slate-300 [&::-webkit-details-marker]:hidden">
                             <span className="truncate font-medium">{chunk.filename}</span>
                             <span className="shrink-0 font-mono">
@@ -309,7 +309,7 @@ export function KanbanCardArtifacts({
                             wordWrap={false}
                             maxHeight="260px"
                             className="border-t border-slate-200 dark:border-slate-700"
-                          />
+ />
                         </details>
                       ))}
                     </div>

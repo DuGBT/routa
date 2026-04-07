@@ -163,7 +163,7 @@ export function CodeBlock({
             type="button"
             onClick={handleCopy}
             className="code-block-copy-btn"
-            title={t.common.copyToClipboard}
+ title={t.common.copyToClipboard}
           >
             {copied ? (
               <Check className="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>

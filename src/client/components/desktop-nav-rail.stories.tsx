@@ -17,7 +17,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="desktop-theme h-[640px] w-12 border border-desktop-border">
+      <div className=" h-[640px] w-12 border border-slate-300 dark:border-slate-700">
         <Story />
       </div>
     ),

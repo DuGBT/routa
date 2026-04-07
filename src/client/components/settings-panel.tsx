@@ -90,10 +90,10 @@ function OnboardingSettingsSection({ onResetOnboarding }: { onResetOnboarding?: 
           </p>
         </div>
         <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${
-          hasCompletedOnboarding
-            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/12 dark:text-emerald-300"
-            : "bg-amber-100 text-amber-700 dark:bg-amber-500/12 dark:text-amber-300"
-        }`}>
+ hasCompletedOnboarding
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/12 dark:text-emerald-300"
+ : "bg-amber-100 text-amber-700 dark:bg-amber-500/12 dark:text-amber-300"
+ }`}>
           {hasCompletedOnboarding ? t.settings.onboardingSection.completed : t.settings.onboardingSection.available}
         </span>
       </div>
@@ -102,7 +102,7 @@ function OnboardingSettingsSection({ onResetOnboarding }: { onResetOnboarding?: 
           type="button"
           onClick={handleReset}
           className="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-        >
+ >
           {t.settings.onboardingSection.showAgain}
         </button>
       </div>
@@ -146,12 +146,12 @@ function SystemInfoFooter() {
                 {t.settings.sessions} {memoryStats.sessionStore.sessionCount}
               </span>
               <span className={`shrink-0 ${
-                memoryStats.current.level === "critical"
-                  ? "text-red-500"
-                  : memoryStats.current.level === "warning"
-                    ? "text-amber-500"
-                    : "text-emerald-500"
-              }`}>
+ memoryStats.current.level === "critical"
+ ? "text-red-500"
+ : memoryStats.current.level === "warning"
+ ? "text-amber-500"
+ : "text-emerald-500"
+ }`}>
                 {memoryStats.current.level}
               </span>
             </>
@@ -163,7 +163,7 @@ function SystemInfoFooter() {
           onClick={fetchData}
           disabled={loading}
           className="shrink-0 rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 disabled:opacity-50 dark:hover:bg-slate-800 dark:hover:text-slate-300"
-          title={t.settings.refreshSystemInfo}
+ title={t.settings.refreshSystemInfo}
           type="button"
         >
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
@@ -216,7 +216,7 @@ function RolesTab({
                 value={settings[role]?.provider ?? ""}
                 onChange={(event) => onChange(role, "provider", event.target.value)}
                 className="w-[180px] shrink-0 text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-[#1e2130] text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              >
+ >
                 <option value="">Auto</option>
                 {builtinProviders.length > 0 && (
                   <optgroup label="Built-in">
@@ -265,7 +265,7 @@ function RolesTab({
                 onChange={(event) => onChange(role, "model", event.target.value)}
                 placeholder={modelDefs.length > 0 ? "select alias or type model" : "e.g. claude-3-5-haiku"}
                 className="flex-1 text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-[#1e2130] text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-1 focus:ring-blue-500 focus:outline-none font-mono"
-              />
+ />
             </div>
           ))}
         </div>
@@ -364,7 +364,7 @@ function CustomAcpProvidersSection() {
           <button
             onClick={() => { setShowForm(true); setEditingId(null); setForm(EMPTY_CUSTOM_PROVIDER_FORM); }}
             className="text-xs text-blue-500 hover:text-blue-600 dark:hover:text-blue-400"
-          >
+ >
             + {t.common.add}
           </button>
         )}
@@ -420,13 +420,13 @@ function CustomAcpProvidersSection() {
             <button
               onClick={handleSave}
               className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md"
-            >
+ >
               {editingId ? t.common.save : t.common.add}
             </button>
             <button
               onClick={() => { setShowForm(false); setEditingId(null); setForm(EMPTY_CUSTOM_PROVIDER_FORM); setError(null); }}
               className="px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700"
-            >
+ >
               Cancel
             </button>
           </div>
@@ -441,7 +441,7 @@ function CustomAcpProvidersSection() {
             <div
               key={p.id}
               className="flex items-center justify-between px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1e2130]"
-            >
+ >
               <div className="min-w-0">
                 <p className="text-xs font-medium text-slate-900 dark:text-slate-100 truncate">{p.name}</p>
                 <p className="text-[10px] text-slate-400 font-mono truncate">
@@ -452,13 +452,13 @@ function CustomAcpProvidersSection() {
                 <button
                   onClick={() => handleEdit(p)}
                   className="px-2 py-1 text-[10px] text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 border border-slate-200 dark:border-slate-600 rounded"
-                >
+ >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(p.id)}
                   className="px-2 py-1 text-[10px] text-red-500 hover:text-red-700 border border-red-200 dark:border-red-800 rounded"
-                >
+ >
                   Delete
                 </button>
               </div>
@@ -512,14 +512,14 @@ function ProviderCatalogSection({ allProviders }: ProviderCatalogSectionProps) {
               <div
                 key={provider.id}
                 className="flex items-center justify-between px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1e2130]"
-              >
+ >
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   <input
                     type="checkbox"
                     checked={!isHidden}
                     onChange={() => handleToggle(provider.id)}
                     className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500 focus:ring-offset-0"
-                  />
+ />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <p className="text-xs font-medium text-slate-900 dark:text-slate-100 truncate">
@@ -541,12 +541,12 @@ function ProviderCatalogSection({ allProviders }: ProviderCatalogSectionProps) {
                   {provider.status && (
                     <span
                       className={`px-2 py-0.5 text-[10px] rounded ${
-                        provider.status === "available"
-                          ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
-                          : provider.status === "checking"
-                            ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
-                            : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
-                      }`}
+ provider.status === "available"
+ ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+ : provider.status === "checking"
+ ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
+ : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
+ }`}
                     >
                       {provider.status}
                     </span>
@@ -588,7 +588,7 @@ function WebhooksTab() {
           <button
             onClick={() => setShowFullPanel(false)}
             className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-            title={t.settings.backToOverview}
+ title={t.settings.backToOverview}
           >
             <ArrowLeft className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
@@ -625,7 +625,7 @@ function WebhooksTab() {
           <button
             onClick={() => setShowFullPanel(true)}
             className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-medium rounded-lg hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors"
-          >
+ >
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
             </svg>
@@ -637,7 +637,7 @@ function WebhooksTab() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-medium rounded-lg hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors"
-          >
+ >
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
             </svg>
@@ -711,12 +711,12 @@ function DockerOpenCodeSection({ embedded = false }: { embedded?: boolean }) {
         placeholder={EXAMPLE_AUTH_JSON}
         rows={5}
         className="w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-[#1e2130] text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-1 focus:ring-blue-500 focus:outline-none font-mono resize-y"
-      />
+ />
       {error && <p className="text-[10px] text-red-500">{error}</p>}
       <button
         onClick={() => handleSave(authJson)}
         className="px-2.5 py-1.5 text-xs font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-      >
+ >
         {t.common.save}
       </button>
     </div>
@@ -794,7 +794,7 @@ function DockerConfigModalContent({ open: _open, errorMessage, onClose, onSaved 
               rows={6}
               autoFocus
               className="w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-[#1e2130] text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-1 focus:ring-blue-500 focus:outline-none font-mono resize-y"
-            />
+ />
             {error && <p className="text-[10px] text-red-500">{error}</p>}
           </div>
         </div>
@@ -807,7 +807,7 @@ function DockerConfigModalContent({ open: _open, errorMessage, onClose, onSaved 
             onClick={handleSave}
             disabled={!authJson.trim()}
             className="px-3 py-1.5 text-xs font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 transition-colors"
-          >
+ >
             Save & Retry
           </button>
         </div>
@@ -915,14 +915,14 @@ function SettingsPanelContent({ onClose, providers, initialTab, onResetOnboardin
 
   if (isPageVariant) {
     return (
-      <div className="flex h-full min-h-0 bg-desktop-bg-primary text-desktop-text-primary">
+      <div className="flex h-full min-h-0 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-200">
         <SettingsCenterNav activeConfigTab={activeTab} />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="border-b border-desktop-border px-8 py-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-desktop-text-tertiary">{t.settings.preferences}</p>
-            <h1 className="mt-2 text-3xl font-semibold text-desktop-text-primary">{activeTabMeta.label}</h1>
-            <p className="mt-2 max-w-2xl text-sm text-desktop-text-secondary">
+          <header className="border-b border-slate-300 dark:border-slate-700 px-8 py-8">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">{t.settings.preferences}</p>
+            <h1 className="mt-2 text-3xl font-semibold text-slate-900 dark:text-slate-200">{activeTabMeta.label}</h1>
+            <p className="mt-2 max-w-2xl text-sm text-slate-700 dark:text-slate-400">
               {activeTab === "providers" && t.settings.providersDesc}
               {activeTab === "registry" && t.settings.registryDesc}
               {activeTab === "roles" && t.settings.rolesDesc}
@@ -942,7 +942,7 @@ function SettingsPanelContent({ onClose, providers, initialTab, onResetOnboardin
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
       <div
         className="relative mx-4 flex h-full max-h-[92vh] w-[calc(100vw-2rem)] max-w-6xl flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-[#1a1d2e]"
-        style={{ height: SETTINGS_PANEL_HEIGHT }}
+ style={{ height: SETTINGS_PANEL_HEIGHT }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700 shrink-0">
@@ -965,10 +965,10 @@ function SettingsPanelContent({ onClose, providers, initialTab, onResetOnboardin
           {TAB_DEFS.map(({ key, label }) => (
             <button key={key} onClick={() => handleTabChange(key)}
               className={`flex-1 px-3 py-2 text-xs font-medium transition-colors ${
-                activeTab === key
-                  ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-              }`}>
+ activeTab === key
+ ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
+ : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+ }`}>
               {label}
             </button>
           ))}

@@ -107,14 +107,14 @@ export function NotesTab({
             onChange={(e) => setNewTitle(e.target.value)}
             placeholder={t.notesTab.noteTitle}
             className="w-full mb-3 px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#0e1019] text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 outline-none focus:ring-2 focus:ring-amber-500/30 transition"
-          />
+ />
           <textarea
             value={newContent}
             onChange={(e) => setNewContent(e.target.value)}
             placeholder={t.notesTab.writePlaceholder}
             rows={4}
             className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#0e1019] text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 outline-none focus:ring-2 focus:ring-amber-500/30 transition resize-none font-mono text-[13px]"
-          />
+ />
           {sessions.length > 0 && (
             <div className="mt-3">
               <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">
