@@ -32,7 +32,7 @@ import {
   sortProviderIdsByPreference,
   type CustomAcpProvider,
 } from "../utils/custom-acp-providers";
-import { loadDockerOpencodeAuthJson } from "../components/settings-panel";
+import { loadDockerOpencodeAuthJson } from "../store/settings-storage";
 import type { McpServerProfile } from "@/core/mcp/mcp-server-profiles";
 
 const ACP_SELECTED_PROVIDER_STORAGE_KEY = "routa.acp.selectedProvider";

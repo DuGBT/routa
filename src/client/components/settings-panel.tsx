@@ -45,6 +45,7 @@ import {
 import { ArrowLeft, RefreshCw, Settings, TriangleAlert, X, Package } from "lucide-react";
 import { Button } from "./button";
 import { Modal } from "./modal";
+import { loadDockerOpencodeAuthJson, saveDockerOpencodeAuthJson } from "../store/settings-storage";
 
 export {
   getModelDefinitionByAlias,
@@ -64,6 +65,7 @@ export type {
   ProviderConnectionsStorage,
   SettingsPanelProps,
 } from "./settings-panel-shared";
+export { loadDockerOpencodeAuthJson, saveDockerOpencodeAuthJson } from "../store/settings-storage";
 
 function OnboardingSettingsSection({ onResetOnboarding }: { onResetOnboarding?: () => void }) {
   const { t } = useTranslation();
@@ -649,21 +651,6 @@ function WebhooksTab() {
       </div>
     </div>
   );
-}
-
-// ─── Docker OpenCode auth.json storage key ────────────────────────────────────
-const DOCKER_OPENCODE_AUTH_JSON_KEY = "docker-opencode-auth-json";
-
-/** Load saved Docker OpenCode auth.json from localStorage. */
-export function loadDockerOpencodeAuthJson(): string {
-  if (typeof window === "undefined") return "";
-  return localStorage.getItem(DOCKER_OPENCODE_AUTH_JSON_KEY) ?? "";
-}
-
-/** Save Docker OpenCode auth.json to localStorage. */
-export function saveDockerOpencodeAuthJson(json: string): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(DOCKER_OPENCODE_AUTH_JSON_KEY, json);
 }
 
 const EXAMPLE_AUTH_JSON = `{
