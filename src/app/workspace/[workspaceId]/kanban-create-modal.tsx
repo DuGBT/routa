@@ -6,6 +6,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import type { CodebaseData } from "@/client/hooks/use-workspaces";
 import { useTranslation } from "@/i18n";
+import { Modal } from "@/client/components/modal";
 
 export type TaskDraft = {
   title: string;
@@ -129,15 +130,7 @@ export function KanbanCreateModal({
   const canCreate = Boolean(draft.title.trim()) && Boolean(draft.objectiveHtml.replace(/<[^>]*>/g, "").trim());
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-[#1c1f2e] dark:bg-[#12141c]">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{t.kanbanCreate.manualTask}</h3>
-          <button onClick={onClose} className="text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
-            {t.common.close}
-          </button>
-        </div>
-
+    <Modal open onClose={onClose} title={t.kanbanCreate.manualTask} className="max-w-2xl">
         <div className="space-y-3">
           <input
             value={draft.title}
@@ -259,7 +252,6 @@ export function KanbanCreateModal({
             {t.kanbanCreate.create}
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }

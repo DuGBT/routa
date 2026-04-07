@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "@/i18n";
+import { Modal } from "@/client/components/modal";
 import { formatRelativeTime } from "../ui-components";
 import type { BackgroundTaskInfo } from "../types";
-import { X } from "lucide-react";
 
 
 interface WorkspaceBackgroundAgent {
@@ -555,28 +555,8 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
         </div>
       </section>
 
-      {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" role="dialog" aria-modal="true">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setShowCreateModal(false)} aria-hidden="true" />
-          <div className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-[#1c1f2e] dark:bg-[#12141c]">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{t.kanbanBgAgent.addBgAgentTitle}</h3>
-                <p className="mt-1 text-[12px] text-slate-500 dark:text-slate-400">
-                  {t.kanbanBgAgent.addBgAgentDesc}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowCreateModal(false)}
-                className="rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-[#191c28] dark:hover:text-slate-300"
- aria-label="Close background agent modal"
-              >
-                <X className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-              </button>
-            </div>
-
-            <div className="mt-4 space-y-3">
+      <Modal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={t.kanbanBgAgent.addBgAgentTitle} description={t.kanbanBgAgent.addBgAgentDesc} className="max-w-md">
+            <div className="space-y-3">
               <div>
                 <label className="mb-1 block text-[12px] font-medium text-slate-600 dark:text-slate-400">{t.kanbanBgAgent.agentName}</label>
                 <input
@@ -642,9 +622,7 @@ export function KanbanBgAgentPanel({ workspaceId }: KanbanBgAgentPanelProps) {
                 {creating ? t.kanbanBgAgent.creating : t.kanbanBgAgent.createAgent}
               </button>
             </div>
-          </div>
-        </div>
-      )}
+      </Modal>
     </>
   );
 }

@@ -29,7 +29,8 @@ import { BackgroundTaskInfo, TaskInfo, SessionInfo, KanbanBoardInfo } from "@/ap
 import { NoteTasksTab } from "@/app/workspace/[workspaceId]/note-tasks-tab";
 import { NotesTab } from "@/app/workspace/[workspaceId]/notes-tab";
 import { BgTasksTab } from "@/app/workspace/[workspaceId]/bg-tasks-tab";
-import { PieChart, X } from "lucide-react";
+import { PieChart } from "lucide-react";
+import { Modal } from "@/client/components/modal";
 
 
 export function WorkspacePageClient({
@@ -544,26 +545,8 @@ function OverlayModal({
   children: React.ReactNode;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} aria-hidden="true" />
-      <div
-        className="relative h-[80vh] w-full max-w-5xl overflow-hidden rounded border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 shadow-2xl"
- onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex h-9 items-center justify-between border-b border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-700 px-3">
-          <span className="text-[12px] font-medium text-slate-900 dark:text-slate-200">{title}</span>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex h-6 w-6 items-center justify-center rounded text-slate-700 dark:text-slate-400 transition-colors hover:bg-blue-100 dark:bg-blue-900 hover:text-white"
- title="Close (Esc)"
-            aria-label="Close"
-          >
-            <X className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-          </button>
-        </div>
-        <div className="h-[calc(80vh-36px)]">{children}</div>
-      </div>
-    </div>
+    <Modal open onClose={onClose} title={title} className="max-w-5xl h-[80vh] overflow-hidden">
+      <div className="h-[calc(80vh-80px)]">{children}</div>
+    </Modal>
   );
 }

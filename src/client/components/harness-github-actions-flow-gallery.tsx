@@ -8,7 +8,8 @@ import {
   normalizeGitHubWorkflowEventTokens,
   type GitHubWorkflowCategory,
 } from "@/core/github/workflow-classifier";
-import { ArrowRight, Bot, Check, Download, RefreshCcw, X } from "lucide-react";
+import { ArrowRight, Bot, Check, Download, RefreshCcw } from "lucide-react";
+import { Modal } from "@/client/components/modal";
 
 
 type HarnessGitHubActionsFlowGalleryProps = {
@@ -544,35 +545,18 @@ function WorkflowDetailDialog({
     };
   }, [onClose, open]);
 
-  if (!open || !flow) {
-    return null;
-  }
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <button
-        type="button"
-        aria-label="Close workflow detail"
-        className="absolute inset-0 bg-slate-950/28 backdrop-blur-[2px]"
- onClick={onClose}
-      />
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={`${flow.name} pipeline detail`}
-        className="relative z-10 flex max-h-[88vh] w-full max-w-[1360px] flex-col overflow-hidden rounded-sm border border-slate-200/80 bg-white/98 shadow-[0_16px_48px_rgba(15,23,42,0.18)]"
- >
-        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200/80 px-4 py-3.5">
+    <Modal open={!!open && !!flow} onClose={onClose} title={flow?.name ?? ""} className="max-w-[1360px] max-h-[88vh] overflow-hidden">
+        <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
           <div className="min-w-0">
             <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Pipeline detail</div>
-            <h3 className="mt-1 truncate text-[20px] font-semibold tracking-[-0.03em] text-slate-950">{flow.name}</h3>
             <div className="mt-1 flex flex-wrap gap-1.5">
-              {normalizeGitHubWorkflowEventTokens(flow.event).map((token) => (
+              {flow && normalizeGitHubWorkflowEventTokens(flow.event).map((token) => (
                 <span key={`${flow.id}:dialog:${token}`} className="rounded-full border border-slate-200 bg-white/90 px-2.5 py-1 text-[10px] text-slate-600">
                   {token}
                 </span>
               ))}
-              {flow.relativePath ? (
+              {flow?.relativePath ? (
                 <span className="rounded-full border border-slate-200 bg-white/90 px-2.5 py-1 font-mono text-[10px] text-slate-500">
                   {flow.relativePath}
                 </span>
@@ -580,35 +564,33 @@ function WorkflowDetailDialog({
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-slate-200 bg-white/90 px-2.5 py-1 text-[10px] text-slate-600">
-              {flow.jobs.length} jobs
-            </span>
-            <span className="rounded-full border border-slate-200 bg-white/90 px-2.5 py-1 text-[10px] text-slate-600">
-              {summarizeStageCount(flow)} stages
-            </span>
-            <button
-              type="button"
-              onClick={onClose}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition-colors hover:border-slate-300 hover:text-slate-700"
- >
-              <X className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}/>
-            </button>
+            {flow && (
+              <>
+                <span className="rounded-full border border-slate-200 bg-white/90 px-2.5 py-1 text-[10px] text-slate-600">
+                  {flow.jobs.length} jobs
+                </span>
+                <span className="rounded-full border border-slate-200 bg-white/90 px-2.5 py-1 text-[10px] text-slate-600">
+                  {summarizeStageCount(flow)} stages
+                </span>
+              </>
+            )}
           </div>
         </div>
 
-        <div className="overflow-auto px-4 py-4">
-          <div className="grid gap-4 xl:grid-cols-[minmax(0,1.45fr)_340px]">
-            <FlowCanvas
-              flow={flow}
-              activeJobId={activeJobId}
-              onJobSelect={onJobSelect}
-              compactMode={false}
-            />
-            <JobInspector flow={flow} activeJob={activeJob} compactMode={false} />
+        {flow && (
+          <div className="overflow-auto">
+            <div className="grid gap-4 xl:grid-cols-[minmax(0,1.45fr)_340px]">
+              <FlowCanvas
+                flow={flow}
+                activeJobId={activeJobId}
+                onJobSelect={onJobSelect}
+                compactMode={false}
+              />
+              <JobInspector flow={flow} activeJob={activeJob} compactMode={false} />
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        )}
+    </Modal>
   );
 }
 

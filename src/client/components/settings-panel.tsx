@@ -43,6 +43,8 @@ import {
   type SettingsTab,
 } from "./settings-panel-shared";
 import { ArrowLeft, RefreshCw, Settings, TriangleAlert, X, Package } from "lucide-react";
+import { Button } from "./button";
+import { Modal } from "./modal";
 
 export {
   getModelDefinitionByAlias,
@@ -733,11 +735,10 @@ export interface DockerConfigModalProps {
 }
 
 export function DockerConfigModal(props: DockerConfigModalProps) {
-  if (!props.open) return null;
   return <DockerConfigModalContent {...props} />;
 }
 
-function DockerConfigModalContent({ open: _open, errorMessage, onClose, onSaved }: DockerConfigModalProps) {
+function DockerConfigModalContent({ open, errorMessage, onClose, onSaved }: DockerConfigModalProps) {
   const [authJson, setAuthJson] = useState(() => loadDockerOpencodeAuthJson());
   const [error, setError] = useState<string | null>(null);
 
@@ -755,66 +756,45 @@ function DockerConfigModalContent({ open: _open, errorMessage, onClose, onSaved 
     onSaved(authJson);
   }, [authJson, onSaved]);
 
-  // Simplify the error message for display
   const displayError = errorMessage
     .replace(/^Failed to create docker OpenCode session:\s*/i, "")
     .replace(/^Failed to start Docker container:\s*/i, "")
     .trim();
 
   return (
-    <div className="fixed inset-0 z-60 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-white dark:bg-[#1a1d2e] rounded-xl shadow-2xl w-full max-w-md mx-4 border border-slate-200 dark:border-slate-700 overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700">
-          <div className="flex items-center gap-2">
-            <TriangleAlert className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Docker OpenCode — Configuration Required</h3>
-          </div>
-          <button onClick={onClose} className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
-            <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-          </button>
-        </div>
-        {/* Body */}
-        <div className="px-4 py-4 space-y-3">
-          {displayError && (
-            <div className="p-2.5 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-              <p className="text-xs text-red-700 dark:text-red-400 font-mono break-all">{displayError}</p>
-            </div>
-          )}
-          <div className="space-y-2">
-            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">OpenCode auth.json</label>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500">
-              Paste your local <code className="bg-slate-100 dark:bg-slate-800 px-1 rounded">~/.local/share/opencode/auth.json</code> here.
-            </p>
-            <textarea
-              value={authJson}
-              onChange={(e) => setAuthJson(e.target.value)}
-              placeholder={EXAMPLE_AUTH_JSON}
-              rows={6}
-              autoFocus
-              className="w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-[#1e2130] text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-1 focus:ring-blue-500 focus:outline-none font-mono resize-y"
- />
-            {error && <p className="text-[10px] text-red-500">{error}</p>}
-          </div>
-        </div>
-        {/* Footer */}
-        <div className="px-4 py-3 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-2">
-          <button onClick={onClose} className="px-3 py-1.5 text-xs font-medium rounded-md border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-            Cancel
-          </button>
-          <button
-            onClick={handleSave}
-            disabled={!authJson.trim()}
-            className="px-3 py-1.5 text-xs font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 transition-colors"
- >
-            Save & Retry
-          </button>
-        </div>
+    <Modal open={open} onClose={onClose} className="max-w-md">
+      <div className="flex items-center gap-2 text-amber-500">
+        <TriangleAlert className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
+        <span className="text-xs font-medium">Configuration Required</span>
       </div>
-    </div>
+      {displayError && (
+        <div className="p-2.5 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+          <p className="text-xs text-red-700 dark:text-red-400 font-mono break-all">{displayError}</p>
+        </div>
+      )}
+      <div className="space-y-2">
+        <label className="text-xs font-medium text-muted-foreground">OpenCode auth.json</label>
+        <p className="text-[10px] text-muted-foreground">
+          Paste your local <code className="bg-muted px-1 rounded">~/.local/share/opencode/auth.json</code> here.
+        </p>
+        <textarea
+          value={authJson}
+          onChange={(e) => setAuthJson(e.target.value)}
+          placeholder={EXAMPLE_AUTH_JSON}
+          rows={6}
+          autoFocus
+          className="w-full text-xs px-2 py-1.5 rounded-md border border-border bg-background text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring focus:outline-none font-mono resize-y"
+        />
+        {error && <p className="text-[10px] text-red-500">{error}</p>}
+      </div>
+      <div className="flex justify-end gap-2 border-t border-border pt-3">
+        <Button variant="secondary" onClick={onClose}>Cancel</Button>
+        <Button variant="primary" onClick={handleSave} disabled={!authJson.trim()}>Save &amp; Retry</Button>
+      </div>
+    </Modal>
   );
 }
+
 
 // ─── Main Settings Panel ───────────────────────────────────────────────────
 export function SettingsPanel({ open, onClose, providers, initialTab, onResetOnboarding, variant = "modal" }: SettingsPanelProps) {

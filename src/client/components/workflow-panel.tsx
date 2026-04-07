@@ -13,8 +13,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useWorkspaces } from "@/client/hooks/use-workspaces";
 import { desktopAwareFetch } from "@/client/utils/diagnostics";
 import { Select } from "./select";
+import { Modal } from "./modal";
 import { useTranslation } from "@/i18n";
-import { PieChart, SquarePen, Trash2, X, Play } from "lucide-react";
+import { PieChart, SquarePen, Trash2, Play } from "lucide-react";
 
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -336,22 +337,8 @@ function EditorModal({ workflow, onClose, onSaved }: EditorModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-white dark:bg-[#1a1d2e] rounded-xl shadow-2xl w-full max-w-2xl mx-4 flex flex-col border border-slate-200 dark:border-slate-700" style={{ maxHeight: "85vh" }}>
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700 shrink-0">
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-            {isNew ? t.workflows.newWorkflow : `${t.workflows.editLabel}${workflow!.name}`}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
- >
-            <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-          </button>
-        </div>
-
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3">
+    <Modal open onClose={onClose} title={isNew ? t.workflows.newWorkflow : `${t.workflows.editLabel}${workflow!.name}`} className="max-w-2xl max-h-[85vh]">
+        <div className="min-h-0 overflow-y-auto space-y-3">
           {isNew && (
             <div>
               <label htmlFor="workflow-id-input" className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
@@ -407,8 +394,7 @@ function EditorModal({ workflow, onClose, onSaved }: EditorModalProps) {
             {saving ? t.workflows.saving : t.common.save}
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
@@ -465,22 +451,8 @@ function ExecuteModal({ workflow, onClose }: ExecuteModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-white dark:bg-[#1a1d2e] rounded-xl shadow-2xl w-full max-w-lg mx-4 flex flex-col border border-slate-200 dark:border-slate-700">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700">
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-            Run: {workflow.name}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
- >
-            <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-          </button>
-        </div>
-
-        <div className="px-4 py-4 space-y-3">
+    <Modal open onClose={onClose} title={`Run: ${workflow.name}`} className="max-w-lg">
+        <div className="space-y-3">
           <div>
             <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
               Workspace
@@ -541,8 +513,7 @@ function ExecuteModal({ workflow, onClose }: ExecuteModalProps) {
             </button>
           )}
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 

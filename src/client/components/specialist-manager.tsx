@@ -3,8 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { desktopAwareFetch } from "../utils/diagnostics";
 import { Select } from "./select";
+import { Modal } from "./modal";
 import { useTranslation } from "@/i18n";
-import { SquarePen, Trash2, X, Briefcase } from "lucide-react";
+import { SquarePen, Trash2 } from "lucide-react";
 
 
 // ─── Types ─────────────────────────────────────────────────────────────────
@@ -227,40 +228,20 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
     resetForm();
   };
 
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-
-      {/* Dialog */}
-      <div className="relative bg-white dark:bg-[#1a1d2e] rounded-xl shadow-2xl w-full max-w-4xl mx-4 overflow-hidden border border-slate-200 dark:border-slate-700 max-h-[90vh] flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <Briefcase className="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-            <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{t.specialists.manageSpecialists}</h2>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleSync}
-              disabled={syncing}
-              className="px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-md hover:bg-slate-200 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors"
+    <Modal open={open} onClose={onClose} title={t.specialists.manageSpecialists} className="max-w-4xl max-h-[90vh] overflow-hidden">
+      <div className="flex items-center justify-end mb-3">
+        <button
+          onClick={handleSync}
+          disabled={syncing}
+          className="px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-md hover:bg-slate-200 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors"
  >
-              {syncing ? `${t.common.loading}...` : t.specialists.sync}
-            </button>
-            <button
-              onClick={onClose}
-              className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
- >
-              <X className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-            </button>
-          </div>
-        </div>
+          {syncing ? `${t.common.loading}...` : t.specialists.sync}
+        </button>
+      </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-auto p-5">
+      {/* Content */}
+      <div className="overflow-auto p-0 -mx-6 px-6 pb-2 max-h-[calc(90vh-120px)]">
           {error && (
             <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
               <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
@@ -546,7 +527,6 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
             </>
           )}
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }

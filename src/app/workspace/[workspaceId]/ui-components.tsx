@@ -1,7 +1,8 @@
 // Small reusable UI components for the workspace dashboard
 
 import React from "react";
-import { Check, CircleCheck, Clock, X, CircleOff, XCircle } from "lucide-react";
+import { Check, CircleCheck, Clock, CircleOff, XCircle } from "lucide-react";
+import { Modal } from "@/client/components/modal";
 
 
 // ─── Tab Button ────────────────────────────────────────────────────
@@ -202,45 +203,15 @@ export function OverlayModal({
   onClose,
   title,
   children,
-  closeLabel,
 }: {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
-  closeLabel?: string;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
-      <div
-        className="relative w-full max-w-5xl h-[80vh] bg-white dark:bg-[#12141c] border border-slate-200 dark:border-[#1c1f2e] rounded-xl shadow-2xl overflow-hidden"
- onClick={(e) => e.stopPropagation()}
-      >
-        <div className="h-11 px-4 border-b border-slate-100 dark:border-[#191c28] flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">{title}</span>
-            <a
-              href="/settings/agents"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
- >
-              Open in new tab
-            </a>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-[#191c28] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
- title={closeLabel ?? "Close (Esc)"}
-            aria-label={closeLabel ?? "Close"}
-          >
-            <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-          </button>
-        </div>
-        <div className="h-[calc(80vh-44px)]">{children}</div>
-      </div>
-    </div>
+    <Modal open onClose={onClose} title={title} className="max-w-5xl h-[80vh] overflow-hidden">
+      <div className="h-[calc(80vh-80px)]">{children}</div>
+    </Modal>
   );
 }
 

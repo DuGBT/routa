@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { CodebaseData } from "@/client/hooks/use-workspaces";
 import { desktopAwareFetch } from "@/client/utils/diagnostics";
 import { useTranslation } from "@/i18n";
+import { Modal } from "@/client/components/modal";
 import type { GitHubIssueListItemInfo, GitHubPRListItemInfo, TaskInfo } from "../types";
 
 type ImportTab = "issues" | "pulls";
@@ -197,22 +198,10 @@ export function KanbanGitHubImportModal({
   const currentNoItemsText = activeTab === "issues" ? t.kanbanImport.noIssues : t.kanbanImport.noPulls;
   const currentItemsLoadedText = activeTab === "issues" ? t.kanbanImport.issuesLoaded : t.kanbanImport.pullsLoaded;
 
-  if (!show) return null;
-
   const canImport = Boolean(selectedItemIds.length > 0 && selectedCodebaseId && currentRepo);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-[#1c1f2e] dark:bg-[#12141c]">
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{t.kanbanImport.title}</h3>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{t.kanbanImport.description}</p>
-          </div>
-          <button onClick={onClose} className="text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
-            {t.common.close}
-          </button>
-        </div>
+    <Modal open={show} onClose={onClose} title={t.kanbanImport.title} description={t.kanbanImport.description} className="max-w-4xl max-h-[88vh] overflow-hidden">
 
         <div className="mb-4 flex gap-1 border-b border-slate-200 dark:border-slate-700">
           <button
@@ -507,7 +496,6 @@ export function KanbanGitHubImportModal({
             {submitting ? t.kanbanImport.importing : t.kanbanImport.importSelected}
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }

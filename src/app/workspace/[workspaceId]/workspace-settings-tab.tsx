@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "@/i18n";
 import { RepoPicker } from "@/client/components/repo-picker";
+import { Modal } from "@/client/components/modal";
 import type { RepoSelection } from "@/client/components/repo-picker";
 
 interface CodebaseInfo {
@@ -221,12 +222,7 @@ export function WorkspaceSettingsTab({
       </section>
 
       {/* ── Edit Codebase Modal ───────────────────────────────────── */}
-      {editingCodebase && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-[#1c1f2e] dark:bg-[#12141c]">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
-              {t.workspace.editRepository}
-            </h3>
+      <Modal open={!!editingCodebase} onClose={handleCancelEdit} title={t.workspace.editRepository} className="max-w-md">
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
@@ -253,9 +249,7 @@ export function WorkspaceSettingsTab({
                 {t.common.cancel}
               </button>
             </div>
-          </div>
-        </div>
-      )}
+      </Modal>
     </div>
   );
 }
