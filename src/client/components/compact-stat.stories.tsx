@@ -6,9 +6,7 @@ const meta = {
   title: "Workspace/Compact Stat",
   component: CompactStat,
   tags: ["autodocs"],
-  parameters: {
-    desktopTheme: true,
-  },
+  parameters: {},
   args: {
     label: "Tasks",
     value: 42,

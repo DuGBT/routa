@@ -29,7 +29,6 @@ const meta = {
   component: DesktopLayout,
   tags: ["autodocs"],
   parameters: {
-    desktopTheme: true,
     nextjs: {
       navigation: {
         pathname: "/workspace/default",

@@ -141,6 +141,7 @@ body {
   font-family: system-ui, -apple-system, sans-serif;
 }
 
+/* @deprecated Use shadcn Badge component instead */
 .role-chip-routa {
   background: var(--brand-blue-200);
   border: 1px solid var(--brand-blue-300);
