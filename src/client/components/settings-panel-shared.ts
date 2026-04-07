@@ -170,11 +170,13 @@ export type SettingsTab =
   | "schedules"
   | "workflows";
 
+/** @deprecated Use shadcn Input from @/components/ui/input instead */
 export const inputCls =
-  "w-full text-xs px-2 py-1.5 rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#1e2130] text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:outline-none";
-export const labelCls = "text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider";
-export const sectionHeadCls = "text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider";
-export const settingsCardCls = "rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-[#1e2130]";
+  "w-full text-xs px-2 py-1.5 rounded-md border border-border bg-background text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring focus:outline-none";
+/** @deprecated Use shadcn Label from @/components/ui/label instead */
+export const labelCls = "text-[10px] font-medium text-muted-foreground uppercase tracking-wider";
+export const sectionHeadCls = "text-xs font-semibold text-muted-foreground uppercase tracking-wider";
+export const settingsCardCls = "rounded-xl border border-border bg-card p-4 text-card-foreground";
 
 export const BASE_URL_SUGGESTIONS = [
   "https://open.bigmodel.cn/api/anthropic",
