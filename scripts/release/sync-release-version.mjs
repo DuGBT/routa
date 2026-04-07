@@ -133,11 +133,4 @@ await updateJsonVersion("packages/routa-cli/package.json", version, {
   updateOptionalDeps: true,
 });
 
-// Update Rust crates versions (and their workspace dependencies)
-await updateTomlVersion("crates/routa-core/Cargo.toml", version);
-await updateTomlVersion("crates/routa-rpc/Cargo.toml", version, { updateWorkspaceDeps: true });
-await updateTomlVersion("crates/routa-scanner/Cargo.toml", version);
-await updateTomlVersion("crates/routa-server/Cargo.toml", version, { updateWorkspaceDeps: true });
-await updateTomlVersion("crates/routa-cli/Cargo.toml", version, { updateWorkspaceDeps: true });
-
 console.log(`Synchronized release version to ${version}`);
