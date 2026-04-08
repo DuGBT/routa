@@ -11,7 +11,6 @@ import {
   loadDefaultProviders,
   loadProviderConnections,
 } from "@/client/components/settings-panel";
-import { loadDockerOpencodeAuthJson } from "@/client/store/settings-storage";
 import { DesktopAppShell } from "@/client/components/desktop-app-shell";
 import { WorkspaceSwitcher } from "@/client/components/workspace-switcher";
 import { useAcp } from "@/client/hooks/use-acp";
