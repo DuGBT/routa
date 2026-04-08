@@ -31,7 +31,6 @@ import {DesktopNavRail} from "@/client/components/desktop-nav-rail";
 import { useRealSessionParams } from "./use-real-session-params";
 import { type AgentRole, type SpecialistOption, useSessionPageBootstrap } from "./use-session-page-bootstrap";
 import { useSessionCrafters } from "./use-session-crafters";
-import { RepoSlideSessionPanel } from "./repo-slide-session-panel";
 import { Select } from "@/client/components/select";
 import { useTranslation } from "@/i18n";
 import { ChevronDown, X } from "lucide-react";
@@ -59,8 +58,6 @@ export function SessionPageClient() {
   const searchParams = useSearchParams();
   const { workspaceId, sessionId, isResolved } = useRealSessionParams();
   const isEmbedMode = searchParams.get("embed") === "true";
-  const repoSlideSource = searchParams.get("source") === "reposlide";
-  const repoSlideCodebaseId = searchParams.get("codebaseId");
 
   const [refreshKey, setRefreshKey] = useState(0);
   const [focusedSessionId, setFocusedSessionId] = useState<string | null>(null);
@@ -753,13 +750,6 @@ export function SessionPageClient() {
 
         {/* ─── Chat Area ──────────────────────────────────────────── */}
         <main className="flex flex-1 min-w-0 flex-col">
-          {repoSlideSource && (
-            <RepoSlideSessionPanel
-              workspaceId={workspaceId}
-              sessionId={displaySessionId}
-              codebaseId={repoSlideCodebaseId}
-            />
-          )}
           <ChatPanel
             acp={acp}
             activeSessionId={displaySessionId}

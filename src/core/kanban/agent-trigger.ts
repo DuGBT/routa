@@ -4,8 +4,6 @@ import { getNextHappyPathColumnId, type KanbanColumn } from "../models/kanban";
 import { AgentEventType, type EventBus } from "../events/event-bus";
 import { isClaudeCodeSdkConfigured } from "../acp/claude-code-sdk-adapter";
 import { dispatchSessionPrompt } from "@/core/acp/session-prompt";
-import { getA2AOutboundClient } from "../a2a";
-import { resolveA2AAuthConfig } from "../a2a/a2a-auth-config";
 import { formatArtifactSummary, resolveKanbanTransitionArtifacts } from "./transition-artifacts";
 import type { TaskLaneSession } from "../models/task";
 import { resolveCurrentLaneAutomationState } from "./lane-automation-state";
@@ -365,14 +363,7 @@ function emitAutomationEvent(params: {
   });
 }
 
-function getStepTransport(step?: KanbanAutomationStep): KanbanTransport {
-  if (step?.transport === "a2a") {
-    return "acp";
-  }
-  return step?.transport ?? "acp";
-}
-
-function getA2AFailureMessage(error: unknown): string {
+function getAcpFailureMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
   }
@@ -380,7 +371,7 @@ function getA2AFailureMessage(error: unknown): string {
 }
 
 function isAcpPromptTimeoutError(error: unknown): boolean {
-  const message = getA2AFailureMessage(error);
+  const message = getAcpFailureMessage(error);
   return message.includes("Timeout waiting for session/prompt");
 }
 
@@ -455,7 +446,7 @@ async function triggerAcpTaskAgent(params: {
       sessionId,
       transport: "acp",
       success: false,
-      error: getA2AFailureMessage(error),
+      error: getAcpFailureMessage(error),
     });
   });
 
@@ -463,98 +454,6 @@ async function triggerAcpTaskAgent(params: {
     transport: "acp",
     localSessionId: sessionId,
     displayTarget: provider,
-  };
-}
-
-async function triggerA2ATaskAgent(params: {
-  workspaceId: string;
-  task: Task;
-  boardColumns: KanbanColumn[];
-  step?: KanbanAutomationStep;
-  summaryContext?: TaskPromptSummaryContext;
-  eventBus?: EventBus;
-}): Promise<AutomationRunHandle | { error: string }> {
-  const agentCardUrl = params.step?.agentCardUrl?.trim();
-  if (!agentCardUrl) {
-    return { error: "A2A automation requires agentCardUrl." };
-  }
-
-  const localSessionId = `a2a-${uuidv4()}`;
-  let authHeaders: Record<string, string> | undefined;
-  try {
-    authHeaders = resolveA2AAuthConfig(params.step?.authConfigId)?.headers;
-  } catch (error) {
-    return { error: error instanceof Error ? error.message : String(error) };
-  }
-
-  const client = getA2AOutboundClient(
-    authHeaders ? { requestHeaders: authHeaders } : undefined,
-  );
-  const metadata: Record<string, unknown> = {
-    workspaceId: params.workspaceId,
-    cardId: params.task.id,
-    boardId: params.task.boardId,
-    columnId: params.task.columnId,
-    specialistId: params.step?.specialistId ?? params.task.assignedSpecialistId,
-    specialistName: params.step?.specialistName ?? params.task.assignedSpecialistName,
-    role: params.step?.role ?? params.task.assignedRole,
-    localSessionId,
-  };
-
-  if (params.step?.skillId) {
-    metadata.skillId = params.step.skillId;
-  }
-  if (params.step?.authConfigId) {
-    metadata.authConfigId = params.step.authConfigId;
-  }
-
-  const taskHandle = await client.sendMessage(
-    agentCardUrl,
-    buildTaskPrompt(params.task, params.boardColumns, {
-      currentSessionId: localSessionId,
-      summaryContext: params.summaryContext,
-    }),
-    metadata,
-  );
-
-  void (async () => {
-    try {
-      const completedTask = await client.waitForCompletion(agentCardUrl, taskHandle.id);
-      const state = completedTask.status.state;
-      const isSuccess = state === "completed";
-      emitAutomationEvent({
-        eventBus: params.eventBus,
-        type: isSuccess ? AgentEventType.AGENT_COMPLETED : AgentEventType.AGENT_FAILED,
-        workspaceId: params.workspaceId,
-        sessionId: localSessionId,
-        transport: "a2a",
-        success: isSuccess,
-        externalTaskId: completedTask.id,
-        contextId: completedTask.contextId,
-        error: isSuccess ? undefined : `A2A task ended in state: ${state}`,
-      });
-    } catch (error) {
-      console.error("[kanban] Failed to monitor A2A task session:", error);
-      emitAutomationEvent({
-        eventBus: params.eventBus,
-        type: AgentEventType.AGENT_FAILED,
-        workspaceId: params.workspaceId,
-        sessionId: localSessionId,
-        transport: "a2a",
-        success: false,
-        externalTaskId: taskHandle.id,
-        contextId: taskHandle.contextId,
-        error: getA2AFailureMessage(error),
-      });
-    }
-  })();
-
-  return {
-    transport: "a2a",
-    localSessionId,
-    externalTaskId: taskHandle.id,
-    contextId: taskHandle.contextId,
-    displayTarget: agentCardUrl,
   };
 }
 
@@ -570,42 +469,20 @@ export async function triggerAssignedTaskAgent(params: {
   summaryContext?: TaskPromptSummaryContext;
   eventBus?: EventBus;
 }): Promise<{ sessionId?: string; error?: string; transport?: KanbanTransport; externalTaskId?: string; contextId?: string; displayTarget?: string }> {
-  const {
-    origin,
-    workspaceId,
-    cwd,
-    branch,
-    task,
-    step,
-    specialistLocale,
-    boardColumns = [],
-    summaryContext,
-    eventBus,
-  } = params;
-  const transport = getStepTransport(step);
-  const runHandle = transport === "a2a"
-    ? await triggerA2ATaskAgent({
-        workspaceId,
-        task,
-        boardColumns,
-        step,
-        summaryContext,
-        eventBus,
-      })
-    : await triggerAcpTaskAgent({
-        origin,
-        workspaceId,
-        cwd,
-        branch,
-        task,
-        specialistLocale,
-        boardColumns,
-        summaryContext,
-        eventBus,
-      });
+  const runHandle = await triggerAcpTaskAgent({
+    origin: params.origin,
+    workspaceId: params.workspaceId,
+    cwd: params.cwd,
+    branch: params.branch,
+    task: params.task,
+    specialistLocale: params.specialistLocale,
+    boardColumns: params.boardColumns ?? [],
+    summaryContext: params.summaryContext,
+    eventBus: params.eventBus,
+  });
 
   if ("error" in runHandle) {
-    return { error: runHandle.error, transport };
+    return { error: runHandle.error, transport: "acp" };
   }
 
   return {
