@@ -1,12 +1,9 @@
 "use client";
 
 /**
- * Messages Page - Notification & PR Agent Execution History
- * 
- * Shows:
- * - All notifications with filtering
- * - PR Agent execution history from background tasks
- * - Webhook trigger logs
+ * Messages Page - Background Task History
+ *
+ * Shows background task execution history for the selected workspace.
  */
 
 import { useState, useEffect } from "react";
@@ -27,24 +24,10 @@ interface BackgroundTask {
   metadata?: Record<string, unknown>;
 }
 
-interface TriggerLog {
-  id: string;
-  configId: string;
-  eventType: string;
-  eventAction?: string;
-  backgroundTaskId?: string;
-  signatureValid: boolean;
-  outcome: "triggered" | "skipped" | "error";
-  errorMessage?: string;
-  createdAt: string;
-}
-
 export default function MessagesPage() {
   const { workspaces, loading: workspacesLoading } = useWorkspaces();
-  const [tab, setTab] = useState<"tasks" | "logs">("tasks");
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState("");
   const [tasks, setTasks] = useState<BackgroundTask[]>([]);
-  const [logs, setLogs] = useState<TriggerLog[]>([]);
   const [loading, setLoading] = useState(false);
   const effectiveWorkspaceId = selectedWorkspaceId || workspaces[0]?.id || "";
 
@@ -56,12 +39,10 @@ export default function MessagesPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [tasksRes, logsRes] = await Promise.all([
-          fetch(`/api/background-tasks?workspaceId=${encodeURIComponent(effectiveWorkspaceId)}&limit=50`),
-          fetch("/api/webhooks/logs?limit=50"),
-        ]);
+        const tasksRes = await fetch(
+          `/api/background-tasks?workspaceId=${encodeURIComponent(effectiveWorkspaceId)}&limit=50`,
+        );
         if (tasksRes.ok) setTasks((await tasksRes.json()).tasks ?? []);
-        if (logsRes.ok) setLogs((await logsRes.json()).logs ?? []);
       } catch { /* ignore */ }
       setLoading(false);
     };
@@ -79,15 +60,6 @@ export default function MessagesPage() {
       cancelled: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400",
     };
     return <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${colors[status] ?? colors.pending}`}>{status}</span>;
-  };
-
-  const getOutcomeBadge = (outcome: TriggerLog["outcome"]) => {
-    const colors: Record<string, string> = {
-      triggered: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
-      skipped: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-      error: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
-    };
-    return <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${colors[outcome] ?? ""}`}>{outcome}</span>;
   };
 
   return (
@@ -115,18 +87,6 @@ export default function MessagesPage() {
               ))
             )}
           </Select>
-          <button
-            onClick={() => setTab("tasks")}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === "tasks" ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400" : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"}`}
-          >
-            Background Tasks
-          </button>
-          <button
-            onClick={() => setTab("logs")}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === "logs" ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400" : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"}`}
-          >
-            Webhook Logs
-          </button>
         </div>
       </header>
 
@@ -134,9 +94,9 @@ export default function MessagesPage() {
       <main className="max-w-5xl mx-auto p-6">
         {loading ? (
           <div className="text-center py-12 text-slate-400">Loading...</div>
-        ) : tab === "tasks" ? (
+        ) : (
           <div className="space-y-3">
-            <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">PR Agent & Background Tasks</h2>
+            <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Background Tasks</h2>
             {tasks.length === 0 ? (
               <p className="text-sm text-slate-400 py-8 text-center">No background tasks yet</p>
             ) : (
@@ -152,28 +112,6 @@ export default function MessagesPage() {
                     {t.completedAt && <span>Completed: {formatTime(t.completedAt)}</span>}
                   </div>
                   {t.error && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{t.error}</p>}
-                </div>
-              ))
-            )}
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Webhook Trigger Logs</h2>
-            {logs.length === 0 ? (
-              <p className="text-sm text-slate-400 py-8 text-center">No webhook logs yet</p>
-            ) : (
-              logs.map((l) => (
-                <div key={l.id} className="p-4 bg-white dark:bg-[#12141c] border border-slate-100 dark:border-[#1c1f2e] rounded-xl">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{l.eventType}{l.eventAction ? `:${l.eventAction}` : ""}</span>
-                    {getOutcomeBadge(l.outcome)}
-                  </div>
-                  <div className="flex items-center gap-4 text-[11px] text-slate-500">
-                    <span>Config: {l.configId.slice(0, 8)}</span>
-                    <span>Signature: {l.signatureValid ? "✓" : "✗"}</span>
-                    <span>{formatTime(l.createdAt)}</span>
-                  </div>
-                  {l.errorMessage && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{l.errorMessage}</p>}
                 </div>
               ))
             )}
