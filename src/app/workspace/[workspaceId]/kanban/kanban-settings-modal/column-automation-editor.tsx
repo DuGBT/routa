@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { AcpProviderInfo } from "@/client/acp-client";
-import { AcpProviderDropdown } from "@/client/components/acp-provider-dropdown";
+import { Select } from "@/client/components/select";
 import { resolveKanbanAutomationStep } from "@/core/kanban/effective-task-automation";
 import {
   DEFAULT_DEV_REQUIRED_TASK_FIELDS,
@@ -25,7 +25,6 @@ import {
   type KanbanSpecialistLanguage,
 } from "../kanban-specialist-language";
 import type { KanbanBoardInfo } from "../../types";
-import { Select } from "@/client/components/select";
 import { ChevronDown } from "lucide-react";
 import { useTranslation, type TranslationDictionary } from "@/i18n";
 
@@ -184,18 +183,18 @@ function ProviderField({
   const { t } = useTranslation();
   return (
     <div className="space-y-2">
-      <AcpProviderDropdown
-        providers={providers}
-        selectedProvider={value ?? ""}
-        onProviderChange={(providerId) => onChange(providerId || undefined)}
-        allowAuto={true}
-        autoLabel={t.common.auto}
-        showStatusDot={false}
-        ariaLabel={ariaLabel}
-        dataTestId={dataTestId}
-        buttonClassName="flex w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-200 dark:hover:bg-[#111722]"
-        labelClassName="truncate text-left"
-      />
+      <Select
+        value={value || ""}
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value || undefined)}
+        aria-label={ariaLabel}
+        data-testid={dataTestId}
+        className="h-10 w-full min-w-0 appearance-none rounded-xl border border-slate-200 bg-white px-3 pr-10 text-sm text-slate-900 outline-none transition hover:bg-slate-50 focus:border-amber-400 dark:border-slate-700 dark:bg-[#0b1119] dark:text-slate-100 dark:hover:bg-[#111722]"
+      >
+        <option value="">{t.common.auto} (Claude)</option>
+        {providers.map((p) => (
+          <option key={p.id} value={p.id}>{p.name || p.id}</option>
+        ))}
+      </Select>
       <p className="text-[11px] text-slate-500 dark:text-slate-400">
         {t.kanban.autoFollowsGlobal}
       </p>

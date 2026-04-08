@@ -1,4 +1,4 @@
-# Routa.js — AI development platform with Claude Code agent coordination (Next.js + optional Rust/Axum backend).
+# Routa.js — AI development platform with Claude Code agent coordination (Next.js).
 
 ## Repository Map
 
