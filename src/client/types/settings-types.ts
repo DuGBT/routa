@@ -1,4 +1,22 @@
-import type { AgentRole, ModelTier, SpecialistConfig } from "../components/specialist-manager";
+// ─── Agent / Specialist Types ─────────────────────────────────────────────────
+
+export type AgentRole = "ROUTA" | "CRAFTER" | "GATE" | "DEVELOPER";
+export type ModelTier = "FAST" | "BALANCED" | "SMART";
+
+export interface SpecialistConfig {
+  id: string;
+  name: string;
+  description?: string;
+  role: AgentRole;
+  defaultModelTier: ModelTier;
+  systemPrompt: string;
+  roleReminder: string;
+  source: "user" | "bundled" | "hardcoded";
+  enabled?: boolean;
+  defaultProvider?: string;
+  defaultAdapter?: string;
+  model?: string;
+}
 
 // ─── Constants ──────────────────────────────────────────────────────────────────
 

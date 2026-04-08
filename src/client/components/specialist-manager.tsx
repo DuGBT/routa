@@ -6,27 +6,11 @@ import { Select } from "./select";
 import { Modal } from "./modal";
 import { useTranslation } from "@/i18n";
 import { SquarePen, Trash2 } from "lucide-react";
+import type { AgentRole, ModelTier, SpecialistConfig } from "../types/settings-types";
+export type { AgentRole, ModelTier, SpecialistConfig } from "../types/settings-types";
 
 
 // ─── Types ─────────────────────────────────────────────────────────────────
-
-export interface SpecialistConfig {
-  id: string;
-  name: string;
-  description?: string;
-  role: AgentRole;
-  defaultModelTier: ModelTier;
-  systemPrompt: string;
-  roleReminder: string;
-  source: "user" | "bundled" | "hardcoded";
-  enabled?: boolean;
-  defaultProvider?: string;
-  defaultAdapter?: string;
-  model?: string;
-}
-
-export type AgentRole = "ROUTA" | "CRAFTER" | "GATE" | "DEVELOPER";
-export type ModelTier = "FAST" | "BALANCED" | "SMART";
 
 // Helper functions to get labels from translation
 function getRoleLabels(t: ReturnType<typeof useTranslation>["t"]): Record<AgentRole, string> {
