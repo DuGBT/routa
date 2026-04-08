@@ -37,7 +37,7 @@ components:
 
     ArtifactType:
       type: string
-      enum: [screenshot, test_results, code_diff, logs]
+      enum: [screenshot, test_results, code_diff, logs, document]
 
     ArtifactStatus:
       type: string
@@ -374,7 +374,7 @@ components:
           type: array
           items:
             type: string
-            enum: [screenshot, test_results, code_diff]
+            enum: [screenshot, test_results, code_diff, document]
         autoAdvanceOnSuccess:
           type: boolean
 
@@ -418,6 +418,33 @@ components:
           type: string
           format: date-time
 
+    KbEntryHealth:
+      type: string
+      enum: [good, stale, broken, unknown]
+
+    WikiFrontmatter:
+      type: object
+      required: [slug, tags, sourceUrls, health]
+      properties:
+        slug:
+          type: string
+          description: Stable kebab-case identifier, unique within workspace
+        tags:
+          type: array
+          items:
+            type: string
+        sourceUrls:
+          type: array
+          items:
+            type: string
+        health:
+          $ref: "#/components/schemas/KbEntryHealth"
+        lastCompiled:
+          type: string
+          description: ISO date string (e.g. "2026-04-06")
+        compiledBy:
+          type: string
+
     NoteMetadata:
       type: object
       required: [type]
@@ -438,6 +465,11 @@ components:
           type: object
           additionalProperties:
             type: string
+        wikiFrontmatter:
+          $ref: "#/components/schemas/WikiFrontmatter"
+          description: |
+            Present only on notes that act as KB/wiki entries.
+            Presence is the discriminator: notes with this field are wiki entries.
 
     Note:
       type: object

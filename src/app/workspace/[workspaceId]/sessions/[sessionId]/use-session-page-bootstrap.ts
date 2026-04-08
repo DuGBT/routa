@@ -44,8 +44,6 @@ interface UseSessionPageBootstrapParams {
     skillContext?: { skillName: string; skillContent: string },
   ) => Promise<void>;
   setSelectedAgent: (role: AgentRole) => void;
-  setDockerErrorMessage: (message: string | null) => void;
-  setDockerRetryText: (text: string | null) => void;
 }
 
 export function useSessionPageBootstrap(params: UseSessionPageBootstrapParams) {
@@ -64,8 +62,6 @@ export function useSessionPageBootstrap(params: UseSessionPageBootstrapParams) {
     acpSetProvider,
     acpPrompt,
     setSelectedAgent,
-    setDockerErrorMessage,
-    setDockerRetryText,
   } = params;
 
   const [specialists, setSpecialists] = useState<SpecialistOption[]>([]);
@@ -223,24 +219,6 @@ export function useSessionPageBootstrap(params: UseSessionPageBootstrapParams) {
 
     return () => clearTimeout(timer);
   }, [sessionId, acpConnected, acpLoading, acpUpdates, acpPrompt, loadSkillContext]);
-
-  useEffect(() => {
-    if (!acpUpdates.length) return;
-    const lastUpdate = acpUpdates[acpUpdates.length - 1];
-    const update = (lastUpdate as Record<string, unknown>).update as Record<string, unknown> | undefined;
-    if (
-      update?.sessionUpdate === "acp_status" &&
-      update?.status === "error" &&
-      acpSelectedProvider === "docker-opencode"
-    ) {
-      const errMsg = (update.error as string | undefined) ?? "Docker session failed to start";
-      setDockerErrorMessage(errMsg);
-      if (pendingPromptRef.current) {
-        setDockerRetryText(pendingPromptRef.current.text);
-        pendingPromptRef.current = null;
-      }
-    }
-  }, [acpUpdates, acpSelectedProvider, setDockerErrorMessage, setDockerRetryText]);
 
   useEffect(() => {
     fetch("/api/mcp/tools")

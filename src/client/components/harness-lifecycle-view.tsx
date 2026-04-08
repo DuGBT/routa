@@ -79,7 +79,7 @@ export function HarnessLifecycleView({
 
   return (
     <div className="space-y-4">
-      <div className="min-w-0 rounded-sm border border-desktop-border bg-desktop-bg-primary">
+      <div className="min-w-0 rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
         <div className="relative overflow-x-auto p-3">
           {/* Base SVG */}
           <div className="relative" style={{ minWidth: "800px", maxWidth: "100%" }}>
@@ -89,14 +89,14 @@ export function HarnessLifecycleView({
               width={2048}
               height={320}
               className="w-full h-auto"
-              priority
+ priority
             />
 
             {/* Overlay interactive hotspots */}
             <svg
               viewBox="0 0 2048 320"
               className="absolute inset-0 w-full h-full pointer-events-none"
-            >
+ >
               {selectableNodes.map((node) => (
                 <rect
                   key={node.nodeId}
@@ -108,7 +108,7 @@ export function HarnessLifecycleView({
                   stroke={activeSelectedNodeId === node.nodeId ? "#3b82f6" : "transparent"}
                   strokeWidth={activeSelectedNodeId === node.nodeId ? 3 : 0}
                   className="cursor-pointer transition-all hover:fill-blue-500/5 pointer-events-auto"
-                  onClick={() => handleNodeClick(node.nodeId)}
+ onClick={() => handleNodeClick(node.nodeId)}
                   role="button"
                   aria-label={node.title}
                   tabIndex={0}

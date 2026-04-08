@@ -75,7 +75,7 @@ export function AgentPanel({ refreshKey, workspaceId = "" }: AgentPanelProps) {
           onClick={fetchAgents}
           disabled={loading}
           className="text-sm text-blue-600 dark:text-blue-400 hover:underline disabled:opacity-50"
-        >
+ >
           {loading ? "..." : t.common.refresh}
         </button>
       </div>
@@ -88,13 +88,13 @@ export function AgentPanel({ refreshKey, workspaceId = "" }: AgentPanelProps) {
           onChange={(e) => setNewAgentName(e.target.value)}
           placeholder={t.agents.agentName}
           className="flex-1 px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-slate-400 dark:placeholder:text-slate-500"
-          onKeyDown={(e) => e.key === "Enter" && createAgent()}
+ onKeyDown={(e) => e.key === "Enter" && createAgent()}
         />
         <Select
           value={newAgentRole}
           onChange={(e) => setNewAgentRole(e.target.value)}
           className="px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-        >
+ >
           <option value="ROUTA">ROUTA</option>
           <option value="CRAFTER">CRAFTER</option>
           <option value="GATE">GATE</option>
@@ -102,7 +102,7 @@ export function AgentPanel({ refreshKey, workspaceId = "" }: AgentPanelProps) {
         <button
           onClick={createAgent}
           className="px-4 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-        >
+ >
           {t.common.create}
         </button>
       </div>
@@ -118,7 +118,7 @@ export function AgentPanel({ refreshKey, workspaceId = "" }: AgentPanelProps) {
             <div
               key={agent.id}
               className="px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors"
-            >
+ >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-sm text-slate-900 dark:text-slate-100">

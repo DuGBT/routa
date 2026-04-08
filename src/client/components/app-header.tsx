@@ -68,10 +68,10 @@ export function AppHeader({
   return (
     <header
       className={
-        isDashboard
-          ? "h-12 shrink-0 flex items-center px-5 border-b border-gray-200/60 dark:border-[#191c28] bg-white/80 dark:bg-[#0e1019]/80 backdrop-blur-md z-20"
-          : "h-[52px] shrink-0 bg-white dark:bg-[#161922] border-b border-gray-200 dark:border-gray-800 flex items-center px-3 md:px-4 gap-2 md:gap-4 z-10"
-      }
+ isDashboard
+ ? "h-12 shrink-0 flex items-center px-5 border-b border-gray-200/60 dark:border-[#191c28] bg-white/80 dark:bg-[#0e1019]/80 backdrop-blur-md z-20"
+ : "h-[52px] shrink-0 bg-white dark:bg-[#161922] border-b border-gray-200 dark:border-gray-800 flex items-center px-3 md:px-4 gap-2 md:gap-4 z-10"
+ }
     >
       {/* ── Mobile hamburger (session variant only) ── */}
       {!isDashboard && onToggleMobileSidebar && (
@@ -81,7 +81,7 @@ export function AppHeader({
           onClick={onToggleMobileSidebar}
           aria-label={showMobileSidebar ? t.nav.closeSidebar : t.nav.openSidebar}
           className="md:hidden w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500"
-        >
+ >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             {showMobileSidebar ? (
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

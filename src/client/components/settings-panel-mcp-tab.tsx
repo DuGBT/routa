@@ -342,18 +342,18 @@ export function McpServersTab() {
       <div className="space-y-2">
         {servers.map((server) => (
           <div key={server.id} className={`rounded-lg border p-3 transition-colors ${
-            server.enabled
-              ? "border-slate-200 dark:border-slate-700"
-              : "border-slate-200 dark:border-slate-700 opacity-60"
-          }`}>
+ server.enabled
+ ? "border-slate-200 dark:border-slate-700"
+ : "border-slate-200 dark:border-slate-700 opacity-60"
+ }`}>
             <div className="flex items-center gap-2">
               <button onClick={() => handleToggle(server)}
                 className={`w-7 h-4 rounded-full transition-colors relative shrink-0 ${
-                  server.enabled ? "bg-blue-500" : "bg-slate-300 dark:bg-slate-600"
-                }`}>
+ server.enabled ? "bg-blue-500" : "bg-slate-300 dark:bg-slate-600"
+ }`}>
                 <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white shadow transition-transform ${
-                  server.enabled ? "left-3.5" : "left-0.5"
-                }`} />
+ server.enabled ? "left-3.5" : "left-0.5"
+ }`} />
               </button>
 
               <span className="text-xs font-medium text-slate-800 dark:text-slate-200 flex-1 truncate">{server.name}</span>

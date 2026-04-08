@@ -142,6 +142,16 @@ export class ClaudeCodeAdapter extends BaseProviderAdapter {
         return update;
       }
 
+      case "error": {
+        const error = payload.error as { message?: string; code?: string } | undefined;
+        const message = error?.message ?? (payload.message as string) ?? "Unknown error";
+        const code = error?.code ?? (payload.code as string) ?? "RUNTIME_ERROR";
+
+        const update = this.createUpdate(sessionId, "error", rawNotification);
+        update.error = { code, message };
+        return update;
+      }
+
       default:
         // Pass through unknown types with raw notification
         return null;

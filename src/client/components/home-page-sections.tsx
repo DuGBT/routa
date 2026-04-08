@@ -176,18 +176,18 @@ export function StoryGuideRail({
                   }}
                   data-step-index={index}
                   className="flex min-h-[48vh] items-center lg:min-h-[58vh]"
-                >
+ >
                   <div className={`max-w-2xl rounded-[30px] border px-5 py-6 transition-all duration-500 sm:px-7 sm:py-8 ${
-                    isActive
-                      ? "border-[#7cccf6]/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(239,247,255,0.92))] shadow-[0_44px_120px_-82px_rgba(14,64,151,0.42)] dark:border-sky-400/30 dark:bg-[linear-gradient(180deg,rgba(11,20,35,0.98),rgba(10,17,30,0.98))]"
-                      : "border-sky-200/60 bg-white/56 dark:border-white/8 dark:bg-white/[0.025]"
-                  }`}>
+ isActive
+ ? "border-[#7cccf6]/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(239,247,255,0.92))] shadow-[0_44px_120px_-82px_rgba(14,64,151,0.42)] dark:border-sky-400/30 dark:bg-[linear-gradient(180deg,rgba(11,20,35,0.98),rgba(10,17,30,0.98))]"
+ : "border-sky-200/60 bg-white/56 dark:border-white/8 dark:bg-white/[0.025]"
+ }`}>
                     <div className="flex items-start gap-4">
                       <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border text-sm font-semibold ${
-                        isActive
-                          ? "border-sky-300/80 bg-sky-100/75 text-[#1d6fd6] dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-200"
-                          : "border-sky-200/70 bg-white/75 text-[#5f7ea8] dark:border-white/10 dark:bg-white/5 dark:text-slate-400"
-                      }`}>
+ isActive
+ ? "border-sky-300/80 bg-sky-100/75 text-[#1d6fd6] dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-200"
+ : "border-sky-200/70 bg-white/75 text-[#5f7ea8] dark:border-white/10 dark:bg-white/5 dark:text-slate-400"
+ }`}>
                         {step.index}
                       </div>
                       <div className="min-w-0">
@@ -245,8 +245,8 @@ function StoryPreview({
             </div>
           </div>
           <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.18em] ${
-            connected ? "bg-emerald-500/12 text-emerald-200" : "bg-amber-500/12 text-amber-200"
-          }`}>
+ connected ? "bg-emerald-500/12 text-emerald-200" : "bg-amber-500/12 text-amber-200"
+ }`}>
             <span className={`h-1.5 w-1.5 rounded-full ${connected ? "bg-emerald-400" : "bg-amber-300"}`} />
             {connected ? "Runtime Online" : "Runtime Offline"}
           </span>
@@ -275,13 +275,13 @@ function StoryPreview({
           <Link
             href={activeWorkspaceHref}
             className="inline-flex items-center justify-center rounded-full border border-white/12 bg-white/[0.04] px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-200 transition-colors hover:bg-white/[0.08]"
-          >
+ >
             Open Workspace
           </Link>
           <Link
             href={activeKanbanHref}
             className="inline-flex items-center justify-center rounded-full bg-[#5ee5ff] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#04111d] transition-colors hover:bg-[#87edff]"
-          >
+ >
             Open Kanban
           </Link>
         </div>
@@ -579,7 +579,7 @@ export function HomeTodoPreview({
         <Link
           href={`/workspace/${workspaceId}/kanban`}
           className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-[#0f62d6] px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#2a77e4] sm:w-auto dark:bg-[#5ee5ff] dark:text-[#04111d] dark:hover:bg-[#87edff]"
-        >
+ >
           Open Kanban
         </Link>
       </div>
@@ -602,7 +602,7 @@ export function HomeTodoPreview({
               key={task.id}
               href={`/workspace/${workspaceId}/kanban`}
               className="group rounded-[24px] border border-sky-200/70 bg-white/62 px-4 py-4 transition-all hover:-translate-y-0.5 hover:border-[#38bdf8] hover:bg-white hover:shadow-[0_20px_50px_-36px_rgba(37,99,235,0.28)] dark:border-[#1f2434] dark:bg-white/[0.03] dark:hover:border-sky-700/40 dark:hover:bg-[#111827]"
-            >
+ >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-medium text-[#081120] transition-colors group-hover:text-[#1d6fd6] dark:text-white dark:group-hover:text-sky-300">
@@ -720,7 +720,7 @@ export function OnboardingCard({
           onChange={(event) => setWorkspaceName(event.target.value)}
           placeholder={t.onboarding.workspaceNamePlaceholder}
           className="w-full rounded-2xl border border-sky-200/80 bg-white/90 px-4 py-3 text-sm text-slate-900 shadow-[0_18px_50px_-44px_rgba(37,99,235,0.4)] outline-none transition-colors focus:border-sky-400 dark:border-[#223049] dark:bg-[#0d1728] dark:text-white"
-        />
+ />
         {workspaceError && (
           <p className="mt-2 text-sm text-rose-600 dark:text-rose-300">{workspaceError}</p>
         )}
@@ -730,14 +730,14 @@ export function OnboardingCard({
             onClick={() => void handleWorkspaceCreate()}
             disabled={workspaceBusy || !workspaceName.trim()}
             className="rounded-full bg-[#0f62d6] px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.14em] text-white transition-all hover:bg-[#2a77e4] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#5ee5ff] dark:text-[#04111d] dark:hover:bg-[#87edff]"
-          >
+ >
             {workspaceBusy ? t.common.loading : t.onboarding.getStarted}
           </button>
           <button
             type="button"
             onClick={onOpenProviders}
             className="rounded-full border border-sky-200/80 px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.14em] text-[#356fb0] transition-colors hover:border-sky-300 hover:text-[#0f62d6] dark:border-[#223049] dark:text-slate-300 dark:hover:border-[#314665] dark:hover:text-white"
-          >
+ >
             {t.onboarding.openProviders}
           </button>
         </div>
@@ -789,7 +789,7 @@ export function OnboardingCard({
             type="button"
             onClick={onOpenProviders}
             className="mt-4 rounded-full border border-sky-200/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#356fb0] transition-colors hover:border-sky-300 hover:text-[#0f62d6] dark:border-[#223049] dark:text-slate-300 dark:hover:border-[#314665] dark:hover:text-white"
-          >
+ >
             {hasProviderConfig ? t.onboarding.providerReady : t.onboarding.providerAction}
           </button>
         </div>
@@ -821,7 +821,7 @@ export function OnboardingCard({
                 onClick={() => void handleAddCodebase()}
                 disabled={!repoSelection?.path || codebaseBusy}
                 className="mt-4 rounded-full bg-[#0f62d6] px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#2a77e4] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#5ee5ff] dark:text-[#04111d] dark:hover:bg-[#87edff]"
-              >
+ >
                 {codebaseBusy ? t.common.loading : t.onboarding.codebaseAction}
               </button>
             </>
@@ -870,7 +870,7 @@ export function OnboardingCard({
             type="button"
             onClick={onDismiss}
             className="rounded-full border border-transparent px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b84aa] transition-colors hover:border-sky-200/80 hover:text-[#356fb0] dark:text-slate-500 dark:hover:border-white/8 dark:hover:text-slate-300"
-          >
+ >
             {t.onboarding.continueLater}
           </button>
         </div>
@@ -1028,7 +1028,7 @@ export function WorkspaceCards({
           <button
             onClick={() => setShowWorkspacesMenu(!showWorkspacesMenu)}
             className="inline-flex items-center gap-1 rounded-full border border-sky-200/70 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#45678f] transition-colors hover:border-sky-300 hover:text-[#081120] dark:border-[#2a3042] dark:text-slate-400 dark:hover:border-[#39415a] dark:hover:text-slate-200"
-          >
+ >
             View all
             <ChevronDown className={`h-2.5 w-2.5 transition-transform ${showWorkspacesMenu ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
@@ -1038,7 +1038,7 @@ export function WorkspaceCards({
                 href="/"
                 onClick={() => setShowWorkspacesMenu(false)}
                 className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-[#1a1d2c]"
-              >
+ >
                 <Folder className="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
                 All Workspaces
               </Link>
@@ -1046,7 +1046,7 @@ export function WorkspaceCards({
                 href="/traces"
                 onClick={() => setShowWorkspacesMenu(false)}
                 className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-[#1a1d2c]"
-              >
+ >
                 <MessageSquareMore className="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
                 All Sessions
               </Link>
@@ -1063,10 +1063,10 @@ export function WorkspaceCards({
               key={workspace.id}
               onClick={() => onWorkspaceSelect(workspace.id)}
               className={`group rounded-[22px] border px-4 py-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-36px_rgba(37,99,235,0.26)] ${
-                isActive
-                  ? "border-sky-300 bg-sky-50/90 dark:border-sky-700/50 dark:bg-sky-900/10"
-                  : "border-sky-200/70 bg-white/52 dark:border-[#1c1f2e] dark:bg-white/[0.03] hover:border-sky-300 dark:hover:border-sky-700/40"
-              }`}
+ isActive
+ ? "border-sky-300 bg-sky-50/90 dark:border-sky-700/50 dark:bg-sky-900/10"
+ : "border-sky-200/70 bg-white/52 dark:border-[#1c1f2e] dark:bg-white/[0.03] hover:border-sky-300 dark:hover:border-sky-700/40"
+ }`}
             >
               <div className="mb-3 flex items-start justify-between gap-3">
                 <div className="min-w-0">
@@ -1090,7 +1090,7 @@ export function WorkspaceCards({
                     href={`/workspace/${workspace.id}/kanban`}
                     onClick={(event) => event.stopPropagation()}
                     className="rounded-full border border-transparent p-1 text-[#1d6fd6] opacity-0 transition-opacity hover:border-sky-100 hover:text-[#38bdf8] group-hover:opacity-100 dark:text-sky-500 dark:hover:border-sky-900/30 dark:hover:text-sky-300"
-                    title="Open Kanban board"
+ title="Open Kanban board"
                   >
                     <Columns2 className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                   </Link>
@@ -1098,7 +1098,7 @@ export function WorkspaceCards({
                     href={`/workspace/${workspace.id}`}
                     onClick={(event) => event.stopPropagation()}
                     className="rounded-full border border-transparent p-1 text-slate-400 opacity-0 transition-opacity hover:border-slate-200 hover:text-slate-600 group-hover:opacity-100 dark:hover:border-[#2a3042] dark:hover:text-slate-300"
-                    title="Open overview"
+ title="Open overview"
                   >
                     <SquareArrowOutUpRight className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                   </Link>
@@ -1111,7 +1111,7 @@ export function WorkspaceCards({
                     <div
                       key={session.sessionId}
                       className="flex cursor-pointer items-center gap-2 rounded-xl bg-white/72 px-3 py-2 dark:bg-[#131722]"
-                      onClick={(event) => {
+ onClick={(event) => {
                         event.stopPropagation();
                         onSessionClick(workspace.id, session.sessionId);
                       }}
@@ -1136,7 +1136,7 @@ export function WorkspaceCards({
         <button
           onClick={() => onWorkspaceCreate("New Workspace")}
           className="group rounded-[22px] border border-dashed border-sky-200/70 p-4 text-left transition-all hover:border-[#38bdf8] hover:bg-white/70 dark:border-[#1c1f2e] dark:hover:border-sky-700/50 dark:hover:bg-sky-900/5"
-        >
+ >
           <div className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-sky-50 transition-colors group-hover:bg-sky-100 dark:bg-[#1a1d2c] dark:group-hover:bg-sky-900/30">
               <Plus className="h-4 w-4 text-sky-500 transition-colors group-hover:text-sky-700 dark:text-slate-500 dark:group-hover:text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>

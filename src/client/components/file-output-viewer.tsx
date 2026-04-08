@@ -249,7 +249,7 @@ function SearchOutputViewer({ matches, matchCount, expanded, onToggle }: SearchO
         type="button"
         onClick={onToggle}
         className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-      >
+ >
         <ChevronRight className={`w-3 h-3 text-slate-400 transition-transform duration-150 ${expanded ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
         <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
           {matchCount ?? matches.reduce((sum, m) => sum + m.lines.length, 0)} {(matchCount ?? matches.length) === 1 ? "match" : "matches"} in {matches.length} {matches.length === 1 ? "file" : "files"}
@@ -264,7 +264,7 @@ function SearchOutputViewer({ matches, matchCount, expanded, onToggle }: SearchO
                 type="button"
                 onClick={() => setSelectedFile(selectedFile === idx ? null : idx)}
                 className="w-full px-3 py-2 flex items-center justify-between bg-slate-50 dark:bg-slate-800/60 text-left hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              >
+ >
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                   <FileText className="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                   <span className="text-xs font-mono text-slate-700 dark:text-slate-300 truncate">
@@ -317,7 +317,7 @@ function ReadOutputViewer({ readOutput, expanded, onToggle }: ReadOutputViewerPr
         type="button"
         onClick={onToggle}
         className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-      >
+ >
         <ChevronRight className={`w-3 h-3 text-slate-400 transition-transform duration-150 ${expanded ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
         <FileText className="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
         <span className="text-xs font-mono text-slate-700 dark:text-slate-300 truncate">
@@ -342,7 +342,7 @@ function ReadOutputViewer({ readOutput, expanded, onToggle }: ReadOutputViewerPr
             variant="simple"
             wordWrap={true}
             className="!border-0 !rounded-t-none"
-          />
+ />
         </div>
       )}
     </div>

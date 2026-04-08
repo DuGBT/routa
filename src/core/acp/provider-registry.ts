@@ -1,14 +1,12 @@
 /**
  * Provider Registry
  *
- * Central registry for managing multiple ACP provider configurations.
+ * Central registry for managing ACP provider configurations.
  * Supports:
  * - Factory pattern for provider creation
  * - Compound model IDs (provider:model format)
  * - Model tier-based resolution (fast/balanced/smart)
  * - Provider inheritance from parent to child agents
- *
- * Ported from Intent 0.2.11's ProviderRegistry implementation.
  */
 
 import { ACP_AGENT_PRESETS, getPresetById } from "./acp-presets";
@@ -21,9 +19,6 @@ export type ModelTierType = "fast" | "balanced" | "smart";
 /**
  * Model tiers define which model to use for each provider.
  * Keys are provider IDs, values map tier names to model identifiers.
- *
- * Note: Some providers (like opencode) have dynamic models that are
- * fetched at runtime, so they may not be listed here.
  */
 export const PROVIDER_MODEL_TIERS: Record<string, Record<string, string>> = {
   claude: {
@@ -34,13 +29,7 @@ export const PROVIDER_MODEL_TIERS: Record<string, Record<string, string>> = {
   claudeCodeSdk: {
     fast: "claude-3-5-haiku-20241022",
     balanced: "claude-sonnet-4-20250514",
-    smart: "claude-opus-4-5",  // Use claude-opus-4-5 for high-capability tasks
-  },
-  opencode: {
-    // Models are dynamic - fetched from the CLI at runtime
-    fast: "fast",
-    balanced: "balanced",
-    smart: "smart",
+    smart: "claude-opus-4-5",
   },
 };
 
@@ -57,10 +46,10 @@ export interface ParsedModelId {
  *
  * Examples:
  * - "claude:opus-4.6" → { providerId: "claude", modelId: "opus-4.6" }
- * - "opus-4.6" → { providerId: "opencode", modelId: "opus-4.6" }
- * - "sonnet-4.5" → { providerId: "opencode", modelId: "sonnet-4.5" }
+ * - "opus-4.6" → { providerId: "claude", modelId: "opus-4.6" }
+ * - "sonnet-4.5" → { providerId: "claude", modelId: "sonnet-4.5" }
  */
-export function parseCompoundModelId(compoundModelId: string, defaultProviderId = "opencode"): ParsedModelId {
+export function parseCompoundModelId(compoundModelId: string, defaultProviderId = "claude"): ParsedModelId {
   if (compoundModelId.includes(":")) {
     const [providerId, ...modelParts] = compoundModelId.split(":");
     return { providerId, modelId: modelParts.join(":") };
@@ -101,7 +90,7 @@ export function getModelForProvider(providerId: string, tier: ModelTierType): st
  * Get the default provider ID.
  */
 export function getDefaultProviderId(): string {
-  return "opencode";
+  return "claude";
 }
 
 // ─── Provider Registry ─────────────────────────────────────────────────────

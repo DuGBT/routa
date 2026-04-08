@@ -227,7 +227,7 @@ export function BranchSelector({
         }}
         disabled={disabled || switching}
         className="flex max-w-[220px] items-center gap-1 px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
-      >
+ >
         <BranchIcon />
         <span className="truncate">{switching ? "..." : currentBranch}</span>
         {/* Behind badge */}
@@ -256,7 +256,7 @@ export function BranchSelector({
             zIndex: 10000,
           }}
           className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1e2130] shadow-xl overflow-hidden"
-        >
+ >
           {/* Header */}
           <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800">
             <div className="flex items-center justify-between mb-1.5">
@@ -270,7 +270,7 @@ export function BranchSelector({
                 onClick={() => fetchBranches(true)}
                 disabled={loading}
                 className="p-0.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-                title={t.branchSelector.fetchRemote}
+ title={t.branchSelector.fetchRemote}
               >
                 <RefreshCw className={`w-3 h-3 ${loading ? "animate-spin" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}/>
               </Button>
@@ -286,7 +286,7 @@ export function BranchSelector({
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t.branchSelector.filterBranches}
                 className="flex-1 bg-transparent text-[11px] text-slate-900 dark:text-slate-100 placeholder:text-slate-400 outline-none"
-                onKeyDown={(e) => {
+ onKeyDown={(e) => {
                   if (e.key === "Escape") setShowDropdown(false);
                 }}
               />
@@ -302,7 +302,7 @@ export function BranchSelector({
               onClick={handlePull}
               disabled={loading}
               className="w-full px-3 py-2 flex items-center gap-2 text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/10 border-b border-slate-100 dark:border-slate-800 transition-colors"
-            >
+ >
               <Download className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}/>
               {t.branchSelector.pullNewCommits.replace("{{count}}", String(status.behind)).replace("{{plural}}", status.behind > 1 ? "s" : "")}
             </Button>
@@ -386,10 +386,10 @@ function BranchItem({
       size="xs"
       onClick={onClick}
       className={`w-full justify-start rounded-none text-left px-3 py-1.5 text-[11px] hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5 ${
-        isCurrent
-          ? "text-blue-600 dark:text-blue-400 font-medium"
-          : "text-slate-700 dark:text-slate-300"
-      }`}
+ isCurrent
+ ? "text-blue-600 dark:text-blue-400 font-medium"
+ : "text-slate-700 dark:text-slate-300"
+ }`}
     >
       {isCurrent && (
         <Check className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}/>

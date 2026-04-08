@@ -6,11 +6,16 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import type { CodebaseData } from "@/client/hooks/use-workspaces";
 import { useTranslation } from "@/i18n";
+import { Modal } from "@/client/components/modal";
 
 export type TaskDraft = {
   title: string;
   objectiveHtml: string;
+  taskType: string;
   testCases: string;
+  scope: string;
+  acceptanceCriteria: string;
+  verificationCommands: string;
   priority: string;
   labels: string;
   createGitHubIssue: boolean;
@@ -20,7 +25,11 @@ export type TaskDraft = {
 export const EMPTY_DRAFT: TaskDraft = {
   title: "",
   objectiveHtml: "",
+  taskType: "code",
   testCases: "",
+  scope: "",
+  acceptanceCriteria: "",
+  verificationCommands: "",
   priority: "medium",
   labels: "",
   createGitHubIssue: false,
@@ -84,9 +93,9 @@ function TipTapObjectiveEditor({
             onClick={cmd}
             title={title}
             className={`rounded px-1.5 py-0.5 text-[11px] font-mono font-semibold transition-colors ${active
-                ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
-                : "text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-              }`}
+ ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+ : "text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+ }`}
           >
             {label}
           </button>
@@ -103,9 +112,9 @@ function TipTapObjectiveEditor({
             onClick={cmd}
             title={title}
             className={`rounded px-1.5 py-0.5 text-[11px] font-mono font-semibold transition-colors ${active
-                ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
-                : "text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-              }`}
+ ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+ : "text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+ }`}
           >
             {label}
           </button>
@@ -126,25 +135,31 @@ export function KanbanCreateModal({
   allCodebaseIds: _allCodebaseIds,
 }: KanbanCreateModalProps) {
   const { t } = useTranslation();
+  const isCodeTask = draft.taskType === "code";
   const canCreate = Boolean(draft.title.trim()) && Boolean(draft.objectiveHtml.replace(/<[^>]*>/g, "").trim());
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-[#1c1f2e] dark:bg-[#12141c]">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{t.kanbanCreate.manualTask}</h3>
-          <button onClick={onClose} className="text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
-            {t.common.close}
-          </button>
-        </div>
-
+    <Modal open onClose={onClose} title={t.kanbanCreate.manualTask} className="max-w-2xl">
         <div className="space-y-3">
           <input
             value={draft.title}
             onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
             placeholder={t.kanbanCreate.taskTitle}
             className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
-          />
+ />
+
+          <div>
+            <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.taskType}</div>
+            <select
+              value={draft.taskType}
+              onChange={(e) => setDraft((d) => ({ ...d, taskType: e.target.value }))}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+            >
+              <option value="code">{t.kanbanCreate.taskTypeCode}</option>
+              <option value="analysis">{t.kanbanCreate.taskTypeAnalysis}</option>
+              <option value="document">{t.kanbanCreate.taskTypeDocument}</option>
+            </select>
+          </div>
 
           <div>
             <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.description}</div>
@@ -154,6 +169,7 @@ export function KanbanCreateModal({
             />
           </div>
 
+          {isCodeTask && (
           <div>
             <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.testCases}</div>
             <textarea
@@ -162,18 +178,56 @@ export function KanbanCreateModal({
               placeholder={t.kanbanCreate.testCasesPlaceholder}
               rows={4}
               className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
-            />
+ />
             <div className="mt-1 text-xs text-slate-400 dark:text-slate-500">
               {t.kanbanCreate.testCasesHint}
             </div>
           </div>
+          )}
+
+          {(isCodeTask || draft.taskType === "analysis") && (
+          <div>
+            <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.scope}</div>
+            <textarea
+              value={draft.scope}
+              onChange={(e) => setDraft((d) => ({ ...d, scope: e.target.value }))}
+              placeholder={t.kanbanCreate.scopePlaceholder}
+              rows={2}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+            />
+          </div>
+          )}
+
+          <div>
+            <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.acceptanceCriteria}</div>
+            <textarea
+              value={draft.acceptanceCriteria}
+              onChange={(e) => setDraft((d) => ({ ...d, acceptanceCriteria: e.target.value }))}
+              placeholder={t.kanbanCreate.acceptanceCriteriaPlaceholder}
+              rows={3}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+            />
+          </div>
+
+          {isCodeTask && (
+          <div>
+            <div className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t.kanbanCreate.verificationCommands}</div>
+            <textarea
+              value={draft.verificationCommands}
+              onChange={(e) => setDraft((d) => ({ ...d, verificationCommands: e.target.value }))}
+              placeholder={t.kanbanCreate.verificationCommandsPlaceholder}
+              rows={3}
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400/40 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-100"
+            />
+          </div>
+          )}
 
           <div className="grid grid-cols-2 gap-3">
             <select
               value={draft.priority}
               onChange={(e) => setDraft((d) => ({ ...d, priority: e.target.value }))}
               className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-200"
-            >
+ >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
@@ -184,7 +238,7 @@ export function KanbanCreateModal({
               onChange={(e) => setDraft((d) => ({ ...d, labels: e.target.value }))}
               placeholder="labels,comma,separated"
               className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-200"
-            />
+ />
           </div>
 
           <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
@@ -221,9 +275,9 @@ export function KanbanCreateModal({
                         }))
                       }
                       className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs transition-colors ${selected
-                          ? "border-blue-400 bg-blue-50 text-blue-700 dark:border-blue-600 dark:bg-blue-900/20 dark:text-blue-300"
-                          : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-400"
-                        }`}
+ ? "border-blue-400 bg-blue-50 text-blue-700 dark:border-blue-600 dark:bg-blue-900/20 dark:text-blue-300"
+ : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-400"
+ }`}
                     >
                       <span
                         className={`h-1.5 w-1.5 rounded-full ${cb.sourceType === "github" ? "bg-blue-500" : "bg-emerald-500"}`}
@@ -248,18 +302,17 @@ export function KanbanCreateModal({
           <button
             onClick={onClose}
             className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-300"
-          >
+ >
             {t.common.cancel}
           </button>
           <button
             onClick={onCreate}
             disabled={!canCreate}
             className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50"
-          >
+ >
             {t.kanbanCreate.create}
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }

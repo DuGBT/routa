@@ -22,6 +22,11 @@ export interface ExtendedTranslationDictionarySections extends TailTranslationDi
       loadingHooks: string;
       noAgentHookData: string;
     };
+    dockerConfig: {
+      configurationRequired: string;
+      opencodeAuthJson: string;
+      opencodeAuthJsonHint: string;
+    };
     hookRuntime: {
       loadingHookRuntime: string;
       noHookRuntimeData: string;
@@ -530,6 +535,7 @@ export interface ExtendedTranslationDictionarySections extends TailTranslationDi
     testResultsType: string;
     codeDiffType: string;
     logsType: string;
+    documentType: string;
     byAgent: string;
     failedToLoadArtifacts: string;
     // Card activity (residual hardcoded strings)
@@ -697,6 +703,7 @@ export interface ExtendedTranslationDictionarySections extends TailTranslationDi
     readyForDev: string;
     blockedForDev: string;
     missingFields: string;
+    editFields: string;
     repo: string;
     allRequiredFields: string;
     present: string;
@@ -1026,10 +1033,20 @@ export interface ExtendedTranslationDictionarySections extends TailTranslationDi
   kanbanCreate: {
     manualTask: string;
     taskTitle: string;
+    taskType: string;
+    taskTypeCode: string;
+    taskTypeAnalysis: string;
+    taskTypeDocument: string;
     description: string;
     testCases: string;
     testCasesPlaceholder: string;
     testCasesHint: string;
+    scope: string;
+    scopePlaceholder: string;
+    acceptanceCriteria: string;
+    acceptanceCriteriaPlaceholder: string;
+    verificationCommands: string;
+    verificationCommandsPlaceholder: string;
     createLinkedGithubIssue: string;
     noGithubLinked: string;
     linkRepositories: string;

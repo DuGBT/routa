@@ -40,7 +40,6 @@ import { getProviderAdapter } from "../acp/provider-adapter";
 import { AgentEventBridge, makeStartedEvent } from "../acp/agent-event-bridge";
 import type { WorkspaceAgentEvent } from "../acp/agent-event-bridge";
 import { LifecycleNotifier } from "../acp/lifecycle-notifier";
-import { createWorkspaceSessionSandbox } from "../sandbox/permissions";
 
 export interface DelegateWithSpawnParams {
   /** Task ID to delegate */
@@ -658,39 +657,12 @@ export class RoutaOrchestrator {
     let sandboxId: string | undefined;
 
     if (isNativeWorkspaceAgent) {
-      sandboxId = (await createWorkspaceSessionSandbox({
-        workspaceId: effectiveWorkspaceId,
-        workdir: cwd,
-      }))?.id;
-
-      acpSessionId = await this.processManager.createWorkspaceAgentSession(
-        sessionId,
-        cwd,
-        notificationHandler,
-        {
-          agentTools: this.system.tools,
-          workspaceId: effectiveWorkspaceId,
-          agentId,
-          sandboxId,
-          lifecycleNotifier,
-        },
+      throw new Error(
+        `Workspace agent provider is no longer supported. Use claude or claude-code-sdk for child agents.`,
       );
+    }
 
-      const workspaceAgent = this.processManager.getWorkspaceAgent(sessionId);
-      if (workspaceAgent) {
-        (async () => {
-          try {
-            for await (const _ of workspaceAgent.promptStream(initialPrompt, acpSessionId)) {
-              // notifications are forwarded via notificationHandler
-            }
-            this.autoReportIfNeeded(agentId);
-          } catch (err) {
-            console.error(`[Orchestrator] Workspace child agent ${agentId} failed:`, err);
-            this.handleChildError(agentId, err);
-          }
-        })();
-      }
-    } else if (isClaudeCode) {
+    if (isClaudeCode) {
       const mcpConfigJson = JSON.stringify({
         mcpServers: {
           routa: { url: mcpUrl, type: "http" },
@@ -754,36 +726,9 @@ export class RoutaOrchestrator {
         })();
       }
     } else {
-      acpSessionId = await this.processManager.createSession(
-        sessionId,
-        cwd,
-        notificationHandler,
-        provider,
-        undefined, // initialModeId
-        undefined, // extraArgs
-        undefined, // extraEnv
-        workspaceId,
+      throw new Error(
+        `Unsupported provider for child agent: ${provider}. Only claude and claude-code-sdk are supported.`,
       );
-
-      // Send the initial prompt and handle completion
-      const proc = this.processManager.getProcess(sessionId);
-      if (proc) {
-        proc.prompt(acpSessionId, initialPrompt)
-          .then((result) => {
-            console.log(
-              `[Orchestrator] Child agent ${agentId} prompt completed:`,
-              JSON.stringify(result).slice(0, 200)
-            );
-            this.autoReportIfNeeded(agentId);
-          })
-          .catch((err) => {
-            console.error(
-              `[Orchestrator] Child agent ${agentId} prompt failed:`,
-              err
-            );
-            this.handleChildError(agentId, err);
-          });
-      }
     }
 
     console.log(
@@ -1156,50 +1101,10 @@ export class RoutaOrchestrator {
           `[Orchestrator] Claude Code SDK adapter not available for session ${sessionId}`
         );
       }
-    } else if (manager.isOpencodeAdapterSession(sessionId)) {
-      const adapter = manager.getOpencodeAdapter(sessionId);
-      if (adapter && adapter.alive) {
-        const acpSessionId = manager.getAcpSessionId(sessionId);
-        if (acpSessionId) {
-          // Use the adapter's prompt method
-          await (adapter as unknown as { prompt: (s: string, t: string) => Promise<unknown> }).prompt(
-            acpSessionId,
-            prompt
-          );
-        }
-      }
-    } else if (manager.isDockerAdapterSession(sessionId)) {
-      const adapter = manager.getDockerAdapter(sessionId);
-      if (adapter && adapter.alive) {
-        for await (const _ of adapter.promptStream(prompt, sessionId)) {
-          // notifications are forwarded by the adapter
-        }
-      } else {
-        console.error(
-          `[Orchestrator] Docker adapter not available for session ${sessionId}`
-        );
-      }
-    } else if (manager.getWorkspaceAgent(sessionId)) {
-      const workspaceAgent = manager.getWorkspaceAgent(sessionId);
-      if (workspaceAgent) {
-        for await (const _ of workspaceAgent.promptStream(prompt, sessionId)) {
-          // notifications are forwarded by the adapter
-        }
-      } else {
-        console.error(
-          `[Orchestrator] Workspace agent not available for session ${sessionId}`
-        );
-      }
     } else {
-      const proc = manager.getProcess(sessionId);
-      const acpSessionId = manager.getAcpSessionId(sessionId);
-      if (proc && acpSessionId && proc.alive) {
-        await proc.prompt(acpSessionId, prompt);
-      } else {
-        console.error(
-          `[Orchestrator] ACP process not available for session ${sessionId}`
-        );
-      }
+      console.error(
+        `[Orchestrator] No supported session type found for session ${sessionId}`
+      );
     }
   }
 

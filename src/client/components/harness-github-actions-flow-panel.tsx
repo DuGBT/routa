@@ -152,7 +152,7 @@ export function HarnessGitHubActionsFlowPanel({
             ? t.harness.githubActions.noWorkflowsFound
             : `${visibleFlows.length} ${visibleFlows.length !== 1 ? t.harness.githubActions.workflows : t.harness.githubActions.workflow}`;
   const stateBadge = (
-    <span className="text-[10px] text-desktop-text-secondary">
+    <span className="text-[10px] text-slate-700 dark:text-slate-400">
       {flowsSummary}
     </span>
   );

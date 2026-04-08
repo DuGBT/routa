@@ -285,16 +285,16 @@ function TracePageContent() {
       titleBarRight={(
         <Link
           href="/"
-          className="rounded px-2.5 py-1 text-[11px] text-desktop-text-secondary transition-colors hover:bg-desktop-bg-active hover:text-desktop-text-primary"
-          title={t.trace.backToHome}
+          className="rounded px-2.5 py-1 text-[11px] text-slate-700 dark:text-slate-400 transition-colors hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200"
+ title={t.trace.backToHome}
         >
           {t.trace.home}
         </Link>
       )}
     >
       <div
-        className="flex h-full flex-col overflow-hidden bg-desktop-bg-primary"
-        data-testid="traces-page-shell"
+        className="flex h-full flex-col overflow-hidden bg-slate-50 dark:bg-slate-900"
+ data-testid="traces-page-shell"
         data-snapshot-ready={snapshotReady ? "true" : "false"}
       >
         <TracesPageHeader
@@ -313,12 +313,12 @@ function TracePageContent() {
         <div className="flex-1 flex min-h-0">
           {/* Session Sidebar */}
           {showSidebar && (
-            <aside className="flex w-80 flex-col border-r border-desktop-border bg-desktop-bg-primary">
-              <div className="border-b border-desktop-border px-4 py-3">
-                <h2 className="text-xs font-semibold text-desktop-text-primary">
+            <aside className="flex w-80 flex-col border-r border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+              <div className="border-b border-slate-300 dark:border-slate-700 px-4 py-3">
+                <h2 className="text-xs font-semibold text-slate-900 dark:text-slate-200">
                   {t.trace.sessions}
                 </h2>
-                <p className="mt-0.5 text-[11px] text-desktop-text-secondary">
+                <p className="mt-0.5 text-[11px] text-slate-700 dark:text-slate-400">
                   {sessions.length === 1 ? t.trace.sessionFound : t.trace.sessionsFound.replace("{count}", String(sessions.length))}
                 </p>
               </div>
@@ -326,18 +326,18 @@ function TracePageContent() {
               <div className="flex-1 overflow-y-auto">
                 {loading && sessions.length === 0 ? (
                   <div className="p-4 text-center">
-                    <p className="text-xs text-desktop-text-secondary">{t.trace.loadingSessions}</p>
+                    <p className="text-xs text-slate-700 dark:text-slate-400">{t.trace.loadingSessions}</p>
                   </div>
                 ) : sessions.length === 0 ? (
                   <div className="p-4 text-center">
-                    <FileText className="mx-auto mb-3 h-12 w-12 text-desktop-text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
-                    <p className="text-xs text-desktop-text-secondary">{t.trace.noSessionsFound}</p>
-                    <p className="mt-1 text-[10px] text-desktop-text-muted">
+                    <FileText className="mx-auto mb-3 h-12 w-12 text-slate-900 dark:text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
+                    <p className="text-xs text-slate-700 dark:text-slate-400">{t.trace.noSessionsFound}</p>
+                    <p className="mt-1 text-[10px] text-slate-500">
                       {t.trace.startConversationHint}
                     </p>
                   </div>
                 ) : (
-                  <div className="divide-y divide-desktop-border">
+                  <div className="divide-y divide-border">
                     {(() => {
                       // Separate top-level (parent) sessions from child sessions
                       const parentSessions = sessions.filter((s) => !s.parentSessionId);
@@ -363,27 +363,27 @@ function TracePageContent() {
                           <div key={session.sessionId}>
                             <button
                               onClick={() => handleSessionSelect(session.sessionId)}
-                              className={`w-full px-4 py-3 text-left transition-colors hover:bg-desktop-bg-active/70 ${
-                                isChild ? "pl-8 py-2" : ""
-                              } ${
+                              className={`w-full px-4 py-3 text-left transition-colors hover:bg-blue-100 dark:bg-blue-900/70 ${
+ isChild ? "pl-8 py-2" : ""
+ } ${
                                 selectedSessionId === session.sessionId
-                                  ? "border-l-2 border-desktop-accent bg-desktop-bg-active"
+                                  ? "border-l-2 border-blue-500 bg-blue-100 dark:bg-blue-900"
                                   : ""
                               }`}
                             >
                               <div className="flex items-start justify-between gap-2 mb-1">
-                                <span className="truncate text-xs font-medium text-desktop-text-primary">
+                                <span className="truncate text-xs font-medium text-slate-900 dark:text-slate-200">
                                   {session.name || (
                                     <code className="font-mono">
                                       {session.sessionId.slice(0, 8)}…
                                     </code>
                                   )}
                                 </span>
-                                <span className="shrink-0 text-[10px] font-medium text-desktop-text-secondary">
+                                <span className="shrink-0 text-[10px] font-medium text-slate-700 dark:text-slate-400">
                                   {session.count}
                                 </span>
                               </div>
-                              <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-desktop-text-secondary">
+                              <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-slate-700 dark:text-slate-400">
                                 <span>{formatTimestamp(session.lastTimestamp)}</span>
                                 {session.role && (
                                   <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${roleClass}`}>
@@ -391,7 +391,7 @@ function TracePageContent() {
                                   </span>
                                 )}
                                 {session.provider && (
-                                  <span className="rounded bg-desktop-bg-secondary px-1.5 py-0.5 text-[10px] text-desktop-text-secondary">
+                                  <span className="rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-700 dark:text-slate-400">
                                     {session.provider}
                                   </span>
                                 )}
@@ -399,7 +399,7 @@ function TracePageContent() {
                             </button>
                             {/* Child sessions indented under parent */}
                             {!isChild && childSessionMap.has(session.sessionId) && (
-                              <div className="ml-4 border-l-2 border-desktop-border">
+                              <div className="ml-4 border-l-2 border-slate-300 dark:border-slate-700">
                                 {(childSessionMap.get(session.sessionId) ?? []).map((child) => renderSession(child, true))}
                               </div>
                             )}
@@ -422,7 +422,7 @@ function TracePageContent() {
           )}
 
           {/* Trace Panel */}
-          <section className="flex-1 min-w-0 bg-desktop-bg-primary" aria-label="Trace content">
+          <section className="flex-1 min-w-0 bg-slate-50 dark:bg-slate-900" aria-label="Trace content">
             {selectedSessionId ? (
               <>
                 {activeTab === "chat" && (
@@ -435,11 +435,11 @@ function TracePageContent() {
             ) : (
               <div className="h-full flex items-center justify-center p-8">
                 <div className="text-center">
-                  <FileText className="mx-auto mb-4 h-16 w-16 text-desktop-text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
-                  <p className="mb-2 text-[13px] text-desktop-text-secondary">
+                  <FileText className="mx-auto mb-4 h-16 w-16 text-slate-900 dark:text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
+                  <p className="mb-2 text-[13px] text-slate-700 dark:text-slate-400">
                     {t.trace.noSessionSelected}
                   </p>
-                  <p className="text-xs text-desktop-text-muted">
+                  <p className="text-xs text-slate-500">
                     {t.trace.selectSessionHint}
                   </p>
                 </div>
@@ -456,10 +456,10 @@ function TracePageContent() {
 export default function TracePage() {
   return (
     <Suspense fallback={
-      <div className="desktop-theme flex h-screen items-center justify-center bg-desktop-bg-primary">
+      <div className=" flex h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-desktop-accent border-t-transparent" />
-          <p className="text-sm text-desktop-text-secondary">Loading...</p>
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+          <p className="text-sm text-slate-700 dark:text-slate-400">Loading...</p>
         </div>
       </div>
     }>

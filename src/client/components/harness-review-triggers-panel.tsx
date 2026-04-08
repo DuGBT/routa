@@ -62,34 +62,34 @@ const TONE_STYLES: Record<
   danger: {
     pill: "border-rose-200 bg-rose-50 text-rose-700",
     bar: "bg-rose-500/85",
-    border: "border-desktop-border",
+    border: "border-slate-300 dark:border-slate-700",
     accent: "bg-rose-100/80",
     tag: "border-rose-200 bg-rose-50/70 text-rose-700",
-    detailSurface: "border-rose-100/80 bg-desktop-bg-primary/85",
+    detailSurface: "border-rose-100/80 bg-slate-50 dark:bg-slate-900/85",
   },
   warning: {
     pill: "border-amber-200 bg-amber-50 text-amber-800",
     bar: "bg-amber-500/85",
-    border: "border-desktop-border",
+    border: "border-slate-300 dark:border-slate-700",
     accent: "bg-amber-100/85",
     tag: "border-amber-200 bg-amber-50/70 text-amber-800",
-    detailSurface: "border-amber-100/80 bg-desktop-bg-primary/85",
+    detailSurface: "border-amber-100/80 bg-slate-50 dark:bg-slate-900/85",
   },
   info: {
     pill: "border-sky-200 bg-sky-50 text-sky-700",
     bar: "bg-sky-500/85",
-    border: "border-desktop-border",
+    border: "border-slate-300 dark:border-slate-700",
     accent: "bg-sky-100/85",
     tag: "border-sky-200 bg-sky-50/70 text-sky-700",
-    detailSurface: "border-sky-100/80 bg-desktop-bg-primary/85",
+    detailSurface: "border-sky-100/80 bg-slate-50 dark:bg-slate-900/85",
   },
   success: {
     pill: "border-emerald-200 bg-emerald-50 text-emerald-700",
     bar: "bg-emerald-500/85",
-    border: "border-desktop-border",
+    border: "border-slate-300 dark:border-slate-700",
     accent: "bg-emerald-100/85",
     tag: "border-emerald-200 bg-emerald-50/70 text-emerald-700",
-    detailSurface: "border-emerald-100/80 bg-desktop-bg-primary/85",
+    detailSurface: "border-emerald-100/80 bg-slate-50 dark:bg-slate-900/85",
   },
 };
 
@@ -337,7 +337,7 @@ function buildCompactPreviewSections(card: ReviewDimensionCard, labels: { hooks:
 
 function DetailLabel({ children }: { children: string }) {
   return (
-    <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">
+    <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">
       {children}
     </div>
   );
@@ -408,8 +408,8 @@ function BoundaryGroup({
       <DetailLabel>{label}</DetailLabel>
       <div className="mt-1.5 grid gap-1.5">
         {boundaries.map((boundary) => (
-          <div key={boundary.name} className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-2.5 py-2">
-            <div className="text-[10px] font-medium text-desktop-text-primary">
+          <div key={boundary.name} className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-2.5 py-2">
+            <div className="text-[10px] font-medium text-slate-900 dark:text-slate-200">
               {formatTokenLabel(boundary.name)}
             </div>
             <CodeTokens items={boundary.paths} tone={tone} />
@@ -435,12 +435,12 @@ function RuleDetailCard({
   return (
     <div className={`rounded-sm border px-3 py-2.5 ${styles.detailSurface}`}>
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <div className="text-[11px] font-semibold text-desktop-text-primary">{formatRuleLabel(rule.name)}</div>
+        <div className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{formatRuleLabel(rule.name)}</div>
         <div className="flex flex-wrap gap-1">
           <span className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold ${styles.pill}`}>
             {rule.severity}
           </span>
-          <span className="rounded-full border border-desktop-border bg-desktop-bg-primary px-2 py-0.5 text-[9px] text-desktop-text-secondary">
+          <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2 py-0.5 text-[9px] text-slate-700 dark:text-slate-400">
             {formatTokenLabel(rule.type)}
           </span>
         </div>
@@ -472,7 +472,7 @@ function RoutingDetailCard({
         <div className="grid gap-2">
           {details.profiles.map((profile) => (
             <div key={profile.name} className={`rounded-sm border px-3 py-2.5 ${TONE_STYLES[tone].detailSurface}`}>
-              <div className="text-[11px] font-semibold text-desktop-text-primary">
+              <div className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">
                 {formatTokenLabel(profile.name)}
               </div>
               <DetailGroup label="Phases" items={profile.phases.map(formatTokenLabel)} tone={tone} />
@@ -491,7 +491,7 @@ function RoutingDetailCard({
         <div className="grid gap-2">
           {details.hookFiles.map((file) => (
             <div key={file.relativePath} className={`rounded-sm border px-3 py-2.5 ${TONE_STYLES[tone].detailSurface}`}>
-              <div className="text-[11px] font-semibold text-desktop-text-primary">{file.relativePath}</div>
+              <div className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{file.relativePath}</div>
               <DetailGroup label={labels.triggerCommand} items={[file.triggerCommand]} tone={tone} />
             </div>
           ))}
@@ -561,8 +561,8 @@ export function HarnessReviewTriggersPanel({
         canToggleDetails && reviewTriggerFile && reviewTriggerFile.rules.length ? (
           <button
             type="button"
-            className="rounded-sm border border-desktop-border bg-desktop-bg-primary/65 px-2.5 py-1 text-[10px] font-semibold text-desktop-text-primary transition-colors hover:bg-desktop-bg-primary"
-            onClick={() => setShowDetails((current) => !current)}
+            className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/65 px-2.5 py-1 text-[10px] font-semibold text-slate-900 dark:text-slate-200 transition-colors hover:bg-slate-50 dark:bg-slate-900"
+ onClick={() => setShowDetails((current) => !current)}
           >
             {detailsVisible ? t.harness.reviewTriggers.hideDetails : t.harness.reviewTriggers.showDetails}
           </button>
@@ -600,7 +600,7 @@ export function HarnessReviewTriggersPanel({
             return (
               <article
                 key={card.key}
-                className={`rounded-sm border bg-desktop-bg-primary/80 px-3.5 py-3 ${styles.border}`}
+                className={`rounded-sm border bg-slate-50 dark:bg-slate-900/80 px-3.5 py-3 ${styles.border}`}
               >
                 <div className={`mb-3 h-1 rounded-sm ${styles.accent}`} aria-hidden="true">
                   <div
@@ -610,16 +610,16 @@ export function HarnessReviewTriggersPanel({
                 </div>
 
                 <div className="flex items-start justify-between gap-2">
-                  <h4 className="text-[14px] font-semibold text-desktop-text-primary">{card.title}</h4>
+                  <h4 className="text-[14px] font-semibold text-slate-900 dark:text-slate-200">{card.title}</h4>
                   <span className={`rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${styles.pill}`}>
                     {card.value}
                   </span>
                 </div>
 
-                <p className="mt-1.5 text-[11px] leading-4 text-desktop-text-secondary">{card.subtitle}</p>
+                <p className="mt-1.5 text-[11px] leading-4 text-slate-700 dark:text-slate-400">{card.subtitle}</p>
 
                 {detailsVisible ? (
-                  <div className="mt-2.5 border-t border-desktop-border pt-2.5">
+                  <div className="mt-2.5 border-t border-slate-300 dark:border-slate-700 pt-2.5">
                     {card.key === "routing" && card.routingDetails ? (
                       <RoutingDetailCard details={card.routingDetails} tone={card.tone} labels={{
                         hooks: t.harness.reviewTriggers.compactHooks,

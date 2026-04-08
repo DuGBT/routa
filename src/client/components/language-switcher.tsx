@@ -18,10 +18,10 @@ export function LanguageSwitcher() {
           type="button"
           onClick={() => setLocale(loc)}
           className={`rounded-md px-2 py-1 text-[10px] font-medium transition-colors ${
-            locale === loc
-              ? "bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100"
-              : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-          }`}
+ locale === loc
+ ? "bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100"
+ : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+ }`}
         >
           {LOCALE_LABELS[loc]}
         </button>

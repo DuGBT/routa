@@ -7,7 +7,6 @@ const meta = {
   component: DesktopSidebar,
   tags: ["autodocs"],
   parameters: {
-    desktopTheme: true,
     layout: "centered",
     nextjs: {
       navigation: {
@@ -17,7 +16,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="desktop-theme h-[640px] w-12 border border-desktop-border">
+      <div className=" h-[640px] w-12 border border-slate-300 dark:border-slate-700">
         <Story />
       </div>
     ),
@@ -47,8 +46,8 @@ export const HoverState: Story = {
   play: async ({ canvasElement }) => {
     const settingsLink = canvasElement.querySelector('a[title="Settings"]');
     if (settingsLink instanceof HTMLElement) {
-      settingsLink.style.backgroundColor = "var(--dt-bg-active)";
-      settingsLink.style.color = "var(--dt-text-primary)";
+      settingsLink.style.backgroundColor = "var(--color-blue-100)";
+      settingsLink.style.color = "var(--color-blue-700)";
     }
   },
 };

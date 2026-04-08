@@ -278,7 +278,7 @@ export async function executeMcpTool(
         await tools.requestArtifact({
           fromAgentId: args.fromAgentId as string,
           toAgentId: args.toAgentId as string,
-          artifactType: args.artifactType as "screenshot" | "test_results" | "code_diff" | "logs",
+          artifactType: args.artifactType as "screenshot" | "test_results" | "code_diff" | "logs" | "document",
           taskId: args.taskId as string,
           workspaceId: (args.workspaceId as string) ?? workspace,
           context: args.context as string | undefined,
@@ -288,7 +288,7 @@ export async function executeMcpTool(
       return formatResult(
         await tools.provideArtifact({
           agentId: args.agentId as string,
-          type: args.type as "screenshot" | "test_results" | "code_diff" | "logs",
+          type: args.type as "screenshot" | "test_results" | "code_diff" | "logs" | "document",
           taskId: args.taskId as string,
           workspaceId: (args.workspaceId as string) ?? workspace,
           content: args.content as string,
@@ -301,7 +301,7 @@ export async function executeMcpTool(
       return formatResult(
         await tools.listArtifacts({
           taskId: args.taskId as string,
-          type: args.type as "screenshot" | "test_results" | "code_diff" | "logs" | undefined,
+          type: args.type as "screenshot" | "test_results" | "code_diff" | "logs" | "document" | undefined,
         })
       );
     case "get_artifact":
@@ -569,6 +569,156 @@ export async function executeMcpTool(
         })
       );
 
+    // ── Knowledge base tools ─────────────────────────────────────────
+    case "query_knowledge_base": {
+      const { buildHybridKbIndex, queryKb } = await import("@/core/knowledge");
+      const { getRoutaSystem } = await import("../routa-system");
+      const system = getRoutaSystem();
+      const index = await buildHybridKbIndex({
+        workspaceId: workspace,
+        noteStore: system.noteStore,
+        repoRoot: process.cwd(),
+      });
+      const kbQuery = args.query as string | undefined;
+      if (!kbQuery) {
+        return formatResult({ success: false, error: "query is required" });
+      }
+      const kbTags = args.tags as string[] | undefined;
+      const kbLimit = typeof args.limit === "number" ? Math.min(args.limit, 20) : 5;
+      const result = queryKb(index, kbQuery, kbTags, kbLimit);
+      return formatResult({ success: true, data: result });
+    }
+    case "kb_health_check": {
+      const { loadWikiEntries, loadNoteKbEntries, checkLinkHealth, getWikiDir } =
+        await import("@/core/knowledge");
+      const { getRoutaSystem } = await import("../routa-system");
+      const system = getRoutaSystem();
+      const fsEntries = loadWikiEntries(getWikiDir(process.cwd()));
+      const noteEntries = await loadNoteKbEntries(system.noteStore, workspace);
+      // Workspace-wins dedup: notes override fs entries with the same slug
+      const bySlug = new Map<string, (typeof fsEntries)[number]>();
+      for (const e of fsEntries) bySlug.set(e.slug, e);
+      for (const e of noteEntries) bySlug.set(e.slug, e);
+      const entries = [...bySlug.values()];
+
+      const slugFilter = args.slugs as string[] | undefined;
+      const filtered = slugFilter
+        ? entries.filter((e) => slugFilter.includes(e.slug))
+        : entries;
+      const reportEntries = await Promise.all(
+        filtered.map(async (entry) => {
+          const links = await Promise.all(
+            entry.source_urls.map(async (url) => ({
+              url,
+              status: await checkLinkHealth(url),
+              checkedAt: new Date().toISOString(),
+            })),
+          );
+          const issues: string[] = [];
+          for (const link of links) {
+            if (link.status === "broken") issues.push(`Broken link: ${link.url}`);
+          }
+          for (const refSlug of entry.crossRefs) {
+            if (!entries.some((e) => e.slug === refSlug)) {
+              issues.push(`Broken cross-reference: [[${refSlug}]]`);
+            }
+          }
+          return { slug: entry.slug, title: entry.title, health: entry.health, links, issues };
+        }),
+      );
+      return formatResult({
+        success: true,
+        data: {
+          checkedAt: new Date().toISOString(),
+          entries: reportEntries,
+          summary: {
+            total: filtered.length,
+            good: filtered.filter((e) => e.health === "good").length,
+            stale: filtered.filter((e) => e.health === "stale").length,
+            broken: filtered.filter((e) => e.health === "broken").length,
+            unknown: filtered.filter((e) => e.health === "unknown").length,
+          },
+        },
+      });
+    }
+
+    // ── Knowledge base: promote document artifact to wiki ──────────
+    case "promote_document_to_wiki": {
+      const artifactId = args.artifactId as string;
+      const slugArg = args.slug as string;
+      if (!artifactId || !slugArg) {
+        return formatResult({ success: false, error: "artifactId and slug are required" });
+      }
+      if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(slugArg)) {
+        return formatResult({ success: false, error: "slug must be kebab-case (lowercase, hyphens, 2+ chars)" });
+      }
+      const artifact = await tools.getArtifact(artifactId);
+      if (!artifact || typeof artifact !== "object" || !("data" in artifact)) {
+        return formatResult({ success: false, error: `Artifact ${artifactId} not found` });
+      }
+      const data = artifact.data as { type?: string; content?: string };
+      if (data.type !== "document") {
+        return formatResult({
+          success: false,
+          error: `Artifact ${artifactId} is type "${data.type}", only "document" can be promoted`,
+        });
+      }
+      if (!data.content) {
+        return formatResult({ success: false, error: `Artifact ${artifactId} has no content` });
+      }
+
+      const { extractMarkdownFrontmatter } = await import("@/core/knowledge");
+      const extracted = extractMarkdownFrontmatter(data.content);
+      if (!extracted) {
+        return formatResult({
+          success: false,
+          error: `Artifact ${artifactId} content is missing required YAML frontmatter (title:, slug:)`,
+        });
+      }
+
+      // The slug arg overrides whatever the YAML claims, for safety.
+      const finalFrontmatter = { ...extracted.frontmatter, slug: slugArg };
+
+      // Use a deterministic noteId so duplicate detection is a single get().
+      const noteId = `wiki-${slugArg}`;
+      const { getRoutaSystem } = await import("../routa-system");
+      const system = getRoutaSystem();
+      const existing = await system.noteStore.get(noteId, workspace);
+      if (existing) {
+        return formatResult({
+          success: false,
+          error: `Wiki entry already exists in this workspace: ${slugArg} — update the note directly`,
+        });
+      }
+
+      const result = await system.noteTools.createNote({
+        title: extracted.title,
+        content: extracted.body,
+        workspaceId: workspace,
+        noteId,
+        type: "general",
+        wikiFrontmatter: finalFrontmatter,
+      });
+
+      if (!result.success) {
+        return formatResult({
+          success: false,
+          error: `Failed to create wiki note: ${result.error ?? "unknown error"}`,
+        });
+      }
+
+      return formatResult({
+        success: true,
+        data: {
+          slug: slugArg,
+          noteId,
+          workspaceId: workspace,
+          artifactId,
+          title: extracted.title,
+        },
+      });
+    }
+
     default:
       return {
         content: [{ type: "text", text: `Unknown tool: ${name}` }],
@@ -613,6 +763,42 @@ export function getMcpToolDefinitions(
           query: { type: "string", description: "Optional search query to help focus on relevant content" },
         },
         required: ["url"],
+      },
+    },
+    // ── Knowledge base tools ────────────────────────────────────────
+    {
+      name: "query_knowledge_base",
+      description: "Search this workspace's knowledge base for reference material. Pulls from a hybrid index of workspace-private wiki notes (created by promote_document_to_wiki or knowledge curation) and the repo-level shared wiki at docs/references/wiki/. Returns matching entries with summaries. Use this to find protocols, framework docs, or technical references before implementing.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "Search query — terms to match against entry titles, summaries, and tags" },
+          tags: { type: "array", items: { type: "string" }, description: "Filter by tags (e.g., ['acp', 'tauri'])" },
+          limit: { type: "number", description: "Max results to return (default: 5, max: 20)" },
+        },
+        required: ["query"],
+      },
+    },
+    {
+      name: "kb_health_check",
+      description: "Check the health of knowledge base entries (workspace notes ∪ shared fs wiki): verify source URLs, cross-references, and entry metadata. Optionally filter by slugs.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          slugs: { type: "array", items: { type: "string" }, description: "Optional list of slugs to check (checks all if omitted)" },
+        },
+      },
+    },
+    {
+      name: "promote_document_to_wiki",
+      description: "Promote a document-type artifact into this workspace's knowledge base. The artifact content must be markdown with YAML frontmatter (title, slug, tags, source_urls, health, …). Creates a new wiki note with id 'wiki-<slug>' carrying structured wikiFrontmatter. Does not overwrite existing wiki notes in the same workspace.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          artifactId: { type: "string", description: "ID of the document-type artifact to promote" },
+          slug: { type: "string", description: "Target wiki entry slug (kebab-case, e.g. 'acp-protocol'). Overrides the slug in the YAML frontmatter for safety." },
+        },
+        required: ["artifactId", "slug"],
       },
     },
     // ── Task tools ──────────────────────────────────────────────────
@@ -1067,7 +1253,7 @@ export function getMcpToolDefinitions(
         properties: {
           fromAgentId: { type: "string", description: "ID of the requesting agent" },
           toAgentId: { type: "string", description: "ID of the agent to provide the artifact" },
-          artifactType: { type: "string", enum: ["screenshot", "test_results", "code_diff", "logs"], description: "Artifact type" },
+          artifactType: { type: "string", enum: ["screenshot", "test_results", "code_diff", "logs", "document"], description: "Artifact type" },
           taskId: { type: "string", description: "Task/card ID" },
           context: { type: "string", description: "Context or instructions for the request" },
         },
@@ -1081,7 +1267,7 @@ export function getMcpToolDefinitions(
         type: "object",
         properties: {
           agentId: { type: "string", description: "ID of the providing agent" },
-          type: { type: "string", enum: ["screenshot", "test_results", "code_diff", "logs"], description: "Artifact type" },
+          type: { type: "string", enum: ["screenshot", "test_results", "code_diff", "logs", "document"], description: "Artifact type" },
           taskId: { type: "string", description: "Task/card ID" },
           content: { type: "string", description: "Artifact content. Use base64 for screenshots." },
           context: { type: "string", description: "Description or context" },
@@ -1098,7 +1284,7 @@ export function getMcpToolDefinitions(
         type: "object",
         properties: {
           taskId: { type: "string", description: "Task/card ID" },
-          type: { type: "string", enum: ["screenshot", "test_results", "code_diff", "logs"], description: "Optional artifact type filter" },
+          type: { type: "string", enum: ["screenshot", "test_results", "code_diff", "logs", "document"], description: "Optional artifact type filter" },
         },
         required: ["taskId"],
       },

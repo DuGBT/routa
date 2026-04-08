@@ -66,7 +66,7 @@ const RECOMMENDED_AUTOMATION_BY_STAGE: Partial<Record<KanbanColumnStage, KanbanC
       },
     ],
     transitionType: "entry",
-    requiredArtifacts: ["screenshot", "test_results"],
+    requiredArtifacts: [],
     autoAdvanceOnSuccess: false,
   },
   blocked: {

@@ -245,7 +245,7 @@ export function PtyTerminal({
       <div
         ref={containerRef}
         className="w-full bg-[#0d1117]"
-        style={{
+ style={{
           minHeight: "300px",
           maxHeight: "600px",
         }}

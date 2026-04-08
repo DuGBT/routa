@@ -267,11 +267,11 @@ export function KanbanCard({
       tabIndex={0}
       aria-label={`${t.kanban.openCard} ${task.title}`}
       className="group relative flex cursor-grab flex-col gap-3 border border-slate-200/80 bg-white/90 p-3.5 transition duration-150 hover:border-slate-300 hover:bg-white active:cursor-grabbing focus:outline-none focus:ring-2 focus:ring-amber-400/50 dark:border-[#262938] dark:bg-[#0d1018] dark:hover:border-[#34384a]"
-      data-testid="kanban-card"
+ data-testid="kanban-card"
     >
       <div
         className="pointer-events-none absolute left-2.5 top-2.5 rounded-md p-1 text-slate-400 opacity-0 transition-opacity group-hover:opacity-100 dark:text-slate-500"
-        title={t.kanban.dragCard}
+ title={t.kanban.dragCard}
         aria-label={t.kanban.dragCard}
       >
         <GripVertical className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
@@ -283,7 +283,7 @@ export function KanbanCard({
           onDelete();
         }}
         className="absolute right-2.5 top-2.5 rounded-lg p-1 text-red-500 opacity-0 transition-all hover:bg-red-100 hover:text-red-600 group-hover:opacity-100 dark:text-red-400 dark:hover:bg-red-900/20"
-        title={t.kanban.deleteTask}
+ title={t.kanban.deleteTask}
         data-testid="kanban-card-delete"
       >
         <Trash2 className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"/>
@@ -299,9 +299,9 @@ export function KanbanCard({
                 rel="noreferrer"
                 onClick={stopCardInteraction}
                 className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ring-1 ring-inset hover:opacity-80 ${task.isPullRequest
-                  ? "bg-purple-50 text-purple-700 ring-purple-200 dark:bg-purple-900/20 dark:text-purple-300 dark:ring-purple-900/40"
-                  : "bg-amber-50 text-amber-700 ring-amber-200 hover:bg-amber-100 dark:bg-amber-900/20 dark:text-amber-300 dark:ring-amber-900/40"
-                }`}
+ ? "bg-purple-50 text-purple-700 ring-purple-200 dark:bg-purple-900/20 dark:text-purple-300 dark:ring-purple-900/40"
+ : "bg-amber-50 text-amber-700 ring-amber-200 hover:bg-amber-100 dark:bg-amber-900/20 dark:text-amber-300 dark:ring-amber-900/40"
+ }`}
               >
                 {task.isPullRequest ? `PR #${task.githubNumber}` : `Issue #${task.githubNumber}`}
               </a>
@@ -336,7 +336,7 @@ export function KanbanCard({
           {artifactCount > 0 && (
             <span
               className="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600 ring-1 ring-inset ring-slate-200 dark:bg-[#181c28] dark:text-slate-300 dark:ring-white/5"
-              title={artifactCountTooltip}
+ title={artifactCountTooltip}
               data-testid="kanban-card-artifact-count"
             >
               {artifactCountLabel}
@@ -353,7 +353,7 @@ export function KanbanCard({
           </div>
           <div
             className="mt-1 line-clamp-2 font-mono text-[12px] leading-5 text-sky-700 dark:text-sky-200"
-            title={liveMessageTail}
+ title={liveMessageTail}
             data-testid="kanban-card-live-tail"
           >
             {liveMessageTail}
@@ -384,7 +384,7 @@ export function KanbanCard({
               <span
                 key={cbId}
                 className="inline-flex items-center gap-1 rounded-full bg-blue-100/90 px-2 py-0.5 text-[10px] font-medium text-blue-700 ring-1 ring-inset ring-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:ring-blue-900/40"
-                data-testid="repo-badge"
+ data-testid="repo-badge"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                 {cb.label ?? cb.repoPath.split("/").pop() ?? cb.repoPath}
@@ -412,9 +412,9 @@ export function KanbanCard({
               onClick={() => void onRetryTrigger(task.id)}
               onClickCapture={stopCardInteraction}
               className={`shrink-0 rounded-full px-3 py-1 text-[11px] font-medium ${canRetry
-                ? "border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:border-amber-800/50 dark:bg-amber-900/10 dark:text-amber-300"
-                : "border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:border-emerald-800/50 dark:bg-emerald-900/10 dark:text-emerald-300"
-                }`}
+ ? "border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:border-amber-800/50 dark:bg-amber-900/10 dark:text-amber-300"
+ : "border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:border-emerald-800/50 dark:bg-emerald-900/10 dark:text-emerald-300"
+ }`}
             >
               {canRetry ? t.kanban.rerun : t.kanban.run}
             </button>
@@ -440,7 +440,7 @@ export function KanbanCard({
                 setShowAssignment((current) => !current);
               }}
               className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-medium text-slate-600 transition hover:bg-slate-100 dark:border-gray-700 dark:bg-[#151826] dark:text-slate-300 dark:hover:bg-[#1b1e2b]"
-            >
+ >
               {showAssignment ? t.kanban.done : t.common.edit}
             </button>
           </div>
@@ -459,7 +459,7 @@ export function KanbanCard({
                     void handleProviderChange(event.target.value);
                   }}
                   className="min-w-0 flex-1 truncate bg-transparent text-[11px] font-medium text-slate-700 outline-none disabled:opacity-50 dark:text-slate-200"
-                  aria-label={`ACP provider for ${task.title}`}
+ aria-label={`ACP provider for ${task.title}`}
                   data-testid="kanban-card-acp-select"
                 >
                   <option value="">{t.kanban.useLaneDefault}</option>
@@ -523,7 +523,7 @@ function WorktreeBadge({ task, worktreeCache, onOpenDetail, stopCardInteraction 
       onClick={onOpenDetail}
       onClickCapture={stopCardInteraction}
       className="inline-flex max-w-full items-center gap-1 text-[10px] text-slate-500 transition hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-      title={t.kanban.worktreeLoading}
+ title={t.kanban.worktreeLoading}
       data-testid="worktree-badge"
     >
       <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${wtDotColor}`} />
@@ -577,7 +577,7 @@ function AssignmentSection({
               onRefresh();
             }}
             className="flex-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] text-slate-700 dark:border-gray-700 dark:bg-[#12141c] dark:text-slate-200"
-          >
+ >
             {ROLE_OPTIONS.map((role) => (
               <option key={role} value={role}>{role}</option>
             ))}
@@ -601,7 +601,7 @@ function AssignmentSection({
               onRefresh();
             }}
             className="min-w-0 flex-1 truncate rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] text-slate-700 dark:border-gray-700 dark:bg-[#12141c] dark:text-slate-200"
-          >
+ >
             <option value="">{KANBAN_SPECIALIST_LANGUAGE_LABELS[specialistLanguage].none}</option>
             {specialists.map((specialist) => (
               <option key={specialist.id} value={specialist.id}>

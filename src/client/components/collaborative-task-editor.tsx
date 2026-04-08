@@ -187,7 +187,7 @@ export function CollaborativeTaskEditor({
               <button
                 onClick={toggleSelectAll}
                 className="text-xs font-medium px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-              >
+ >
                 {selectedNoteIds.size === pendingNotes.length ? t.tasks.deselectAll : t.tasks.selectAll}
               </button>
             )}
@@ -195,7 +195,7 @@ export function CollaborativeTaskEditor({
               <button
                 onClick={handleExecuteSelected}
                 className="text-xs font-medium px-2.5 py-1 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-              >
+ >
                 {t.tasks.executeSelected} ({selectedNoteIds.size})
               </button>
             )}
@@ -203,7 +203,7 @@ export function CollaborativeTaskEditor({
               <button
                 onClick={() => onExecuteAll(concurrency)}
                 className="text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
-              >
+ >
                 {t.tasks.executeAll}
               </button>
             )}
@@ -211,8 +211,8 @@ export function CollaborativeTaskEditor({
             <div className="flex items-center gap-1">
               <span
                 className={`w-1.5 h-1.5 rounded-full ${
-                  connected ? "bg-emerald-500" : "bg-slate-400"
-                }`}
+ connected ? "bg-emerald-500" : "bg-slate-400"
+ }`}
               />
               <span className="text-[10px] text-slate-400 dark:text-slate-500">
                 {connected ? t.collaborativeTasks.live : t.collaborativeTasks.off}
@@ -234,10 +234,10 @@ export function CollaborativeTaskEditor({
                 key={n}
                 onClick={() => onConcurrencyChange?.(n)}
                 className={`px-2 py-0.5 text-[11px] font-medium transition-colors ${
-                  concurrency === n
-                    ? "bg-emerald-600 text-white"
-                    : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
-                }`}
+ concurrency === n
+ ? "bg-emerald-600 text-white"
+ : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
+ }`}
               >
                 {n}
               </button>
@@ -302,12 +302,12 @@ export function CollaborativeTaskEditor({
       {specNote && specNote.content && (
         <div
           className="shrink-0 flex flex-col bg-blue-50/50 dark:bg-blue-900/10 relative"
-          style={{ height: specExpanded ? `${specHeight}px` : "auto" }}
+ style={{ height: specExpanded ? `${specHeight}px` : "auto" }}
         >
           {/* Spec Header */}
           <div
             className="flex items-center gap-1.5 px-3 py-2 cursor-pointer hover:bg-blue-100/50 dark:hover:bg-blue-900/20 transition-colors shrink-0"
-            onClick={() => setSpecExpanded((prev) => !prev)}
+ onClick={() => setSpecExpanded((prev) => !prev)}
           >
             <FileText className="w-3 h-3 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider flex-1">
@@ -321,7 +321,7 @@ export function CollaborativeTaskEditor({
                 }}
                 title="Delete spec"
                 className="p-0.5 rounded text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-              >
+ >
                 <X className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
               </button>
             )}
@@ -333,7 +333,7 @@ export function CollaborativeTaskEditor({
               <MarkdownViewer
                 content={specNote.content}
                 className="text-[11px] text-slate-600 dark:text-slate-400"
-              />
+ />
             </div>
           ) : (
             <div className="px-3 pb-2">
@@ -341,7 +341,7 @@ export function CollaborativeTaskEditor({
                 <MarkdownViewer
                   content={specNote.content.slice(0, 200) + (specNote.content.length > 200 ? "..." : "")}
                   className="text-[11px]"
-                />
+ />
               </div>
             </div>
           )}
@@ -349,7 +349,7 @@ export function CollaborativeTaskEditor({
           {specExpanded && (
             <div
               className="absolute left-0 right-0 bottom-0 h-1 cursor-row-resize z-20 hover:bg-blue-500/30 active:bg-blue-500/50 transition-colors group"
-              onMouseDown={handleVerticalResizeStart}
+ onMouseDown={handleVerticalResizeStart}
             >
               <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-8 h-1 rounded-full bg-slate-300 dark:bg-slate-600 group-hover:bg-blue-400 group-active:bg-blue-500 transition-colors" />
             </div>
@@ -637,24 +637,24 @@ function TaskNoteCard({
       {/* Header */}
       <div
         className="flex items-start gap-2.5 px-3 py-2.5 cursor-pointer hover:bg-black/2 dark:hover:bg-white/2 transition-colors"
-        onClick={onToggleExpand}
+ onClick={onToggleExpand}
       >
         {onToggleSelect && status === "PENDING" ? (
           <label
             className="shrink-0 cursor-pointer"
-            onClick={(e) => e.stopPropagation()}
+ onClick={(e) => e.stopPropagation()}
           >
             <input
               type="checkbox"
               checked={!!selected}
               onChange={() => onToggleSelect()}
               className="sr-only peer"
-            />
+ />
             <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${
-              selected
-                ? "bg-blue-600 border-blue-600"
-                : "border-slate-300 dark:border-slate-600 hover:border-blue-400"
-            }`}>
+ selected
+ ? "bg-blue-600 border-blue-600"
+ : "border-slate-300 dark:border-slate-600 hover:border-blue-400"
+ }`}>
               {selected && (
                 <Check className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}/>
               )}
@@ -698,7 +698,7 @@ function TaskNoteCard({
             }}
             title="Delete task"
             className="p-0.5 rounded text-slate-300 dark:text-slate-600 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors shrink-0"
-          >
+ >
             <X className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
         )}
@@ -731,7 +731,7 @@ function TaskNoteCard({
                       onExecute();
                     }}
                     className="text-[11px] font-medium px-2 py-1 rounded-md transition-colors bg-emerald-600 text-white hover:bg-emerald-700"
-                  >
+ >
                     {t.tasks.execute}
                   </button>
                 )}
@@ -753,7 +753,7 @@ function TaskNoteCard({
                     onEdit();
                   }}
                   className="text-[11px] font-medium px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-                >
+ >
                   Edit
                 </button>
 
@@ -766,7 +766,7 @@ function TaskNoteCard({
                   }}
                   onClick={(e) => e.stopPropagation()}
                   className="min-w-29.5 text-[11px] px-2 py-1 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300"
-                >
+ >
                   <option value="PENDING">Pending</option>
                   <option value="IN_PROGRESS">In Progress</option>
                   <option value="COMPLETED">Completed</option>
@@ -780,7 +780,7 @@ function TaskNoteCard({
                       onDelete();
                     }}
                     className="text-[11px] font-medium px-2 py-1 rounded-md text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                  >
+ >
                     {t.common.delete}
                   </button>
                 )}
@@ -872,7 +872,7 @@ function TaskNoteEditor({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="mt-0.5 w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-emerald-500 outline-none"
-        />
+ />
       </div>
       <div>
         <label className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase">
@@ -883,7 +883,7 @@ function TaskNoteEditor({
           onChange={(e) => handleContentChange(e.target.value)}
           rows={8}
           className="mt-0.5 w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-emerald-500 outline-none resize-y font-mono"
-          placeholder="Task content (Markdown supported)..."
+ placeholder="Task content (Markdown supported)..."
         />
         <div className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">
           Auto-saves after 1.5s of inactivity
@@ -894,13 +894,13 @@ function TaskNoteEditor({
           onClick={handleSave}
           disabled={saving}
           className="text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors disabled:opacity-50"
-        >
+ >
           {saving ? t.common.loading : t.common.saveAndClose}
         </button>
         <button
           onClick={onCancel}
           className="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-        >
+ >
           {t.common.cancel}
         </button>
       </div>

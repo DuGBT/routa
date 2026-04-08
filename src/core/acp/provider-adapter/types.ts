@@ -2,26 +2,13 @@
  * Provider Adapter Types
  *
  * Defines the unified message format that all ACP providers normalize to.
- * This abstraction allows different providers (Claude Code, OpenCode, Kimi, etc.)
- * to be handled uniformly by the core system.
+ * Currently only Claude Code is supported as a provider.
  */
 
 /**
  * Supported provider types.
- * Each provider may have different message formats and timing behaviors.
  */
-export type ProviderType =
-  | "claude"      // Claude Code - uses stream-json protocol
-  | "opencode"    // OpenCode - standard ACP with deferred rawInput
-  | "docker-opencode" // OpenCode over Docker container HTTP bridge
-  | "kimi"        // Kimi - standard ACP
-  | "gemini"      // Gemini - standard ACP
-  | "copilot"     // GitHub Copilot - standard ACP
-  | "codex"       // OpenAI Codex - standard ACP
-  | "auggie"      // Augment Code - standard ACP
-  | "kiro"        // Amazon Kiro - standard ACP
-  | "workspace"   // Native Workspace Agent - Vercel AI SDK
-  | "standard";   // Generic standard ACP
+export type ProviderType = "claude";
 
 /**
  * Normalized session update event types.
@@ -106,11 +93,7 @@ export interface NormalizedSessionUpdate {
 export interface ProviderBehavior {
   /** Provider type */
   type: ProviderType;
-  /**
-   * Whether tool_call events include rawInput immediately.
-   * - true: rawInput is in tool_call (Claude Code)
-   * - false: rawInput comes in tool_call_update (OpenCode)
-   */
+  /** Whether tool_call events include rawInput immediately. */
   immediateToolInput: boolean;
   /**
    * Whether the provider uses streaming (chunks).

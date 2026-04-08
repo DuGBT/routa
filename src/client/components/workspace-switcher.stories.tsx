@@ -72,9 +72,7 @@ export const DesktopCompact: Story = {
     compact: true,
     desktop: true,
   },
-  parameters: {
-    desktopTheme: true,
-  },
+  parameters: {},
 };
 
 export const EmptyState: Story = {
@@ -92,9 +90,7 @@ export const CreatingWorkspace: Story = {
     desktop: true,
     compact: true,
   },
-  parameters: {
-    desktopTheme: true,
-  },
+  parameters: {},
   play: async ({ canvasElement }) => {
     const buttons = canvasElement.querySelectorAll("button");
     const trigger = buttons.item(0);

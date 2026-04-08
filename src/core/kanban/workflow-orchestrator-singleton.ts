@@ -27,7 +27,7 @@ import {
   type AutomationSpecialistSummary,
 } from "./effective-task-automation";
 import { buildKanbanWorktreeNaming } from "./worktree-naming";
-import { getInternalApiOrigin, triggerAssignedTaskAgent } from "./agent-trigger";
+import { getInternalApiOrigin, triggerAssignedTaskAgent, buildKnowledgeContext } from "./agent-trigger";
 import { KanbanSessionQueue } from "./kanban-session-queue";
 import { getKanbanSessionConcurrencyLimit as getBoardSessionConcurrencyLimit } from "./board-session-limits";
 import { getKanbanDevSessionSupervision } from "./board-session-supervision";
@@ -160,7 +160,7 @@ async function startKanbanTaskSession(
 
   let worktreeCwd = preferredCodebase?.repoPath ?? process.cwd();
   let worktreeBranch = preferredCodebase?.branch;
-  if (params.expectedColumnId === "dev" && preferredCodebase && !nextTask.worktreeId) {
+  if (params.expectedColumnId === "dev" && preferredCodebase && !nextTask.worktreeId && (nextTask.taskType ?? "code") === "code") {
     try {
       const worktreeService = new GitWorktreeService(
         system.worktreeStore,
@@ -221,6 +221,12 @@ async function startKanbanTaskSession(
     evidenceSummary: await buildTaskEvidenceSummary(taskForSession, system),
     storyReadiness: await buildTaskStoryReadiness(taskForSession, system),
     investValidation: buildTaskInvestValidation(taskForSession),
+    knowledgeContext: await buildKnowledgeContext(
+      nextTask.labels ?? [],
+      nextTask.workspaceId,
+      nextTask.scope,
+      3,
+    ),
   };
 
   const triggerResult = await triggerAssignedTaskAgent({

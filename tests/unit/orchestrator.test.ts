@@ -77,8 +77,8 @@ function createTestOrchestrator(): { system: RoutaSystem; orchestrator: RoutaOrc
   const system = createInMemorySystem();
   const mockProcessManager = new MockAcpProcessManager() as unknown as AcpProcessManager;
   const config: OrchestratorConfig = {
-    defaultCrafterProvider: "opencode",
-    defaultGateProvider: "opencode",
+    defaultCrafterProvider: "claude",
+    defaultGateProvider: "claude",
     defaultCwd: "/tmp/test",
   };
   const orchestrator = new RoutaOrchestrator(system, mockProcessManager, config);

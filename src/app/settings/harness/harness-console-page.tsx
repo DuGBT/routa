@@ -127,7 +127,7 @@ function sectionStatusClass(tone: SectionStatusTone = "neutral") {
     case "warning":
       return "border-amber-200 bg-amber-50 text-amber-800";
     default:
-      return "border-desktop-border bg-desktop-bg-primary text-desktop-text-secondary";
+      return "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400";
   }
 }
 
@@ -489,7 +489,7 @@ export default function HarnessConsolePage() {
       case "post-commit":
         return <HarnessGitHubActionsFlowPanel workspaceId={workspaceId} codebaseId={activeRepoCodebaseId} repoPath={activeRepoPath} {...props} data={githubActionsState.data} loading={githubActionsState.loading} error={githubActionsState.error} variant="compact" />;
       default:
-        return <div className="p-3 text-[11px] text-desktop-text-secondary">选择 Lifecycle 节点查看对应组件的上下文视图。</div>;
+        return <div className="p-3 text-[11px] text-slate-700 dark:text-slate-400">选择 Lifecycle 节点查看对应组件的上下文视图。</div>;
     }
   }, [
     designDecisionsState.data,
@@ -525,28 +525,28 @@ export default function HarnessConsolePage() {
 
   function renderFitnessDetailArea() {
     return (
-      <div className="overflow-hidden rounded-sm border border-desktop-border bg-desktop-bg-primary">
+      <div className="overflow-hidden rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
         <div className="grid gap-0 xl:grid-cols-[280px_minmax(0,1fr)]">
-          <div className="min-w-0 border-r border-desktop-border bg-desktop-bg-secondary/40 p-3">
+          <div className="min-w-0 border-r border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/40 p-3">
             <div className="mb-2 flex items-center justify-between gap-2 text-[11px]">
-              <div className="font-semibold text-desktop-text-primary">Sources</div>
-              <div className="text-desktop-text-secondary">{specFiles.length}</div>
+              <div className="font-semibold text-slate-900 dark:text-slate-200">Sources</div>
+              <div className="text-slate-700 dark:text-slate-400">{specFiles.length}</div>
             </div>
             <div className="space-y-1.5">
-              {specsState.loading ? <div className="text-[10px] text-desktop-text-secondary">Loading fitness files...</div> : null}
+              {specsState.loading ? <div className="text-[10px] text-slate-700 dark:text-slate-400">Loading fitness files...</div> : null}
               {unsupportedRepoMessage ? <HarnessUnsupportedState className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-[10px] text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-300" /> : null}
               {specsState.error && !unsupportedRepoMessage ? <div className="text-[10px] text-red-600 dark:text-red-400">{specsState.error}</div> : null}
-              {!specsState.loading && !specsState.error && !unsupportedRepoMessage && specFiles.length === 0 ? <div className="text-[10px] text-desktop-text-secondary">No fitness files found.</div> : null}
+              {!specsState.loading && !specsState.error && !unsupportedRepoMessage && specFiles.length === 0 ? <div className="text-[10px] text-slate-700 dark:text-slate-400">No fitness files found.</div> : null}
               {!unsupportedRepoMessage ? primaryFiles.map((file) => (
                 <button
                   key={file.name}
                   type="button"
                   onClick={() => setSelectedSpecName(file.name)}
                   className={`w-full rounded-md border px-2.5 py-2 text-left transition-colors ${
-                    visibleSpec?.name === file.name
-                      ? "border-desktop-accent bg-desktop-bg-active text-desktop-text-primary"
-                      : "border-transparent bg-desktop-bg-primary text-desktop-text-secondary hover:border-desktop-border hover:bg-desktop-bg-primary/80 hover:text-desktop-text-primary"
-                  }`}
+ visibleSpec?.name === file.name
+ ? "border-blue-500 bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-slate-200"
+ : "border-transparent bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400 hover:border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-900/80 hover:text-slate-900 dark:text-slate-200"
+ }`}
                 >
                   <div className="text-[11px] font-medium">{file.name}</div>
                   <div className="mt-0.5 flex items-center gap-1.5 text-[9px] text-current/75">
@@ -557,8 +557,8 @@ export default function HarnessConsolePage() {
                 </button>
               )) : null}
               {!unsupportedRepoMessage && auxiliaryFiles.length > 0 ? (
-                <details className="rounded-md border border-desktop-border bg-desktop-bg-primary/60 px-2.5 py-2">
-                  <summary className="cursor-pointer text-[9px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">Auxiliary ({auxiliaryFiles.length})</summary>
+                <details className="rounded-md border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 px-2.5 py-2">
+                  <summary className="cursor-pointer text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">Auxiliary ({auxiliaryFiles.length})</summary>
                   <div className="mt-2 space-y-1">
                     {auxiliaryFiles.map((file) => (
                       <button
@@ -566,10 +566,10 @@ export default function HarnessConsolePage() {
                         type="button"
                         onClick={() => setSelectedSpecName(file.name)}
                         className={`w-full rounded px-2 py-1 text-left text-[10px] transition-colors ${
-                          visibleSpec?.name === file.name
-                            ? "bg-desktop-bg-active text-desktop-text-primary"
-                            : "text-desktop-text-secondary hover:bg-desktop-bg-primary hover:text-desktop-text-primary"
-                        }`}
+ visibleSpec?.name === file.name
+ ? "bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-slate-200"
+ : "text-slate-700 dark:text-slate-400 hover:bg-slate-50 dark:bg-slate-900 hover:text-slate-900 dark:text-slate-200"
+ }`}
                       >
                         {file.name}
                       </button>
@@ -582,12 +582,12 @@ export default function HarnessConsolePage() {
 
           <div className="min-w-0 p-3">
             <div className="flex items-start justify-between gap-3">
-              <div className="text-sm font-semibold text-desktop-text-primary">{visibleSpec?.name ?? "Select a file"}</div>
+              <div className="text-sm font-semibold text-slate-900 dark:text-slate-200">{visibleSpec?.name ?? "Select a file"}</div>
               {visibleSpec?.kind === "dimension" ? (
                 <div className="flex flex-wrap gap-1.5 text-[9px]">
-                  <span className="desktop-badge">w:{visibleSpec.weight ?? 0}</span>
-                  <span className="desktop-badge desktop-badge-success">pass:{visibleSpec.thresholdPass ?? 90}</span>
-                  <span className="desktop-badge desktop-badge-warning">warn:{visibleSpec.thresholdWarn ?? 80}</span>
+                  <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1.25 text-[10px] font-medium rounded-full bg-slate-400 dark:bg-slate-700 text-slate-900 dark:text-slate-200">w:{visibleSpec.weight ?? 0}</span>
+                  <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1.25 text-[10px] font-medium rounded-full bg-slate-400 dark:bg-slate-700 text-slate-900 dark:text-slate-200 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1.25 text-[10px] font-medium rounded-full bg-emerald-500 text-white">pass:{visibleSpec.thresholdPass ?? 90}</span>
+                  <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1.25 text-[10px] font-medium rounded-full bg-slate-400 dark:bg-slate-700 text-slate-900 dark:text-slate-200 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1.25 text-[10px] font-medium rounded-full bg-amber-500 text-white">warn:{visibleSpec.thresholdWarn ?? 80}</span>
                 </div>
               ) : null}
             </div>
@@ -598,15 +598,15 @@ export default function HarnessConsolePage() {
               </div>
             ) : visibleSpec ? (
               <div className="mt-3 space-y-3">
-                <div className="flex flex-wrap items-center gap-1.5 text-[9px] text-desktop-text-secondary">
-                  <span className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2 py-0.5">{visibleSpec.kind}</span>
-                  <span className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2 py-0.5">{visibleSpec.language}</span>
-                  <span className="font-mono text-desktop-text-primary">{visibleSpec.relativePath}</span>
+                <div className="flex flex-wrap items-center gap-1.5 text-[9px] text-slate-700 dark:text-slate-400">
+                  <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2 py-0.5">{visibleSpec.kind}</span>
+                  <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2 py-0.5">{visibleSpec.language}</span>
+                  <span className="font-mono text-slate-900 dark:text-slate-200">{visibleSpec.relativePath}</span>
                 </div>
 
                 {visibleSpec.kind === "dimension" && visibleSpec.frontmatterSource ? (
-                  <details className="rounded-md border border-desktop-border bg-desktop-bg-secondary/50 p-2.5">
-                    <summary className="cursor-pointer text-[9px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">Frontmatter</summary>
+                  <details className="rounded-md border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/50 p-2.5">
+                    <summary className="cursor-pointer text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">Frontmatter</summary>
                     <div className="mt-2">
                       <CodeViewer
                         code={visibleSpec.frontmatterSource}
@@ -646,27 +646,27 @@ export default function HarnessConsolePage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-[11px] text-desktop-text-secondary">No command blocks found in this markdown file.</div>
+                    <div className="text-[11px] text-slate-700 dark:text-slate-400">No command blocks found in this markdown file.</div>
                   )
                 ) : null}
 
                 {visibleSpec.kind === "dimension" ? (
-                  <div className="overflow-hidden rounded-md border border-desktop-border">
-                    <div className="grid grid-cols-[minmax(0,1.5fr)_auto] gap-2 border-b border-desktop-border bg-desktop-bg-secondary px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">
+                  <div className="overflow-hidden rounded-md border border-slate-300 dark:border-slate-700">
+                    <div className="grid grid-cols-[minmax(0,1.5fr)_auto] gap-2 border-b border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">
                       <div>Metric</div>
                       <div>Dispatch</div>
                     </div>
                     {visibleSpec.metrics.map((metric) => (
-                      <div key={metric.name} className="grid grid-cols-[minmax(0,1.5fr)_auto] gap-2 border-t border-desktop-border px-3 py-2.5 first:border-t-0">
+                      <div key={metric.name} className="grid grid-cols-[minmax(0,1.5fr)_auto] gap-2 border-t border-slate-300 dark:border-slate-700 px-3 py-2.5 first:border-t-0">
                         <div className="min-w-0">
-                          <div className="text-[11px] font-semibold text-desktop-text-primary">{metric.name}</div>
-                          <div className="mt-1 break-all font-mono text-[9px] text-desktop-text-secondary">{metric.command || "No command"}</div>
-                          {metric.description ? <div className="mt-1 text-[10px] text-desktop-text-secondary">{metric.description}</div> : null}
+                          <div className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{metric.name}</div>
+                          <div className="mt-1 break-all font-mono text-[9px] text-slate-700 dark:text-slate-400">{metric.command || "No command"}</div>
+                          {metric.description ? <div className="mt-1 text-[10px] text-slate-700 dark:text-slate-400">{metric.description}</div> : null}
                         </div>
                         <div className="flex flex-wrap content-start justify-end gap-1 text-[9px]">
-                          <span className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2 py-0.5 text-desktop-text-secondary">{metric.runner}</span>
-                          <span className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2 py-0.5 text-desktop-text-secondary">{metric.tier}</span>
-                          <span className={`rounded-full border px-2 py-0.5 ${metric.hardGate ? "border-red-500/30 bg-red-500/10 text-red-600 dark:text-red-400" : "border-desktop-border bg-desktop-bg-secondary text-desktop-text-secondary"}`}>
+                          <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-400">{metric.runner}</span>
+                          <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-400">{metric.tier}</span>
+                          <span className={`rounded-full border px-2 py-0.5 ${metric.hardGate ? "border-red-500/30 bg-red-500/10 text-red-600 dark:text-red-400" : "border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400"}`}>
                             {metric.gate}
                           </span>
                         </div>
@@ -676,7 +676,7 @@ export default function HarnessConsolePage() {
                 ) : null}
               </div>
             ) : (
-              <div className="mt-3 text-[11px] text-desktop-text-secondary">Select a fitness file to inspect.</div>
+              <div className="mt-3 text-[11px] text-slate-700 dark:text-slate-400">Select a fitness file to inspect.</div>
             )}
           </div>
         </div>
@@ -687,18 +687,18 @@ export default function HarnessConsolePage() {
   function renderOverview() {
     return (
       <div className="space-y-2">
-        <div className="flex items-center justify-end border-b border-desktop-border pb-2">
-          <div className="inline-flex items-center gap-0.5 rounded border border-desktop-border bg-desktop-bg-primary p-0.5 normal-case tracking-normal">
+        <div className="flex items-center justify-end border-b border-slate-300 dark:border-slate-700 pb-2">
+          <div className="inline-flex items-center gap-0.5 rounded border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-0.5 normal-case tracking-normal">
             {(["lifecycle", "loop"] as const).map((view) => (
               <button
                 key={view}
                 type="button"
                 onClick={() => setGovernanceView(view)}
                 className={`rounded px-2.5 py-1 text-[10px] font-medium ${
-                  governanceView === view
-                    ? "bg-desktop-accent text-desktop-accent-text"
-                    : "text-desktop-text-secondary hover:bg-desktop-bg-active hover:text-desktop-text-primary"
-                }`}
+ governanceView === view
+ ? "bg-blue-500 text-white"
+ : "text-slate-700 dark:text-slate-400 hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200"
+ }`}
               >
                 {view === "lifecycle" ? "Lifecycle" : "Loop"}
               </button>
@@ -747,8 +747,8 @@ export default function HarnessConsolePage() {
 
     const inlineOverviewPanel = activeSection === "overview";
     const panelBorderClass = inlineOverviewPanel
-      ? "border border-desktop-border"
-      : "border-t border-desktop-border";
+      ? "border border-slate-300 dark:border-slate-700"
+      : "border-t border-slate-300 dark:border-slate-700";
     const panelStyle = inlineOverviewPanel ? undefined : { height: `${bottomPanelHeight}px` };
 
     return (
@@ -758,16 +758,16 @@ export default function HarnessConsolePage() {
             role="separator"
             aria-label="Resize bottom panel"
             data-testid="harness-console-bottom-resizer"
-            className="h-1 shrink-0 cursor-row-resize bg-desktop-border/60 transition-colors hover:bg-desktop-accent"
-            onMouseDown={handleBottomPanelResizeStart}
+            className="h-1 shrink-0 cursor-row-resize border-slate-300 dark:border-slate-700/60 transition-colors hover:bg-blue-500"
+ onMouseDown={handleBottomPanelResizeStart}
           />
         )}
         <div
-          className={`flex shrink-0 flex-col bg-desktop-bg-secondary ${panelBorderClass}`}
+          className={`flex shrink-0 flex-col bg-slate-100 dark:bg-slate-800 ${panelBorderClass}`}
           data-testid="harness-console-bottom-panel"
           style={panelStyle}
         >
-          <div className="flex h-9 items-center justify-between border-b border-desktop-border px-3">
+          <div className="flex h-9 items-center justify-between border-b border-slate-300 dark:border-slate-700 px-3">
             <div className="flex items-center gap-1">
               {(["context", "plan", "fitness"] as const).map((tab) => (
                 <button
@@ -775,38 +775,38 @@ export default function HarnessConsolePage() {
                   type="button"
                   onClick={() => setBottomPanelTab(tab)}
                   className={`rounded px-2.5 py-1 text-[10px] font-medium ${
-                    bottomPanelTab === tab
-                      ? "bg-desktop-accent text-desktop-accent-text"
-                      : "text-desktop-text-secondary hover:bg-desktop-bg-active hover:text-desktop-text-primary"
-                  }`}
+ bottomPanelTab === tab
+ ? "bg-blue-500 text-white"
+ : "text-slate-700 dark:text-slate-400 hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200"
+ }`}
                 >
                   {tab === "context" ? "Context" : tab === "plan" ? "Execution Plan" : "Fitness"}
                 </button>
               ))}
             </div>
 
-            <div className="flex items-center gap-2 text-[10px] text-desktop-text-secondary">
+            <div className="flex items-center gap-2 text-[10px] text-slate-700 dark:text-slate-400">
               {selectedGovernanceNodeId ? <span>node: {selectedGovernanceNodeId}</span> : null}
               {selectedGovernanceSection ? (
                 <button
                   type="button"
-                  className="desktop-btn desktop-btn-secondary"
-                  onClick={() => openSection(selectedGovernanceSection)}
+                  className="inline-flex items-center justify-center px-2.5 py-1 text-xs rounded-sm border-none cursor-pointer transition-colors bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200 hover:bg-blue-100 dark:hover:bg-blue-900"
+ onClick={() => openSection(selectedGovernanceSection)}
                 >
                   Open full view
                 </button>
               ) : null}
               <button
                 type="button"
-                className="desktop-btn desktop-btn-secondary"
-                onClick={() => setShowBottomPanel(false)}
+                className="inline-flex items-center justify-center px-2.5 py-1 text-xs rounded-sm border-none cursor-pointer transition-colors bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200 hover:bg-blue-100 dark:hover:bg-blue-900"
+ onClick={() => setShowBottomPanel(false)}
               >
                 Close
               </button>
             </div>
           </div>
 
-          <div className={inlineOverviewPanel ? "p-3" : "min-h-0 flex-1 overflow-y-auto p-3 desktop-scrollbar-thin"}>
+          <div className={inlineOverviewPanel ? "p-3" : "min-h-0 flex-1 overflow-y-auto p-3 "}>
             {bottomPanelTab === "context" ? governanceContextPanel : null}
             {bottomPanelTab === "plan" ? (
               <HarnessExecutionPlanFlow
@@ -919,13 +919,13 @@ export default function HarnessConsolePage() {
         key={section.id}
         type="button"
         onClick={() => openSection(section.id)}
-        className={`desktop-list-item w-full rounded-md border text-left ${
-          isActive
-            ? "active border-desktop-border"
-            : "border-transparent"
-        }`}
+        className={`flex items-center px-3 py-1.5 text-[13px] text-slate-900 dark:text-slate-200 cursor-pointer transition-colors hover:bg-blue-100 dark:hover:bg-blue-900 w-full rounded-md border text-left ${
+ isActive
+ ? "active border-slate-300 dark:border-slate-700"
+ : "border-transparent"
+ }`}
       >
-        <span className="min-w-0 flex-1 truncate text-[12px] font-medium text-desktop-text-primary">{section.label}</span>
+        <span className="min-w-0 flex-1 truncate text-[12px] font-medium text-slate-900 dark:text-slate-200">{section.label}</span>
         {status ? (
           <span className={`ml-2 shrink-0 rounded-full border px-2 py-0.5 text-[9px] font-medium ${sectionStatusClass(status.tone)}`}>
             {status.label}
@@ -961,8 +961,8 @@ export default function HarnessConsolePage() {
           branch: codebase.branch ?? "",
         }))}
       />
-      <button type="button" className="desktop-btn desktop-btn-secondary" onClick={() => openBottomPanel("plan")}>Plan</button>
-      <button type="button" className="desktop-btn desktop-btn-secondary" onClick={() => openBottomPanel("fitness")}>Fitness</button>
+      <button type="button" className="inline-flex items-center justify-center px-2.5 py-1 text-xs rounded-sm border-none cursor-pointer transition-colors bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200 hover:bg-blue-100 dark:hover:bg-blue-900" onClick={() => openBottomPanel("plan")}>Plan</button>
+      <button type="button" className="inline-flex items-center justify-center px-2.5 py-1 text-xs rounded-sm border-none cursor-pointer transition-colors bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200 hover:bg-blue-100 dark:hover:bg-blue-900" onClick={() => openBottomPanel("fitness")}>Fitness</button>
     </div>
   );
 
@@ -995,20 +995,20 @@ export default function HarnessConsolePage() {
       )}
       titleBarRight={titleBarRight}
     >
-      <div className="flex h-full min-h-0 overflow-hidden bg-desktop-bg-primary text-desktop-text-primary" data-testid="harness-console-root">
+      <div className="flex h-full min-h-0 overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-200" data-testid="harness-console-root">
         <aside
-          className="flex shrink-0 flex-col border-r border-desktop-border bg-desktop-bg-secondary"
-          data-testid="harness-console-explorer"
+          className="flex shrink-0 flex-col border-r border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800"
+ data-testid="harness-console-explorer"
           style={{ width: `${explorerWidth}px` }}
         >
-          <div className="flex-1 overflow-y-auto px-2 py-3 desktop-scrollbar-thin">
+          <div className="flex-1 overflow-y-auto px-2 py-3 ">
             <div className="space-y-3">
               <div className="space-y-1">
                 {renderExplorerSectionButton(sections[0] as SectionDef)}
               </div>
               {groupedSections.map((group) => (
                 <div key={group.id} className="space-y-1">
-                  <div className="px-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">
+                  <div className="px-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">
                     {group.label}
                   </div>
                   {group.sections.map((section) => renderExplorerSectionButton(section))}
@@ -1022,13 +1022,13 @@ export default function HarnessConsolePage() {
           role="separator"
           aria-label="Resize explorer"
           data-testid="harness-console-explorer-resizer"
-          className="w-1 shrink-0 cursor-col-resize bg-desktop-border/60 transition-colors hover:bg-desktop-accent"
-          onMouseDown={handleExplorerResizeStart}
+          className="w-1 shrink-0 cursor-col-resize border-slate-300 dark:border-slate-700/60 transition-colors hover:bg-blue-500"
+ onMouseDown={handleExplorerResizeStart}
         />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <div className="flex h-9 shrink-0 items-center justify-between border-b border-desktop-border bg-desktop-bg-secondary px-2">
-            <div className="flex h-full items-center overflow-x-auto desktop-scrollbar-thin" data-testid="harness-console-tabs">
+          <div className="flex h-9 shrink-0 items-center justify-between border-b border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2">
+            <div className="flex h-full items-center overflow-x-auto " data-testid="harness-console-tabs">
               {visibleTabs.map((tabId) => {
                 const section = sections.find((item) => item.id === tabId);
                 if (!section) {
@@ -1036,11 +1036,11 @@ export default function HarnessConsolePage() {
                 }
                 const isActive = activeSection === tabId;
                 return (
-                  <div key={tabId} className={`group flex h-full shrink-0 items-center border-r border-desktop-border ${isActive ? "bg-desktop-bg-primary" : "bg-desktop-bg-secondary"}`}>
+                  <div key={tabId} className={`group flex h-full shrink-0 items-center border-r border-slate-300 dark:border-slate-700 ${isActive ? "bg-slate-50 dark:bg-slate-900" : "bg-slate-100 dark:bg-slate-800"}`}>
                     <button
                       type="button"
                       onClick={() => openSection(tabId)}
-                      className={`h-full border-b-2 px-3 text-[11px] font-medium ${isActive ? "border-desktop-accent text-desktop-text-primary" : "border-transparent text-desktop-text-secondary hover:bg-desktop-bg-active/70 hover:text-desktop-text-primary"}`}
+                      className={`h-full border-b-2 px-3 text-[11px] font-medium ${isActive ? "border-blue-500 text-slate-900 dark:text-slate-200" : "border-transparent text-slate-700 dark:text-slate-400 hover:bg-blue-100 dark:bg-blue-900/70 hover:text-slate-900 dark:text-slate-200"}`}
                     >
                       {section.shortLabel}
                     </button>
@@ -1051,8 +1051,8 @@ export default function HarnessConsolePage() {
                           event.stopPropagation();
                           closeTab(tabId);
                         }}
-                        className="mr-1 rounded px-1 py-0.5 text-[10px] text-desktop-text-secondary opacity-0 transition-opacity hover:bg-desktop-bg-active hover:text-desktop-text-primary group-hover:opacity-100"
-                      >
+                        className="mr-1 rounded px-1 py-0.5 text-[10px] text-slate-700 dark:text-slate-400 opacity-0 transition-opacity hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200 group-hover:opacity-100"
+ >
                         x
                       </button>
                     ) : null}
@@ -1063,13 +1063,13 @@ export default function HarnessConsolePage() {
 
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto bg-desktop-bg-primary p-4 desktop-scrollbar">
+          <div className="min-h-0 flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-4 ">
             {renderSectionContent(activeSection)}
           </div>
 
           {activeSection !== "overview" ? renderGovernanceBottomPanel() : null}
 
-          <div className="flex h-6 shrink-0 items-center justify-between bg-desktop-accent px-3 text-[10px] text-desktop-accent-text">
+          <div className="flex h-6 shrink-0 items-center justify-between bg-blue-500 px-3 text-[10px] text-white">
             <div className="flex items-center gap-3">
               <span>{activeWorkspaceTitle ?? "-"}</span>
             </div>

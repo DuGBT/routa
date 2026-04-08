@@ -16,10 +16,10 @@ export function CompactStat({ label, value, sub, color }: CompactStatProps) {
   return (
     <div className={`rounded-xl border px-3 py-2.5 ${colorMap[color]}`}>
       <div className="flex items-baseline justify-between gap-3">
-        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-desktop-text-muted">{label}</div>
+        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">{label}</div>
         <div className="text-lg font-semibold tabular-nums">{value}</div>
       </div>
-      <div className="mt-1 text-[10px] leading-4 text-desktop-text-secondary">
+      <div className="mt-1 text-[10px] leading-4 text-slate-700 dark:text-slate-400">
         {sub ?? "Workspace aggregate"}
       </div>
     </div>

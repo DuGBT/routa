@@ -391,13 +391,13 @@ function A2UIComponentRenderer({ componentId, ctx }: { componentId: string; ctx:
               defaultValue={value}
               rows={3}
               className="px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#0e1019] text-sm text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30 resize-none"
-            />
+ />
           ) : (
             <input
               type={comp.variant === "number" ? "number" : comp.variant === "obscured" ? "password" : "text"}
               defaultValue={value}
               className="px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#0e1019] text-sm text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30"
-            />
+ />
           )}
         </div>
       );
@@ -426,7 +426,7 @@ function A2UIComponentRenderer({ componentId, ctx }: { componentId: string; ctx:
             min={comp.min ?? 0}
             max={comp.max ?? 100}
             className="w-full accent-amber-500"
-          />
+ />
         </div>
       );
     }
@@ -467,10 +467,10 @@ function A2UITabsRenderer({ comp, ctx }: { comp: Extract<A2UIComponent, { compon
               key={idx}
               onClick={() => setActiveIdx(idx)}
               className={`px-3 py-2 text-xs font-medium transition-colors border-b-2 ${
-                isActive
-                  ? "border-amber-500 text-amber-600 dark:text-amber-400"
-                  : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-              }`}
+ isActive
+ ? "border-amber-500 text-amber-600 dark:text-amber-400"
+ : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+ }`}
             >
               {title}
             </button>

@@ -113,8 +113,8 @@ export function HarnessModuleGraphView({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-[600px] border border-desktop-border rounded-sm bg-desktop-bg-primary">
-        <div className="text-desktop-text-secondary text-sm">
+      <div className="flex items-center justify-center h-[600px] border border-slate-300 dark:border-slate-700 rounded-sm bg-slate-50 dark:bg-slate-900">
+        <div className="text-slate-700 dark:text-slate-400 text-sm">
           {t.settings.harness.moduleGraph.loading || "Loading dependency graph..."}
         </div>
       </div>
@@ -123,15 +123,15 @@ export function HarnessModuleGraphView({
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-[600px] border border-desktop-border rounded-sm bg-desktop-bg-primary">
+      <div className="flex flex-col items-center justify-center h-[600px] border border-slate-300 dark:border-slate-700 rounded-sm bg-slate-50 dark:bg-slate-900">
         <div className="text-red-500 text-sm mb-2">
           {t.settings.harness.moduleGraph.error || "Failed to load graph"}
         </div>
-        <div className="text-desktop-text-secondary text-xs">{error}</div>
+        <div className="text-slate-700 dark:text-slate-400 text-xs">{error}</div>
         <button
           type="button"
-          className="mt-4 desktop-btn desktop-btn-secondary text-xs"
-          onClick={loadGraph}
+          className="mt-4 inline-flex items-center justify-center px-2.5 py-1 text-xs rounded-sm border-none cursor-pointer transition-colors bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200 hover:bg-blue-100 dark:hover:bg-blue-900 text-xs"
+ onClick={loadGraph}
         >
           {t.common.retry || "Retry"}
         </button>
@@ -141,8 +141,8 @@ export function HarnessModuleGraphView({
 
   if (!graph || graph.node_count === 0) {
     return (
-      <div className="flex items-center justify-center h-[600px] border border-desktop-border rounded-sm bg-desktop-bg-primary">
-        <div className="text-desktop-text-secondary text-sm">
+      <div className="flex items-center justify-center h-[600px] border border-slate-300 dark:border-slate-700 rounded-sm bg-slate-50 dark:bg-slate-900">
+        <div className="text-slate-700 dark:text-slate-400 text-sm">
           {t.settings.harness.moduleGraph.noData || "No modules found in this repository"}
         </div>
       </div>
@@ -154,14 +154,14 @@ export function HarnessModuleGraphView({
       {/* Filters */}
       <div className="flex gap-3 items-center text-sm">
         <label className="flex items-center gap-2">
-          <span className="text-desktop-text-secondary text-xs">
+          <span className="text-slate-700 dark:text-slate-400 text-xs">
             {t.settings.harness.moduleGraph.filterLanguage || "Language:"}
           </span>
           <select
             value={languageFilter}
             onChange={(e) => setLanguageFilter(e.target.value)}
-            className="desktop-input text-xs py-1 px-2"
-          >
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-sm px-2 py-1 text-xs text-slate-900 dark:text-slate-200 outline-none focus:border-blue-500 transition-colors text-xs py-1 px-2"
+ >
             <option value="all">{t.common.all || "All"}</option>
             {availableLanguages.map((lang) => (
               <option key={lang} value={lang}>
@@ -172,14 +172,14 @@ export function HarnessModuleGraphView({
         </label>
 
         <label className="flex items-center gap-2">
-          <span className="text-desktop-text-secondary text-xs">
+          <span className="text-slate-700 dark:text-slate-400 text-xs">
             {t.settings.harness.moduleGraph.filterEdgeKind || "Dependency:"}
           </span>
           <select
             value={edgeFilter}
             onChange={(e) => setEdgeFilter(e.target.value)}
-            className="desktop-input text-xs py-1 px-2"
-          >
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-sm px-2 py-1 text-xs text-slate-900 dark:text-slate-200 outline-none focus:border-blue-500 transition-colors text-xs py-1 px-2"
+ >
             <option value="all">{t.common.all || "All"}</option>
             {availableEdgeKinds.map((kind) => (
               <option key={kind} value={kind}>
@@ -189,14 +189,14 @@ export function HarnessModuleGraphView({
           </select>
         </label>
 
-        <div className="ml-auto text-xs text-desktop-text-secondary">
+        <div className="ml-auto text-xs text-slate-700 dark:text-slate-400">
           {filteredNodes.length} {t.settings.harness.moduleGraph.nodes || "nodes"} ·{" "}
           {filteredEdges.length} {t.settings.harness.moduleGraph.edges || "edges"}
         </div>
       </div>
 
       {/* Graph */}
-      <div className="h-[600px] border border-desktop-border rounded-sm bg-desktop-bg-primary overflow-hidden">
+      <div className="h-[600px] border border-slate-300 dark:border-slate-700 rounded-sm bg-slate-50 dark:bg-slate-900 overflow-hidden">
         <ReactFlow
           nodes={filteredNodes}
           edges={filteredEdges}
@@ -226,7 +226,7 @@ export function HarnessModuleGraphView({
 
       {/* Legend */}
       <div className="flex flex-wrap gap-4 text-xs">
-        <div className="font-semibold text-desktop-text-secondary">
+        <div className="font-semibold text-slate-700 dark:text-slate-400">
           {t.settings.harness.moduleGraph.legend || "Legend:"}
         </div>
         <div className="flex items-center gap-1">

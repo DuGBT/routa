@@ -182,9 +182,9 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
             onClick={() => setBgAutoRefresh((v) => !v)}
             title={bgAutoRefresh ? t.bgTasks.autoRefreshOn : t.bgTasks.autoRefreshOff}
             className={`flex items-center gap-1 px-2 py-1.5 rounded-md text-[11px] font-medium transition-colors ${bgAutoRefresh
-                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                : "text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-[#191c28]"
-              }`}
+ ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+ : "text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-[#191c28]"
+ }`}
           >
             <RefreshCw className={`w-3.5 h-3.5 ${bgAutoRefresh ? "animate-spin" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             {bgAutoRefresh ? t.bgTasks.live : t.common.refresh}
@@ -192,7 +192,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
           <button
             onClick={onRefresh}
             className="p-1.5 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#191c28] transition-colors"
-            title={t.bgTasks.refreshNow}
+ title={t.bgTasks.refreshNow}
           >
             <RefreshCw className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
@@ -208,7 +208,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                 disabled={clearingHistory}
                 title={`Clear ${clearableCount} tasks: all PENDING + COMPLETED/CANCELLED/FAILED`}
                 className="flex items-center gap-1 px-2 py-1.5 rounded-md text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors disabled:opacity-50"
-              >
+ >
                 <Trash2 className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                 {clearingHistory ? t.bgTasks.clearing : `${hasPending ? t.bgTasks.clearAll : t.bgTasks.clearHistory} (${clearableCount})`}
               </button>
@@ -218,7 +218,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
             data-testid="dispatch-task-btn"
             onClick={() => setShowDispatchModal(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium bg-amber-500 hover:bg-amber-600 text-white transition-colors"
-          >
+ >
             <Plus className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             {t.bgTasks.dispatchNow}
           </button>
@@ -251,9 +251,9 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                     key={s}
                     onClick={() => setBgTaskFilter(s)}
                     className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border ${active
-                        ? "ring-2 ring-amber-400 border-amber-400 " + colorMap[s]
-                        : "border-transparent " + colorMap[s] + " hover:opacity-80"
-                      }`}
+ ? "ring-2 ring-amber-400 border-amber-400 " + colorMap[s]
+ : "border-transparent " + colorMap[s] + " hover:opacity-80"
+ }`}
                   >
                     <span className="capitalize">{s === "all" ? t.bgTasks.all : s.charAt(0) + s.slice(1).toLowerCase()}</span>
                     <span className="font-bold">{cnt}</span>
@@ -283,9 +283,9 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                       key={src}
                       onClick={() => setBgSourceFilter(src)}
                       className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium transition-all border ${active
-                          ? "border-amber-400 ring-1 ring-amber-400 " + srcColor[src]
-                          : "border-slate-200 dark:border-[#252838] " + srcColor[src] + " hover:opacity-80"
-                        }`}
+ ? "border-amber-400 ring-1 ring-amber-400 " + srcColor[src]
+ : "border-slate-200 dark:border-[#252838] " + srcColor[src] + " hover:opacity-80"
+ }`}
                     >
                       {srcLabel[src]} <span className="opacity-70">{cnt}</span>
                     </button>
@@ -314,7 +314,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                   <button
                     onClick={() => setExpandedTaskId(isExpanded ? null : task.id)}
                     className="mt-0.5 shrink-0 hover:opacity-70 transition-opacity"
-                    title={isExpanded ? t.bgTasks.collapse : t.bgTasks.expand}
+ title={isExpanded ? t.bgTasks.collapse : t.bgTasks.expand}
                   >
                     <BgTaskStatusIcon status={task.status} />
                   </button>
@@ -323,9 +323,9 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                       <div className="text-[13px] font-medium text-slate-700 dark:text-slate-300 truncate">{task.title}</div>
                       {task.priority && task.priority !== "NORMAL" && (
                         <span className={`shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded ${task.priority === "HIGH"
-                            ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
-                            : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
-                          }`}>
+ ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+ : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+ }`}>
                           {task.priority}
                         </span>
                       )}
@@ -344,7 +344,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                           <button
                             onClick={() => router.push(`/workspace/${workspaceId}/sessions/${task.resultSessionId}`)}
                             className="text-blue-500 dark:text-blue-400 hover:underline"
-                          >
+ >
                             {t.bgTasks.viewSession}
                           </button></>
                       )}
@@ -365,7 +365,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                           setEditForm({ title: task.title, prompt: task.prompt, agentId: task.agentId, priority: task.priority ?? "NORMAL" });
                         }}
                         className="p-1 rounded hover:bg-slate-100 dark:hover:bg-[#191c28] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-                        title={t.bgTasks.editTask}
+ title={t.bgTasks.editTask}
                       >
                         <SquarePen className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                       </button>
@@ -374,7 +374,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                       <button
                         onClick={() => handleRerunTask(task)}
                         className="text-[10px] font-medium px-2 py-0.5 rounded bg-blue-500 hover:bg-blue-600 text-white transition-colors"
-                        title={t.bgTasks.reDispatch}
+ title={t.bgTasks.reDispatch}
                       >
                         {t.bgTasks.rerun}
                       </button>
@@ -386,7 +386,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                           onRefresh();
                         }}
                         className="text-[10px] font-medium px-2 py-0.5 rounded bg-amber-500 hover:bg-amber-600 text-white transition-colors"
-                        title={t.bgTasks.retry}
+ title={t.bgTasks.retry}
                       >
                         {t.common.retry}
                       </button>
@@ -395,7 +395,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                       <button
                         onClick={() => handleCancelTask(task.id)}
                         className="p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-400 hover:text-red-500 transition-colors"
-                        title={t.bgTasks.cancelTask}
+ title={t.bgTasks.cancelTask}
                       >
                         <X className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                       </button>
@@ -404,7 +404,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                       <button
                         onClick={() => handleDeleteTask(task.id)}
                         className="p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-400 hover:text-red-500 transition-colors"
-                        title={t.bgTasks.deleteTask}
+ title={t.bgTasks.deleteTask}
                       >
                         <Trash2 className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                       </button>
@@ -435,7 +435,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                             <button
                               onClick={() => handleForceFailTask(task.id)}
                               className="text-[10px] font-medium px-2 py-1 rounded bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/40 transition-colors"
-                              title={t.bgTasks.forceFailHint}
+ title={t.bgTasks.forceFailHint}
                             >
                               {t.bgTasks.forceFailButton}
                             </button>
@@ -468,7 +468,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                 value={dispatchTitle}
                 onChange={(e) => setDispatchTitle(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-              />
+ />
             </div>
             <div>
               <label className="block text-[12px] font-medium text-slate-600 dark:text-slate-400 mb-1">{t.bgTasks.editPrompt}</label>
@@ -479,7 +479,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                 value={dispatchPrompt}
                 onChange={(e) => { setDispatchPrompt(e.target.value); handleCheckDuplicate(e.target.value, dispatchAgentId); }}
                 className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-600 resize-none focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-              />
+ />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -490,7 +490,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                     value={dispatchAgentId}
                     onChange={(e) => { setDispatchAgentId(e.target.value); handleCheckDuplicate(dispatchPrompt, e.target.value); }}
                     className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-                  >
+ >
                     <option value="">{t.bgTasks.selectAgentLabel}</option>
                     {specialists.map((s) => (
                       <option key={s.id} value={s.id}>{s.name}{s.description ? ` — ${s.description}` : ""}</option>
@@ -504,7 +504,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                     value={dispatchAgentId}
                     onChange={(e) => { setDispatchAgentId(e.target.value); handleCheckDuplicate(dispatchPrompt, e.target.value); }}
                     className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-                  />
+ />
                 )}
               </div>
               <div>
@@ -513,7 +513,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                   value={dispatchPriority}
                   onChange={(e) => setDispatchPriority(e.target.value)}
                   className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-                >
+ >
                   <option value="LOW">{t.bgTasks.lowPriority}</option>
                   <option value="NORMAL">{t.bgTasks.normalPriority}</option>
                   <option value="HIGH">{t.bgTasks.highPriority}</option>
@@ -526,7 +526,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                 value={dispatchWorkspaceId}
                 onChange={(e) => setDispatchWorkspaceId(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-              >
+ >
                 {workspaces.map((w) => (
                   <option key={w.id} value={w.id}>{w.title || w.id}{w.id === workspaceId ? ` ${t.bgTasks.currentWorkspaceLabel}` : ""}</option>
                 ))}
@@ -539,7 +539,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
               <button
                 onClick={() => { setShowDispatchModal(false); setDuplicateWarning(null); }}
                 className="px-3 py-1.5 rounded-md text-[12px] font-medium text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#191c28] transition-colors"
-              >
+ >
                 {t.common.cancel}
               </button>
               <button
@@ -547,7 +547,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                 onClick={handleDispatchTask}
                 disabled={dispatchLoading || !dispatchPrompt.trim() || !dispatchAgentId.trim() || !!duplicateWarning}
                 className="px-3 py-1.5 rounded-md text-[12px] font-medium bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white transition-colors"
-              >
+ >
                 {dispatchLoading ? t.bgTasks.dispatching : t.bgTasks.dispatchNow}
               </button>
             </div>
@@ -566,7 +566,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                 value={editForm.title}
                 onChange={(e) => setEditForm((f) => ({ ...f, title: e.target.value }))}
                 className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-              />
+ />
             </div>
             <div>
               <label className="block text-[12px] font-medium text-slate-600 dark:text-slate-400 mb-1">{t.bgTasks.editPrompt}</label>
@@ -575,7 +575,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                 value={editForm.prompt}
                 onChange={(e) => setEditForm((f) => ({ ...f, prompt: e.target.value }))}
                 className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 resize-none focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-              />
+ />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -585,7 +585,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                     value={editForm.agentId}
                     onChange={(e) => setEditForm((f) => ({ ...f, agentId: e.target.value }))}
                     className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-                  >
+ >
                     <option value="">{t.bgTasks.selectAgentLabel}</option>
                     {specialists.map((s) => (
                       <option key={s.id} value={s.id}>{s.name}</option>
@@ -597,7 +597,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                     value={editForm.agentId}
                     onChange={(e) => setEditForm((f) => ({ ...f, agentId: e.target.value }))}
                     className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-                  />
+ />
                 )}
               </div>
               <div>
@@ -606,7 +606,7 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
                   value={editForm.priority}
                   onChange={(e) => setEditForm((f) => ({ ...f, priority: e.target.value }))}
                   className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#151720] text-[13px] text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
-                >
+ >
                   <option value="LOW">{t.bgTasks.lowPriority}</option>
                   <option value="NORMAL">{t.bgTasks.normalPriority}</option>
                   <option value="HIGH">{t.bgTasks.highPriority}</option>
@@ -617,14 +617,14 @@ export function BgTasksTab({ bgTasks, workspaceId, workspaces, onRefresh }: BgTa
               <button
                 onClick={() => setEditingTask(null)}
                 className="px-3 py-1.5 rounded-md text-[12px] font-medium text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#191c28] transition-colors"
-              >
+ >
                 {t.common.cancel}
               </button>
               <button
                 onClick={handleEditTask}
                 disabled={editLoading || !editForm.prompt.trim() || !editForm.agentId.trim()}
                 className="px-3 py-1.5 rounded-md text-[12px] font-medium bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white transition-colors"
-              >
+ >
                 {editLoading ? t.notesTab.saving : t.common.save}
               </button>
             </div>

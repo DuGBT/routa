@@ -112,7 +112,7 @@ export function NoteTasksTab({
               return (
                 <div key={spec.id} className="bg-white dark:bg-[#12141c] rounded-xl border border-blue-200/60 dark:border-blue-800/30 overflow-hidden">
                   <div className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-blue-50/40 dark:hover:bg-blue-900/10 transition-colors"
-                    onClick={() => setExpandedSpec(isExpanded ? null : spec.id)}>
+ onClick={() => setExpandedSpec(isExpanded ? null : spec.id)}>
                     <ClipboardList className="w-4 h-4 text-blue-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
                     <span className="flex-1 text-[13px] font-medium text-slate-700 dark:text-slate-300 truncate">{spec.title}</span>
                     <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">Spec</span>
@@ -161,7 +161,7 @@ export function NoteTasksTab({
               return (
                 <button key={s} onClick={() => setStatusFilter(s)}
                   className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border ${active
-                      ? `ring-2 ring-emerald-400 border-emerald-400 ${statusColor(s)}`
+ ? `ring-2 ring-emerald-400 border-emerald-400 ${statusColor(s)}`
                       : `border-transparent ${statusColor(s)} hover:opacity-80`
                     }`}>
                   <span>{s === "all" ? t.notesTab.all : s.replace(/_/g, " ")}</span>
@@ -209,7 +209,7 @@ export function NoteTasksTab({
                       disabled={updatingNoteId === task.id}
                       onChange={(e) => handleStatusChange(task.id, e.target.value)}
                       className="text-[10px] border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#0e1019] text-slate-600 dark:text-slate-400 rounded-md px-1.5 py-1 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 disabled:opacity-50"
-                    >
+ >
                       {TASK_STATUSES.map(s => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
                     </select>
                     <button onClick={() => handleDelete(task.id)} disabled={deletingNoteId === task.id}

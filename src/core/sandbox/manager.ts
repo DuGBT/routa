@@ -6,6 +6,7 @@
  */
 
 import { exec } from "child_process";
+import net from "net";
 import { promisify } from "util";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -18,7 +19,27 @@ import {
   type ExecuteRequest,
   type SandboxInfo,
 } from "./types";
-import { findAvailablePort } from "@/core/acp/docker/utils";
+
+const EPHEMERAL_PORT_START = 49152;
+const EPHEMERAL_PORT_END = 65535;
+
+function isPortFree(port: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const server = net.createServer();
+    server.once("error", () => { server.close(() => resolve(false)); });
+    server.once("listening", () => { server.close(() => resolve(true)); });
+    server.listen(port, "127.0.0.1");
+  });
+}
+
+async function findAvailablePort(usedPorts: Set<number>): Promise<number> {
+  for (let port = EPHEMERAL_PORT_START; port <= EPHEMERAL_PORT_END; port += 1) {
+    if (usedPorts.has(port)) continue;
+    const available = await isPortFree(port);
+    if (available) return port;
+  }
+  throw new Error("No available ports in ephemeral range (49152-65535)");
+}
 
 const execAsync = promisify(exec);
 

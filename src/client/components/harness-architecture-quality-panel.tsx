@@ -73,7 +73,7 @@ function formatSignedDelta(value: number): string {
 
 function deltaTone(value: number, mode: "risk" | "recovery" = "risk") {
   if (value === 0) {
-    return "border-desktop-border bg-desktop-bg-primary text-desktop-text-secondary";
+    return "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400";
   }
   const positiveIsBad = mode === "risk";
   const isBad = positiveIsBad ? value > 0 : value < 0;
@@ -396,14 +396,14 @@ export function HarnessArchitectureQualityPanel({
           <div className="space-y-4">
             <div className="space-y-1">
               <div>{copy.idleDescription}</div>
-              <div className="text-[11px] text-desktop-text-secondary">{copy.idleChecksTitle}</div>
+              <div className="text-[11px] text-slate-700 dark:text-slate-400">{copy.idleChecksTitle}</div>
             </div>
             <div className="grid gap-2 sm:grid-cols-3" data-testid="architecture-idle-highlights">
               {[copy.idleChecksBoundaries, copy.idleChecksCycles, copy.idleChecksSnapshots].map((item) => (
                 <div
                   key={item}
-                  className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3 text-[11px] text-desktop-text-secondary"
-                >
+                  className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3 text-[11px] text-slate-700 dark:text-slate-400"
+ >
                   {item}
                 </div>
               ))}
@@ -433,23 +433,23 @@ export function HarnessArchitectureQualityPanel({
           </div>
 
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.statusLabel}</div>
+            <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-2">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.statusLabel}</div>
               <div className={`mt-2 inline-flex rounded-full border px-2 py-0.5 text-[10px] font-semibold ${statusTone(data.summaryStatus)}`}>
                 {statusLabel}
               </div>
             </div>
-            <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.rulesLabel}</div>
-              <div className="mt-2 text-[18px] font-semibold text-desktop-text-primary">{data.ruleCount}</div>
+            <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-2">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.rulesLabel}</div>
+              <div className="mt-2 text-[18px] font-semibold text-slate-900 dark:text-slate-200">{data.ruleCount}</div>
             </div>
-            <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.failedRulesLabel}</div>
-              <div className="mt-2 text-[18px] font-semibold text-desktop-text-primary">{data.failedRuleCount}</div>
+            <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-2">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.failedRulesLabel}</div>
+              <div className="mt-2 text-[18px] font-semibold text-slate-900 dark:text-slate-200">{data.failedRuleCount}</div>
             </div>
-            <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.violationsLabel}</div>
-              <div className="mt-2 text-[18px] font-semibold text-desktop-text-primary">{data.violationCount}</div>
+            <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-2">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.violationsLabel}</div>
+              <div className="mt-2 text-[18px] font-semibold text-slate-900 dark:text-slate-200">{data.violationCount}</div>
             </div>
           </div>
 
@@ -463,10 +463,10 @@ export function HarnessArchitectureQualityPanel({
                   onClick={() => setDetailView(view.id)}
                   aria-pressed={active}
                   className={`rounded-full border px-3 py-1.5 text-[11px] font-medium transition-colors ${
-                    active
-                      ? "border-desktop-accent bg-desktop-bg-active text-desktop-text-primary"
-                      : "border-desktop-border bg-desktop-bg-primary/80 text-desktop-text-secondary hover:text-desktop-text-primary"
-                  }`}
+ active
+ ? "border-blue-500 bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-slate-200"
+ : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:text-slate-200"
+ }`}
                 >
                   {view.label}
                 </button>
@@ -477,8 +477,8 @@ export function HarnessArchitectureQualityPanel({
           {detailView === "summary" ? (
             <div className="space-y-4" data-testid="architecture-view-summary">
               <div className="grid gap-3 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-                <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.primaryFindingsTitle}</div>
+                <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.primaryFindingsTitle}</div>
                   {primaryFindings.length > 0 ? (
                     <div className="mt-2 grid gap-2 xl:grid-cols-3">
                       {primaryFindings.map((finding) => {
@@ -505,29 +505,29 @@ export function HarnessArchitectureQualityPanel({
                             key={finding.id}
                             type="button"
                             onClick={onOpen}
-                            className="rounded-sm border border-desktop-border bg-desktop-bg-secondary/40 px-3 py-3 text-left transition-colors hover:border-desktop-accent/60 hover:bg-desktop-bg-active/60"
-                          >
+                            className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/40 px-3 py-3 text-left transition-colors hover:border-blue-500/60 hover:bg-blue-100 dark:bg-blue-900/60"
+ >
                             <div className="flex items-start justify-between gap-2">
-                              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{finding.eyebrow}</div>
-                              <div className="rounded-full border border-desktop-border bg-desktop-bg-primary px-2 py-0.5 text-[10px] font-semibold text-desktop-text-primary">{finding.metric}</div>
+                              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{finding.eyebrow}</div>
+                              <div className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-slate-900 dark:text-slate-200">{finding.metric}</div>
                             </div>
-                            <div className="mt-2 text-[12px] font-semibold text-desktop-text-primary" title={finding.title}>{finding.title}</div>
-                            <div className="mt-1 truncate font-mono text-[10px] text-desktop-text-secondary" title={finding.summary}>{finding.summary}</div>
-                            <div className="mt-2 text-[10px] font-medium text-desktop-accent">{copy.openDetailsLabel}</div>
+                            <div className="mt-2 text-[12px] font-semibold text-slate-900 dark:text-slate-200" title={finding.title}>{finding.title}</div>
+                            <div className="mt-1 truncate font-mono text-[10px] text-slate-700 dark:text-slate-400" title={finding.summary}>{finding.summary}</div>
+                            <div className="mt-2 text-[10px] font-medium text-blue-500">{copy.openDetailsLabel}</div>
                           </button>
                         );
                       })}
                     </div>
                   ) : (
-                    <div className="mt-2 rounded-sm border border-dashed border-desktop-border px-3 py-4 text-[11px] text-desktop-text-secondary">
+                    <div className="mt-2 rounded-sm border border-dashed border-slate-300 dark:border-slate-700 px-3 py-4 text-[11px] text-slate-700 dark:text-slate-400">
                       {copy.noPrimaryFindings}
                     </div>
                   )}
                 </div>
 
-                <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.compareTitle}</div>
-                  <div className="mt-2 text-[11px] text-desktop-text-secondary">
+                <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.compareTitle}</div>
+                  <div className="mt-2 text-[11px] text-slate-700 dark:text-slate-400">
                     {data.comparison
                       ? `${copy.previousScanLabel}: ${data.comparison.previousGeneratedAt}`
                       : copy.noComparison}
@@ -544,19 +544,19 @@ export function HarnessArchitectureQualityPanel({
                       </div>
                     </div>
                   ) : null}
-                  <div className="mt-3 rounded-sm border border-dashed border-desktop-border px-3 py-3 text-[11px] text-desktop-text-secondary">
+                  <div className="mt-3 rounded-sm border border-dashed border-slate-300 dark:border-slate-700 px-3 py-3 text-[11px] text-slate-700 dark:text-slate-400">
                     {comparisonSummary}
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3">
+              <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.failedRulesTitle}</div>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.failedRulesTitle}</div>
                   <button
                     type="button"
-                    className="text-[11px] font-medium text-desktop-accent hover:underline"
-                    onClick={() => {
+                    className="text-[11px] font-medium text-blue-500 hover:underline"
+ onClick={() => {
                       setDrilldown(null);
                       setDetailView("violations");
                     }}
@@ -575,10 +575,10 @@ export function HarnessArchitectureQualityPanel({
                           label: `${copy.failedRulesTitle}: ${rule.title}`,
                           ruleId: rule.id,
                         })}
-                        className="w-full rounded-sm border border-desktop-border bg-desktop-bg-secondary/40 px-3 py-2 text-left transition-colors hover:border-desktop-accent/60 hover:bg-desktop-bg-active/60"
-                      >
+                        className="w-full rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/40 px-3 py-2 text-left transition-colors hover:border-blue-500/60 hover:bg-blue-100 dark:bg-blue-900/60"
+ >
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-[11px] font-semibold text-desktop-text-primary">{rule.title}</span>
+                          <span className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{rule.title}</span>
                           <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] text-amber-800">
                             {formatSuiteLabel(rule.suite, copy)}
                           </span>
@@ -586,15 +586,15 @@ export function HarnessArchitectureQualityPanel({
                             {rule.violationCount}
                           </span>
                         </div>
-                        <div className="mt-1 truncate font-mono text-[10px] text-desktop-text-secondary" title={summarizeRule(rule)}>
+                        <div className="mt-1 truncate font-mono text-[10px] text-slate-700 dark:text-slate-400" title={summarizeRule(rule)}>
                           {summarizeRule(rule)}
                         </div>
-                        <div className="mt-2 text-[10px] font-medium text-desktop-accent">{copy.openDetailsLabel}</div>
+                        <div className="mt-2 text-[10px] font-medium text-blue-500">{copy.openDetailsLabel}</div>
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <div className="mt-2 rounded-sm border border-dashed border-desktop-border px-3 py-4 text-[11px] text-desktop-text-secondary">
+                  <div className="mt-2 rounded-sm border border-dashed border-slate-300 dark:border-slate-700 px-3 py-4 text-[11px] text-slate-700 dark:text-slate-400">
                     {copy.noFailedRules}
                   </div>
                 )}
@@ -604,8 +604,8 @@ export function HarnessArchitectureQualityPanel({
 
           {detailView === "boundaries" ? (
             <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)]" data-testid="architecture-view-boundaries">
-              <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.boundaryLeaksTitle}</div>
+              <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.boundaryLeaksTitle}</div>
                 {boundaryLeakClusters.length > 0 ? (
                   <div className="mt-2 space-y-2">
                     {boundaryLeakClusters.slice(0, 10).map((cluster) => (
@@ -617,30 +617,30 @@ export function HarnessArchitectureQualityPanel({
                           label: `${copy.boundaryLeaksTitle}: ${cluster.label}`,
                           clusterLabel: cluster.label,
                         })}
-                        className="w-full rounded-sm border border-desktop-border bg-desktop-bg-secondary/40 px-3 py-2 text-left transition-colors hover:border-desktop-accent/60 hover:bg-desktop-bg-active/60"
-                      >
+                        className="w-full rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/40 px-3 py-2 text-left transition-colors hover:border-blue-500/60 hover:bg-blue-100 dark:bg-blue-900/60"
+ >
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-[11px] font-semibold text-desktop-text-primary">{cluster.label}</span>
+                          <span className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{cluster.label}</span>
                           <span className="rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 text-[10px] text-rose-700">
                             {cluster.count}
                           </span>
                         </div>
-                        <div className="mt-1 truncate font-mono text-[10px] text-desktop-text-secondary" title={cluster.sample}>
+                        <div className="mt-1 truncate font-mono text-[10px] text-slate-700 dark:text-slate-400" title={cluster.sample}>
                           {cluster.sample}
                         </div>
-                        <div className="mt-2 text-[10px] font-medium text-desktop-accent">{copy.openDetailsLabel}</div>
+                        <div className="mt-2 text-[10px] font-medium text-blue-500">{copy.openDetailsLabel}</div>
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <div className="mt-2 rounded-sm border border-dashed border-desktop-border px-3 py-4 text-[11px] text-desktop-text-secondary">
+                  <div className="mt-2 rounded-sm border border-dashed border-slate-300 dark:border-slate-700 px-3 py-4 text-[11px] text-slate-700 dark:text-slate-400">
                     {copy.noBoundaryLeaks}
                   </div>
                 )}
               </div>
 
-              <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.failedRulesTitle}</div>
+              <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.failedRulesTitle}</div>
                 {boundaryFailedRules.length > 0 ? (
                   <div className="mt-2 space-y-2">
                     {boundaryFailedRules.map((rule) => (
@@ -652,23 +652,23 @@ export function HarnessArchitectureQualityPanel({
                           label: `${copy.failedRulesTitle}: ${rule.title}`,
                           ruleId: rule.id,
                         })}
-                        className="w-full rounded-sm border border-desktop-border bg-desktop-bg-secondary/40 px-3 py-2 text-left transition-colors hover:border-desktop-accent/60 hover:bg-desktop-bg-active/60"
-                      >
+                        className="w-full rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/40 px-3 py-2 text-left transition-colors hover:border-blue-500/60 hover:bg-blue-100 dark:bg-blue-900/60"
+ >
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-semibold text-desktop-text-primary">{rule.title}</span>
+                          <span className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{rule.title}</span>
                           <span className="rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 text-[10px] text-rose-700">
                             {rule.violationCount}
                           </span>
                         </div>
-                        <div className="mt-1 truncate font-mono text-[10px] text-desktop-text-secondary" title={summarizeRule(rule)}>
+                        <div className="mt-1 truncate font-mono text-[10px] text-slate-700 dark:text-slate-400" title={summarizeRule(rule)}>
                           {summarizeRule(rule)}
                         </div>
-                        <div className="mt-2 text-[10px] font-medium text-desktop-accent">{copy.openDetailsLabel}</div>
+                        <div className="mt-2 text-[10px] font-medium text-blue-500">{copy.openDetailsLabel}</div>
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <div className="mt-2 rounded-sm border border-dashed border-desktop-border px-3 py-4 text-[11px] text-desktop-text-secondary">
+                  <div className="mt-2 rounded-sm border border-dashed border-slate-300 dark:border-slate-700 px-3 py-4 text-[11px] text-slate-700 dark:text-slate-400">
                     {copy.noFailedRules}
                   </div>
                 )}
@@ -678,8 +678,8 @@ export function HarnessArchitectureQualityPanel({
 
           {detailView === "cycles" ? (
             <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)]" data-testid="architecture-view-cycles">
-              <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.cycleHotspotsTitle}</div>
+              <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.cycleHotspotsTitle}</div>
                 {cycleHotspotClusters.length > 0 ? (
                   <div className="mt-2 space-y-2">
                     {cycleHotspotClusters.slice(0, 10).map((cluster) => (
@@ -691,30 +691,30 @@ export function HarnessArchitectureQualityPanel({
                           label: `${copy.cycleHotspotsTitle}: ${cluster.label}`,
                           clusterLabel: cluster.label,
                         })}
-                        className="w-full rounded-sm border border-desktop-border bg-desktop-bg-secondary/40 px-3 py-2 text-left transition-colors hover:border-desktop-accent/60 hover:bg-desktop-bg-active/60"
-                      >
+                        className="w-full rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/40 px-3 py-2 text-left transition-colors hover:border-blue-500/60 hover:bg-blue-100 dark:bg-blue-900/60"
+ >
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-[11px] font-semibold text-desktop-text-primary">{cluster.label}</span>
+                          <span className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{cluster.label}</span>
                           <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] text-amber-800">
                             {cluster.count}
                           </span>
                         </div>
-                        <div className="mt-1 truncate font-mono text-[10px] text-desktop-text-secondary" title={cluster.sample}>
+                        <div className="mt-1 truncate font-mono text-[10px] text-slate-700 dark:text-slate-400" title={cluster.sample}>
                           {cluster.sample}
                         </div>
-                        <div className="mt-2 text-[10px] font-medium text-desktop-accent">{copy.openDetailsLabel}</div>
+                        <div className="mt-2 text-[10px] font-medium text-blue-500">{copy.openDetailsLabel}</div>
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <div className="mt-2 rounded-sm border border-dashed border-desktop-border px-3 py-4 text-[11px] text-desktop-text-secondary">
+                  <div className="mt-2 rounded-sm border border-dashed border-slate-300 dark:border-slate-700 px-3 py-4 text-[11px] text-slate-700 dark:text-slate-400">
                     {copy.noCycleHotspots}
                   </div>
                 )}
               </div>
 
-              <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.failedRulesTitle}</div>
+              <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.failedRulesTitle}</div>
                 {cycleFailedRules.length > 0 ? (
                   <div className="mt-2 space-y-2">
                     {cycleFailedRules.map((rule) => (
@@ -726,23 +726,23 @@ export function HarnessArchitectureQualityPanel({
                           label: `${copy.failedRulesTitle}: ${rule.title}`,
                           ruleId: rule.id,
                         })}
-                        className="w-full rounded-sm border border-desktop-border bg-desktop-bg-secondary/40 px-3 py-2 text-left transition-colors hover:border-desktop-accent/60 hover:bg-desktop-bg-active/60"
-                      >
+                        className="w-full rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/40 px-3 py-2 text-left transition-colors hover:border-blue-500/60 hover:bg-blue-100 dark:bg-blue-900/60"
+ >
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-semibold text-desktop-text-primary">{rule.title}</span>
+                          <span className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{rule.title}</span>
                           <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] text-amber-800">
                             {rule.violationCount}
                           </span>
                         </div>
-                        <div className="mt-1 truncate font-mono text-[10px] text-desktop-text-secondary" title={summarizeRule(rule)}>
+                        <div className="mt-1 truncate font-mono text-[10px] text-slate-700 dark:text-slate-400" title={summarizeRule(rule)}>
                           {summarizeRule(rule)}
                         </div>
-                        <div className="mt-2 text-[10px] font-medium text-desktop-accent">{copy.openDetailsLabel}</div>
+                        <div className="mt-2 text-[10px] font-medium text-blue-500">{copy.openDetailsLabel}</div>
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <div className="mt-2 rounded-sm border border-dashed border-desktop-border px-3 py-4 text-[11px] text-desktop-text-secondary">
+                  <div className="mt-2 rounded-sm border border-dashed border-slate-300 dark:border-slate-700 px-3 py-4 text-[11px] text-slate-700 dark:text-slate-400">
                     {copy.noFailedRules}
                   </div>
                 )}
@@ -751,18 +751,18 @@ export function HarnessArchitectureQualityPanel({
           ) : null}
 
           {detailView === "violations" ? (
-            <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3" data-testid="architecture-view-violations">
+            <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3" data-testid="architecture-view-violations">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{copy.topViolationsTitle}</div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{copy.topViolationsTitle}</div>
                 {drilldown ? (
                   <div className="flex flex-wrap items-center gap-2" data-testid="architecture-violations-focus">
-                    <span className="rounded-full border border-desktop-accent/30 bg-desktop-bg-active px-2 py-0.5 text-[10px] font-medium text-desktop-text-primary">
+                    <span className="rounded-full border border-blue-500/30 bg-blue-100 dark:bg-blue-900 px-2 py-0.5 text-[10px] font-medium text-slate-900 dark:text-slate-200">
                       {copy.focusedViewLabel}: {drilldown.label}
                     </span>
                     <button
                       type="button"
-                      className="text-[10px] font-medium text-desktop-accent hover:underline"
-                      onClick={() => setDrilldown(null)}
+                      className="text-[10px] font-medium text-blue-500 hover:underline"
+ onClick={() => setDrilldown(null)}
                     >
                       {copy.clearFocusLabel}
                     </button>
@@ -770,26 +770,26 @@ export function HarnessArchitectureQualityPanel({
                 ) : null}
               </div>
               {filteredViolations.length > 0 ? (
-                <div className="mt-2 overflow-x-auto overflow-y-auto rounded-sm border border-desktop-border desktop-scrollbar-thin">
+                <div className="mt-2 overflow-x-auto overflow-y-auto rounded-sm border border-slate-300 dark:border-slate-700 ">
                   <table className="w-full min-w-[640px] border-collapse text-left text-[11px]">
                     <thead>
-                      <tr className="border-b border-desktop-border bg-desktop-bg-secondary/60">
-                        <th className="px-3 py-2 font-semibold text-desktop-text-secondary">{copy.ruleColumn}</th>
-                        <th className="px-3 py-2 font-semibold text-desktop-text-secondary">{copy.suiteColumn}</th>
-                        <th className="px-3 py-2 font-semibold text-desktop-text-secondary">{copy.countColumn}</th>
-                        <th className="px-3 py-2 font-semibold text-desktop-text-secondary">{copy.summaryColumn}</th>
+                      <tr className="border-b border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/60">
+                        <th className="px-3 py-2 font-semibold text-slate-700 dark:text-slate-400">{copy.ruleColumn}</th>
+                        <th className="px-3 py-2 font-semibold text-slate-700 dark:text-slate-400">{copy.suiteColumn}</th>
+                        <th className="px-3 py-2 font-semibold text-slate-700 dark:text-slate-400">{copy.countColumn}</th>
+                        <th className="px-3 py-2 font-semibold text-slate-700 dark:text-slate-400">{copy.summaryColumn}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredViolations.slice(0, 24).map((violation, index) => (
-                        <tr key={`${violation.ruleId}-${violation.kindLabel}-${index}`} className="border-b border-desktop-border/70">
-                          <td className="px-3 py-2 text-desktop-text-primary">
+                        <tr key={`${violation.ruleId}-${violation.kindLabel}-${index}`} className="border-b border-slate-300 dark:border-slate-700/70">
+                          <td className="px-3 py-2 text-slate-900 dark:text-slate-200">
                             <div className="font-medium">{violation.ruleTitle}</div>
-                            <div className="text-[10px] text-desktop-text-secondary">{violation.kindLabel}</div>
+                            <div className="text-[10px] text-slate-700 dark:text-slate-400">{violation.kindLabel}</div>
                           </td>
-                          <td className="px-3 py-2 text-desktop-text-secondary">{formatSuiteLabel(violation.suite, copy)}</td>
-                          <td className="px-3 py-2 text-desktop-text-secondary">{violation.count}</td>
-                          <td className="px-3 py-2 font-mono text-[10px] text-desktop-text-primary">
+                          <td className="px-3 py-2 text-slate-700 dark:text-slate-400">{formatSuiteLabel(violation.suite, copy)}</td>
+                          <td className="px-3 py-2 text-slate-700 dark:text-slate-400">{violation.count}</td>
+                          <td className="px-3 py-2 font-mono text-[10px] text-slate-900 dark:text-slate-200">
                             <div className="truncate max-w-[38rem]" title={violation.summary}>{violation.summary}</div>
                           </td>
                         </tr>
@@ -798,7 +798,7 @@ export function HarnessArchitectureQualityPanel({
                   </table>
                 </div>
               ) : (
-                <div className="mt-2 rounded-sm border border-dashed border-desktop-border px-3 py-4 text-[11px] text-desktop-text-secondary">
+                <div className="mt-2 rounded-sm border border-dashed border-slate-300 dark:border-slate-700 px-3 py-4 text-[11px] text-slate-700 dark:text-slate-400">
                   {drilldown ? copy.noMatchingViolations : copy.noViolations}
                 </div>
               )}
@@ -811,11 +811,11 @@ export function HarnessArchitectureQualityPanel({
             </div>
           ) : null}
 
-          <details className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3" data-testid="architecture-execution-details">
-            <summary className="cursor-pointer text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">
+          <details className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3" data-testid="architecture-execution-details">
+            <summary className="cursor-pointer text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">
               {copy.executionDetailsTitle}
             </summary>
-            <div className="mt-3 space-y-2 text-[11px] text-desktop-text-secondary">
+            <div className="mt-3 space-y-2 text-[11px] text-slate-700 dark:text-slate-400">
               <div className="truncate" title={data.archUnitSource ?? ""}>{copy.sourceLabel}: {data.archUnitSource ?? t.common.unavailable}</div>
               <div className="truncate" title={data.tsconfigPath}>{copy.tsconfigLabel}: {data.tsconfigPath || t.common.unavailable}</div>
               <div className="truncate" title={data.snapshotPath}>{copy.snapshotPathLabel}: {data.snapshotPath || t.common.unavailable}</div>
@@ -839,7 +839,7 @@ export function HarnessArchitectureQualityPanel({
         title={copy.title}
         description={copy.description}
         actions={onRefresh ? (
-          <button type="button" className="desktop-btn desktop-btn-secondary" onClick={onRefresh}>
+          <button type="button" className="inline-flex items-center justify-center px-2.5 py-1 text-xs rounded-sm border-none cursor-pointer transition-colors bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200 hover:bg-blue-100 dark:hover:bg-blue-900" onClick={onRefresh}>
             {actionLabel}
           </button>
         ) : null}
@@ -854,7 +854,7 @@ export function HarnessArchitectureQualityPanel({
       title={copy.title}
       description={copy.description}
       actions={onRefresh ? (
-        <button type="button" className="desktop-btn desktop-btn-secondary" onClick={onRefresh}>
+        <button type="button" className="inline-flex items-center justify-center px-2.5 py-1 text-xs rounded-sm border-none cursor-pointer transition-colors bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200 hover:bg-blue-100 dark:hover:bg-blue-900" onClick={onRefresh}>
           {actionLabel}
         </button>
       ) : null}

@@ -82,7 +82,6 @@ vi.mock("@/client/hooks/use-acp", () => ({
     selectedProvider: acpState.selectedProvider,
     error: null,
     authError: null,
-    dockerConfigError: null,
     connect: mockConnect,
     createSession: vi.fn(async () => null),
     selectSession: mockSelectSession,
@@ -95,7 +94,6 @@ vi.mock("@/client/hooks/use-acp", () => ({
     cancel: vi.fn(async () => {}),
     disconnect: vi.fn(),
     clearAuthError: vi.fn(),
-    clearDockerConfigError: vi.fn(),
     listProviderModels: vi.fn(async () => []),
     writeTerminal: vi.fn(async () => {}),
     resizeTerminal: vi.fn(async () => {}),
@@ -149,7 +147,6 @@ vi.mock("@/client/components/specialist-manager", () => ({
 
 vi.mock("@/client/components/settings-panel", () => ({
   SettingsPanel: ({ open }: { open: boolean }) => (open ? <div data-testid="settings-panel" /> : null),
-  DockerConfigModal: ({ open }: { open: boolean }) => (open ? <div data-testid="docker-config-modal" /> : null),
   loadDefaultProviders: () => ({}),
   loadProviderConnectionConfig: () => ({ model: undefined, baseUrl: undefined, apiKey: undefined }),
   getModelDefinitionByAlias: () => undefined,

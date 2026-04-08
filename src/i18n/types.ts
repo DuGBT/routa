@@ -129,6 +129,7 @@ export interface TranslationDictionary extends ExtendedTranslationDictionarySect
     overview: string;
     kanban: string;
     team: string;
+    knowledge: string;
     traces: string;
     settings: string;
     notifications: string;
@@ -143,6 +144,32 @@ export interface TranslationDictionary extends ExtendedTranslationDictionarySect
     workflows: string;
     specialists: string;
     debug: string;
+  };
+
+  knowledge: {
+    title: string;
+    description: string;
+    searchPlaceholder: string;
+    filterAll: string;
+    filterWorkspace: string;
+    filterShared: string;
+    originWorkspace: string;
+    originShared: string;
+    healthGood: string;
+    healthStale: string;
+    healthBroken: string;
+    healthUnknown: string;
+    empty: string;
+    emptyDescription: string;
+    loadFailed: string;
+    notSelected: string;
+    notSelectedDescription: string;
+    sourceUrls: string;
+    crossRefs: string;
+    lastCompiled: string;
+    compiledBy: string;
+    detailLoadFailed: string;
+    loading: string;
   };
 
   // Settings panel

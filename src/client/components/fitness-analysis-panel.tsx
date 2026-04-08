@@ -181,7 +181,7 @@ function FitnessMatrix({
 
   if (!selectedReport) {
     return (
-      <div className="mt-2 rounded-xl border border-dashed border-desktop-border px-3 py-2 text-[11px] text-desktop-text-secondary">
+      <div className="mt-2 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 px-3 py-2 text-[11px] text-slate-700 dark:text-slate-400">
         {matrixRows.length ? noDataText : null}
       </div>
     );
@@ -193,7 +193,7 @@ function FitnessMatrix({
         <svg
           viewBox={`0 0 ${matrixWidth} ${matrixHeight}`}
           className="h-auto w-full"
-          role="img"
+ role="img"
           aria-label="AI capability matrix"
         >
           <rect
@@ -576,21 +576,21 @@ export function FitnessAnalysisPanel({
 
   return (
     <div className="space-y-3">
-      <section className="rounded-[28px] border border-desktop-border bg-desktop-bg-secondary/60 p-3 shadow-sm">
+      <section className="rounded-[28px] border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/60 p-3 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0">
-            <div className="truncate text-[11px] uppercase tracking-[0.14em] text-desktop-text-secondary">
+            <div className="truncate text-[11px] uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">
               {heroModel.title}
             </div>
-            <div className="mt-1 truncate text-[11px] leading-tight text-desktop-text-secondary">
+            <div className="mt-1 truncate text-[11px] leading-tight text-slate-700 dark:text-slate-400">
               {heroModel.currentLevel} → {heroModel.targetLevel}
-              <span className="text-desktop-text-secondary"> · {heroModel.confidenceSummary}</span>
+              <span className="text-slate-700 dark:text-slate-400"> · {heroModel.confidenceSummary}</span>
               {heroModel.baselineSummary ? (
-                <span className="text-desktop-text-secondary"> · {heroModel.baselineSummary}</span>
+                <span className="text-slate-700 dark:text-slate-400"> · {heroModel.baselineSummary}</span>
               ) : null}
-              <span className="text-desktop-text-secondary"> · {fitness.panel.blockers} {selectedReport ? blockers.length : noDataText}</span>
-              <span className="text-desktop-text-secondary"> · {fitness.panel.failed} {selectedReport ? failedCriteria.length : noDataText}</span>
-              <span className="text-desktop-text-secondary"> · {reportSourceLabel}</span>
+              <span className="text-slate-700 dark:text-slate-400"> · {fitness.panel.blockers} {selectedReport ? blockers.length : noDataText}</span>
+              <span className="text-slate-700 dark:text-slate-400"> · {fitness.panel.failed} {selectedReport ? failedCriteria.length : noDataText}</span>
+              <span className="text-slate-700 dark:text-slate-400"> · {reportSourceLabel}</span>
             </div>
           </div>
           <StatusBadge state={selectedState.state} t={fitness.panel} />
@@ -601,25 +601,25 @@ export function FitnessAnalysisPanel({
             type="button"
             onClick={onRunSelectedProfile}
             disabled={!hasContext || selectedState.state === "loading"}
-            className="h-7 rounded-full bg-desktop-accent px-3 text-[12px] font-semibold leading-none text-desktop-text-on-accent disabled:opacity-60"
-          >
+            className="h-7 rounded-full bg-blue-500 px-3 text-[12px] font-semibold leading-none text-white disabled:opacity-60"
+ >
             {primaryActionLabel}
           </button>
           <button
             type="button"
             onClick={() => void syncProfiles()}
             disabled={!hasContext}
-            className="h-7 rounded-full border border-desktop-border px-3 text-[12px] font-semibold leading-none text-desktop-text-primary hover:bg-desktop-bg-primary/80 disabled:opacity-60"
-          >
+            className="h-7 rounded-full border border-slate-300 dark:border-slate-700 px-3 text-[12px] font-semibold leading-none text-slate-900 dark:text-slate-200 hover:bg-slate-50 dark:bg-slate-900/80 disabled:opacity-60"
+ >
             {fitness.panel.refresh}
           </button>
-          <span className="ml-auto inline-flex items-center rounded-full border border-desktop-border px-2 py-0.5 text-[11px] text-desktop-text-secondary">
+          <span className="ml-auto inline-flex items-center rounded-full border border-slate-300 dark:border-slate-700 px-2 py-0.5 text-[11px] text-slate-700 dark:text-slate-400">
             {fitness.panel.fit} {reportReadiness}
           </span>
         </div>
 
-        <div className="mt-1 border-t border-desktop-border/80 pt-1">
-          <div className="text-[10px] uppercase tracking-[0.1em] text-desktop-text-secondary">{fitness.panel.capabilityMatrix}</div>
+        <div className="mt-1 border-t border-slate-300 dark:border-slate-700/80 pt-1">
+          <div className="text-[10px] uppercase tracking-[0.1em] text-slate-700 dark:text-slate-400">{fitness.panel.capabilityMatrix}</div>
           <FitnessMatrix
             selectedReport={selectedReport}
             matrixColumns={matrixColumns}
@@ -637,7 +637,7 @@ export function FitnessAnalysisPanel({
 
       <FitnessAnalysisDashboard report={selectedReport} />
 
-      <section className="rounded-3xl border border-desktop-border bg-desktop-bg-secondary/60 p-4 shadow-sm">
+      <section className="rounded-3xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/60 p-4 shadow-sm">
         <FitnessAnalysisContent
           selectedProfile={selectedProfile}
           viewMode="overview"

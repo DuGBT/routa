@@ -7,7 +7,6 @@ const meta = {
   component: DesktopNavRail,
   tags: ["autodocs"],
   parameters: {
-    desktopTheme: true,
     layout: "centered",
     nextjs: {
       navigation: {
@@ -17,7 +16,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="desktop-theme h-[640px] w-12 border border-desktop-border">
+      <div className=" h-[640px] w-12 border border-slate-300 dark:border-slate-700">
         <Story />
       </div>
     ),
@@ -47,8 +46,8 @@ export const HoverState: Story = {
   play: async ({ canvasElement }) => {
     const firstNavLink = canvasElement.querySelector("a");
     if (firstNavLink instanceof HTMLElement) {
-      firstNavLink.style.backgroundColor = "var(--dt-bg-active)";
-      firstNavLink.style.color = "var(--dt-text-primary)";
+      firstNavLink.style.backgroundColor = "var(--color-blue-100)";
+      firstNavLink.style.color = "var(--color-blue-700)";
     }
   },
 };

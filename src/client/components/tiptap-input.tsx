@@ -34,7 +34,6 @@ import type { SkillSummary } from "../skill-client";
 import { RepoPicker, type RepoSelection } from "./repo-picker";
 import type { FileMatch } from "../hooks/use-file-search";
 import { isDarkThemeActive } from "../utils/theme";
-import { AcpProviderDropdown } from "./acp-provider-dropdown";
 import { useTranslation } from "@/i18n";
 import { ChevronDown, Zap, Monitor, Square, ArrowRight } from "lucide-react";
 
@@ -967,19 +966,15 @@ export function TiptapInput({
             />
           </div>
 
-          {/* Provider dropdown */}
+          {/* Provider indicator */}
           <div className="shrink-0">
-            <AcpProviderDropdown
-              providers={providers}
-              selectedProvider={selectedProvider}
-              onProviderChange={onProviderChange ?? (() => {})}
-              disabled={disabled}
-              variant={isHero ? "hero" : "compact"}
-            />
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 px-2">
+              Claude Code
+            </span>
           </div>
 
-          {/* Model selector — shown for providers that support model listing */}
-          {onFetchModels && (selectedProvider === "opencode" || selectedProvider === "gemini") && (
+          {/* Model selector — not needed for Claude Code */}
+          {false && (
             <div ref={modelDropdownRef}>
               <button
                 ref={modelBtnRef}
@@ -997,7 +992,7 @@ export function TiptapInput({
                       setModelDropdownPos({ left: rect.left, top: rect.bottom + 4, maxHeight: Math.min(spaceBelow, 280) });
                     }
                   }
-                  if (!modelDropdownOpen && availableModels.length === 0) {
+                  if (!modelDropdownOpen && availableModels.length === 0 && onFetchModels) {
                     setModelLoading(true);
                     const models = await onFetchModels(selectedProvider);
                     setAvailableModels(models);
@@ -1019,10 +1014,12 @@ export function TiptapInput({
                 }
               </button>
 
-              {modelDropdownOpen && modelDropdownPos && (
+              {modelDropdownOpen && modelDropdownPos && (() => {
+                const pos = modelDropdownPos!;
+                return (
                 <div
                   className="fixed w-72 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1e2130] shadow-xl z-[9999] flex flex-col"
-                  style={{ left: modelDropdownPos.left, bottom: modelDropdownPos.bottom, top: modelDropdownPos.top, maxHeight: `${modelDropdownPos.maxHeight}px` }}
+                  style={{ left: pos.left, bottom: pos.bottom, top: pos.top, maxHeight: `${pos.maxHeight}px` }}
                 >
                   {/* Search */}
                   <div className="p-2 border-b border-slate-100 dark:border-slate-800">
@@ -1033,7 +1030,7 @@ export function TiptapInput({
                       onChange={(e) => setModelFilter(e.target.value)}
                       placeholder={t.chatPanel.filterModels}
                       className="w-full px-2 py-1 text-xs rounded border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:ring-1 focus:ring-blue-500 text-slate-800 dark:text-slate-200"
-                    />
+ />
                   </div>
                   <div className="overflow-y-auto flex-1">
                     {/* Default option */}
@@ -1041,10 +1038,10 @@ export function TiptapInput({
                       type="button"
                       onClick={() => { setSelectedModel(""); setModelDropdownOpen(false); }}
                       className={`w-full text-left px-3 py-1.5 text-xs transition-colors ${
-                        !selectedModel
-                          ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
-                          : "hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300"
-                      }`}
+ !selectedModel
+ ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
+ : "hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300"
+ }`}
                     >
                       <span className="font-medium">{t.chatPanel.defaultModel}</span>
                     </button>
@@ -1056,10 +1053,10 @@ export function TiptapInput({
                           type="button"
                           onClick={() => { setSelectedModel(m); setModelDropdownOpen(false); setModelFilter(""); }}
                           className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center gap-2 ${
-                            m === selectedModel
-                              ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
-                              : "hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300"
-                          }`}
+ m === selectedModel
+ ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
+ : "hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300"
+ }`}
                         >
                           <span className="text-slate-400 dark:text-slate-500 font-mono text-[10px] shrink-0">
                             {m.split("/")[0]}
@@ -1073,7 +1070,8 @@ export function TiptapInput({
                     )}
                   </div>
                 </div>
-              )}
+                );
+              })()}
             </div>
           )}
 
@@ -1158,10 +1156,10 @@ function ModeChip({
       type="button"
       onClick={onClick}
       className={`px-2 py-0.5 rounded text-[10px] border transition-colors ${
-        active
-          ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800"
-          : "bg-transparent text-slate-500 border-slate-200 hover:bg-slate-100 dark:text-slate-400 dark:border-slate-700 dark:hover:bg-slate-800"
-      }`}
+ active
+ ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800"
+ : "bg-transparent text-slate-500 border-slate-200 hover:bg-slate-100 dark:text-slate-400 dark:border-slate-700 dark:hover:bg-slate-800"
+ }`}
     >
       {label}
     </button>

@@ -5,7 +5,7 @@ import { BrowserAcpClient } from "@/client/acp-client";
 import { type CrafterAgent, type CrafterMessage } from "@/client/components/task-panel";
 import { getToolEventLabel } from "@/client/components/chat-panel/tool-call-name";
 import { type NoteData } from "@/client/hooks/use-notes";
-import { getDesktopApiBaseUrl, shouldSuppressTeardownError } from "@/client/utils/diagnostics";
+import { shouldSuppressTeardownError } from "@/client/utils/diagnostics";
 import type { ParsedTask } from "@/client/utils/task-block-parser";
 import {
   type NoteTaskQueueItem,
@@ -706,7 +706,7 @@ export function useSessionCrafters(params: UseSessionCraftersParams): UseSession
       metadata: { ...existingMetadata, taskStatus: "IN_PROGRESS" },
     });
 
-    const providerClient = new BrowserAcpClient(getDesktopApiBaseUrl());
+    const providerClient = new BrowserAcpClient("");
     let childSessionId: string | null = null;
     let crafterAgentId: string | null = null;
 

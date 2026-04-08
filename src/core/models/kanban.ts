@@ -73,7 +73,7 @@ export interface KanbanColumnAutomation {
   /** When to trigger: on entry, exit, or both (default: entry) */
   transitionType?: "entry" | "exit" | "both";
   /** Artifacts required before transition is allowed */
-  requiredArtifacts?: ("screenshot" | "test_results" | "code_diff")[];
+  requiredArtifacts?: ("screenshot" | "test_results" | "code_diff" | "document")[];
   /** Task fields that must be present before transition is allowed */
   requiredTaskFields?: KanbanRequiredTaskField[];
   /** Automatically advance card to next column on agent success */

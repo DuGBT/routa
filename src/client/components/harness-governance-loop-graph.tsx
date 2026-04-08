@@ -139,10 +139,10 @@ function getNodeToneClasses(tone: LoopTone) {
       };
     default:
       return {
-        border: "border-desktop-border",
-        badge: "border-desktop-border bg-desktop-bg-secondary text-desktop-text-secondary",
-        fill: "bg-desktop-bg-secondary",
-        fillActive: "bg-desktop-bg-primary/96",
+        border: "border-slate-300 dark:border-slate-700",
+        badge: "border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400",
+        fill: "bg-slate-100 dark:bg-slate-800",
+        fillActive: "bg-slate-50 dark:bg-slate-900/96",
         shadow: "",
       };
   }
@@ -168,19 +168,19 @@ function LoopNodeView({ data }: NodeProps<Node<LoopNodeData>>) {
   const unavailable = !interactive && Boolean(data.unavailableReason);
   const unavailableReasonId = data.unavailableReason ? `governance-unavailable-reason-${data.nodeId}` : undefined;
   const selectedClasses = data.selected
-    ? "ring-2 ring-desktop-accent/70 ring-offset-2 ring-offset-white"
+    ? "ring-2 ring-blue-500/70 ring-offset-2 ring-offset-white"
     : "";
 
   return (
     <div className="relative">
-      <Handle id="target-top" type="target" position={Position.Top} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="target-right" type="target" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="target-bottom" type="target" position={Position.Bottom} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="target-left" type="target" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="source-top" type="source" position={Position.Top} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="source-right" type="source" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="source-bottom" type="source" position={Position.Bottom} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="source-left" type="source" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
+      <Handle id="target-top" type="target" position={Position.Top} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="target-right" type="target" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="target-bottom" type="target" position={Position.Bottom} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="target-left" type="target" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="source-top" type="source" position={Position.Top} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="source-right" type="source" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="source-bottom" type="source" position={Position.Bottom} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="source-left" type="source" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
       <button
         type="button"
         data-governance-node-id={data.nodeId}
@@ -214,16 +214,16 @@ function LoopNodeView({ data }: NodeProps<Node<LoopNodeData>>) {
           data.onNavigate?.(direction);
         }}
         className={`flex h-[132px] w-[168px] flex-col justify-between rounded-sm border px-4 py-3 text-left transition ${
-          interactive ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-desktop-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white" : "cursor-not-allowed"
-        } ${
+ interactive ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white" : "cursor-not-allowed"
+ } ${
           data.active ? `${tone.fillActive} ${tone.border} ${tone.shadow}` : `${tone.fill} ${tone.border}`
         } ${selectedClasses}`}
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="text-[10px] font-semibold tracking-[0.08em] text-desktop-text-secondary">{layerLabel[data.layer]}</div>
+            <div className="text-[10px] font-semibold tracking-[0.08em] text-slate-700 dark:text-slate-400">{layerLabel[data.layer]}</div>
             <div
-              className={`mt-1 max-w-[122px] truncate text-[13px] font-semibold ${data.active ? "text-desktop-text-primary" : "text-slate-500"}`}
+              className={`mt-1 max-w-[122px] truncate text-[13px] font-semibold ${data.active ? "text-slate-900 dark:text-slate-200" : "text-slate-500"}`}
               title={data.title}
             >
               {data.title}
@@ -235,7 +235,7 @@ function LoopNodeView({ data }: NodeProps<Node<LoopNodeData>>) {
         </div>
         {data.note ? (
           <div
-            className={`mt-2 min-h-[16px] max-w-[168px] truncate text-[10px] leading-4 ${data.active ? "text-desktop-text-secondary" : "text-slate-400"}`}
+            className={`mt-2 min-h-[16px] max-w-[168px] truncate text-[10px] leading-4 ${data.active ? "text-slate-700 dark:text-slate-400" : "text-slate-400"}`}
             title={data.note}
           >
             {data.note}
@@ -245,7 +245,7 @@ function LoopNodeView({ data }: NodeProps<Node<LoopNodeData>>) {
         <div
           id={unavailableReasonId}
           className="mt-2 min-h-[16px] max-w-[168px] rounded-sm border border-dashed border-slate-200 bg-white/70 px-2.5 py-2 text-[10px] leading-4 text-slate-500 truncate"
-          title={data.unavailableReason}
+ title={data.unavailableReason}
         >
           {data.unavailableReason}
         </div>
@@ -834,7 +834,7 @@ export function HarnessGovernanceLoopGraph({
       ) : null}
 
       {!hasContext && !unsupportedMessage ? (
-        <div className="mt-4 rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-4 py-5 text-[11px] text-desktop-text-secondary">
+        <div className="mt-4 rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-4 py-5 text-[11px] text-slate-700 dark:text-slate-400">
           {t.harness.governanceLoop.graph.selectRepository}
         </div>
       ) : null}
@@ -851,7 +851,7 @@ export function HarnessGovernanceLoopGraph({
 
       {hasContext && !unsupportedMessage ? (
         <div className="mt-3 grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-            <div className="relative overflow-hidden rounded-sm border border-desktop-border bg-desktop-bg-primary">
+            <div className="relative overflow-hidden rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
               <div style={{ height: graph.minHeight }}>
                 <ReactFlow
                   nodes={graph.nodes}
@@ -881,18 +881,18 @@ export function HarnessGovernanceLoopGraph({
                 <div>{contextPanel}</div>
               ) : (
                 <div className="space-y-3">
-                  <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/70 px-3 py-2.5">
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">{t.harness.governanceLoop.graph.nodeDetails}</div>
-                    <div className="mt-1 text-sm font-semibold text-desktop-text-primary">
+                  <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 px-3 py-2.5">
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">{t.harness.governanceLoop.graph.nodeDetails}</div>
+                    <div className="mt-1 text-sm font-semibold text-slate-900 dark:text-slate-200">
                       {graph.nodes.find((node) => node.id === activeSelectedNodeId)?.data.title ?? t.harness.governanceLoop.graph.phaseDetails}
                     </div>
                   </div>
                   {detailSections.map((section: LoopDetailSection) => (
-                    <div key={section.title} className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 p-3">
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">{section.title}</div>
+                    <div key={section.title} className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 p-3">
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">{section.title}</div>
                       <div className="mt-2 flex flex-wrap gap-2">
                         {section.items.map((item: string) => (
-                          <span key={item} className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2.5 py-1 text-[10px] text-desktop-text-primary">
+                          <span key={item} className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-[10px] text-slate-900 dark:text-slate-200">
                             {item}
                           </span>
                         ))}

@@ -2,8 +2,6 @@ import { getAcpProcessManager } from "@/core/acp/processer";
 import { getHttpSessionStore, type SessionUpdateNotification } from "@/core/acp/http-session-store";
 import { getPresetById } from "@/core/acp/acp-presets";
 import { isServerlessEnvironment } from "@/core/acp/api-based-providers";
-import { isOpencodeServerConfigured } from "@/core/acp/opencode-sdk-adapter";
-import { getDockerDetector, DEFAULT_DOCKER_AGENT_IMAGE } from "@/core/acp/docker";
 import { isClaudeCodeSdkConfigured } from "@/core/acp/claude-code-sdk-adapter";
 import { getRoutaOrchestrator } from "@/core/orchestration/orchestrator-singleton";
 import { getRoutaSystem } from "@/core/routa-system";
@@ -212,13 +210,9 @@ async function ensurePromptSessionExists(args: {
   const forwardSessionUpdate = createSessionUpdateForwarder(store, sessionId);
 
   const sessionExists =
-    manager.getProcess(sessionId) !== undefined ||
     manager.getClaudeProcess(sessionId) !== undefined ||
-    manager.isDockerAdapterSession(sessionId) ||
     manager.isClaudeCodeSdkSession(sessionId) ||
-    manager.isOpencodeAdapterSession(sessionId) ||
-    (await manager.isClaudeCodeSdkSessionAsync(sessionId)) ||
-    (await manager.isOpencodeSdkSessionAsync(sessionId));
+    (await manager.isClaudeCodeSdkSessionAsync(sessionId));
 
   if (sessionExists) {
     return null;
@@ -229,7 +223,7 @@ async function ensurePromptSessionExists(args: {
   const storedSession = store.getSession(sessionId);
   const persistedSession = storedSession ? null : await loadSessionFromLocalStorage(sessionId);
   const cwd = storedSession?.cwd ?? persistedSession?.cwd ?? (params.cwd as string | undefined) ?? process.cwd();
-  const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "opencode";
+  const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "claude";
   const provider = (params.provider as string | undefined) ?? storedSession?.provider ?? persistedSession?.provider ?? defaultProvider;
   const workspaceId = requireWorkspaceId(params.workspaceId) ?? storedSession?.workspaceId ?? persistedSession?.workspaceId;
   if (!workspaceId) {
@@ -249,44 +243,10 @@ async function ensurePromptSessionExists(args: {
     const preset = getPresetById(provider);
     const isClaudeCode = preset?.nonStandardApi === true || provider === "claude";
     const isClaudeCodeSdk = provider === "claude-code-sdk";
-    const isOpencodeSdk = provider === "opencode-sdk";
-    const isDockerOpenCode = provider === "docker-opencode";
 
     let acpSessionId: string;
 
-    if (isOpencodeSdk) {
-      if (!isOpencodeServerConfigured()) {
-        return jsonrpcResponse(id ?? null, null, {
-          code: -32002,
-          message: "Cannot auto-create session: OpenCode SDK not configured. Set OPENCODE_SERVER_URL environment variable.",
-        });
-      }
-
-      acpSessionId = await manager.createOpencodeSdkSession(
-        sessionId,
-        forwardSessionUpdate,
-      );
-    } else if (isDockerOpenCode) {
-      const dockerStatus = await getDockerDetector().checkAvailability();
-      if (!dockerStatus.available) {
-        return jsonrpcResponse(id ?? null, null, {
-          code: -32003,
-          message: dockerStatus.error
-            ? `Cannot auto-create Docker session: ${dockerStatus.error}`
-            : "Cannot auto-create Docker session: Docker daemon unavailable.",
-        });
-      }
-
-      const authJson = (params.authJson as string | undefined);
-      acpSessionId = await manager.createDockerSession(
-        sessionId,
-        cwd,
-        forwardSessionUpdate,
-        process.env.ROUTA_DOCKER_OPENCODE_IMAGE ?? DEFAULT_DOCKER_AGENT_IMAGE,
-        undefined,
-        authJson,
-      );
-    } else if (isClaudeCodeSdk) {
+    if (isClaudeCodeSdk) {
       if (!isClaudeCodeSdkConfigured()) {
         return jsonrpcResponse(id ?? null, null, {
           code: -32002,
@@ -320,18 +280,10 @@ async function ensurePromptSessionExists(args: {
         allowedNativeTools,
       );
     } else {
-      acpSessionId = await manager.createSession(
-        sessionId,
-        cwd,
-        forwardSessionUpdate,
-        provider,
-        undefined,
-        undefined,
-        undefined,
-        workspaceId,
-        toolMode,
-        mcpProfile,
-      );
+      return jsonrpcResponse(id ?? null, null, {
+        code: -32000,
+        message: `Unsupported provider: ${provider}. Only claude and claude-code-sdk are supported.`,
+      });
     }
 
     const now = new Date();
@@ -552,111 +504,6 @@ export async function handleSessionPrompt({
   await persistSessionHistorySnapshot(sessionId, store);
   const sessionRecord = store.getSession(sessionId);
 
-  if (manager.isOpencodeAdapterSession(sessionId) || await manager.isOpencodeSdkSessionAsync(sessionId)) {
-    const opcAdapter = await manager.getOrRecreateOpencodeSdkAdapter(
-      sessionId,
-      forwardSessionUpdate,
-    );
-
-    if (!opcAdapter) {
-      return jsonrpcResponse(id ?? null, null, {
-        code: -32000,
-        message: `No OpenCode SDK adapter for session: ${sessionId}`,
-      });
-    }
-
-    if (!opcAdapter.alive) {
-      return jsonrpcResponse(id ?? null, null, {
-        code: -32000,
-        message: "OpenCode SDK adapter is not connected",
-      });
-    }
-
-    return createStreamingSseResponse({
-      sessionId,
-      store,
-      run: async (controller, encoder) => {
-        try {
-          for await (const event of opcAdapter.promptStream(promptText, sessionId, skillContent, sessionRecord?.workspaceId ?? undefined)) {
-            controller.enqueue(encoder.encode(event));
-          }
-          store.flushAgentBuffer(sessionId);
-          store.exitStreamingMode(sessionId);
-          await persistSessionHistorySnapshot(sessionId, store);
-          controller.close();
-        } catch (err) {
-          const message = markSessionPromptError(store, sessionId, err, "OpenCode SDK prompt failed");
-          store.flushAgentBuffer(sessionId);
-          store.exitStreamingMode(sessionId);
-          await persistSessionHistorySnapshot(sessionId, store);
-          controller.enqueue(encoder.encode(encodeSsePayload({
-            jsonrpc: "2.0",
-            method: "session/update",
-            params: {
-              sessionId,
-              type: "error",
-              error: { message },
-            },
-          })));
-          controller.close();
-        }
-      },
-    });
-  }
-
-  if (manager.isDockerAdapterSession(sessionId)) {
-    const dockerAdapter = manager.getDockerAdapter(sessionId);
-    if (!dockerAdapter) {
-      return jsonrpcResponse(id ?? null, null, {
-        code: -32000,
-        message: `No Docker OpenCode adapter for session: ${sessionId}`,
-      });
-    }
-
-    if (!dockerAdapter.alive) {
-      return jsonrpcResponse(id ?? null, null, {
-        code: -32000,
-        message: "Docker OpenCode adapter is not connected",
-      });
-    }
-
-    return createStreamingSseResponse({
-      sessionId,
-      store,
-      run: async (controller, encoder) => {
-        try {
-          for await (const event of dockerAdapter.promptStream(
-            promptText,
-            sessionId,
-            skillContent,
-            sessionRecord?.workspaceId ?? undefined,
-          )) {
-            controller.enqueue(encoder.encode(event));
-          }
-          store.flushAgentBuffer(sessionId);
-          store.exitStreamingMode(sessionId);
-          await persistSessionHistorySnapshot(sessionId, store);
-          controller.close();
-        } catch (err) {
-          const message = markSessionPromptError(store, sessionId, err, "Docker OpenCode prompt failed");
-          store.flushAgentBuffer(sessionId);
-          store.exitStreamingMode(sessionId);
-          await persistSessionHistorySnapshot(sessionId, store);
-          controller.enqueue(encoder.encode(encodeSsePayload({
-            jsonrpc: "2.0",
-            method: "session/update",
-            params: {
-              sessionId,
-              type: "error",
-              error: { message },
-            },
-          })));
-          controller.close();
-        }
-      },
-    });
-  }
-
   if (await manager.isClaudeCodeSdkSessionAsync(sessionId)) {
     const adapter = await manager.getOrRecreateClaudeCodeSdkAdapter(
       sessionId,
@@ -803,26 +650,24 @@ export async function handleSessionPrompt({
     }
   }
 
-  const proc = manager.getProcess(sessionId);
-  const acpSessionId = manager.getAcpSessionId(sessionId);
+  const proc = manager.getClaudeProcess(sessionId);
 
-  if (!proc || !acpSessionId) {
+  if (!proc) {
     return jsonrpcResponse(id ?? null, null, {
       code: -32000,
-      message: `No ACP agent process for session: ${sessionId}`,
+      message: `No Claude Code process for session: ${sessionId}`,
     });
   }
 
   if (!proc.alive) {
-    const presetId = manager.getPresetId(sessionId) ?? "unknown";
     return jsonrpcResponse(id ?? null, null, {
       code: -32000,
-      message: `ACP agent (${presetId}) process is not running`,
+      message: "Claude Code process is not running",
     });
   }
 
   try {
-    const result = await proc.prompt(acpSessionId, promptText);
+    const result = await proc.prompt(sessionId, promptText);
     store.flushAgentBuffer(sessionId);
     void persistSessionHistorySnapshot(sessionId, store);
     return jsonrpcResponse(id ?? null, result);

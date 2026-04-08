@@ -33,6 +33,7 @@ import { InMemoryKanbanBoardStore, KanbanBoardStore } from "./store/kanban-board
 import { InMemoryArtifactStore, ArtifactStore } from "./store/artifact-store";
 import { PermissionStore } from "./tools/permission-store";
 import { startWorkflowOrchestrator } from "./kanban/workflow-orchestrator-singleton";
+import { startKbAutoArchiver } from "./knowledge/auto-archiver";
 
 export interface RoutaSystem {
   agentStore: AgentStore;
@@ -250,7 +251,7 @@ export function createSqliteSystem(): RoutaSystem {
     } = require("./db/sqlite-stores") as typeof import("./db/sqlite-stores");
 
     const db = getSqliteDatabase();
-    ensureSqliteDefaultWorkspace();
+    ensureSqliteDefaultWorkspace(db, "default");
     agentStore = new SqliteAgentStore(db);
     conversationStore = new SqliteConversationStore(db);
     taskStore = new SqliteTaskStore(db);
@@ -349,6 +350,8 @@ export function getRoutaSystem(): RoutaSystem {
     // Start the workflow orchestrator to listen for column transitions
     const system = g[GLOBAL_KEY] as RoutaSystem;
     startWorkflowOrchestrator(system);
+    // Auto-archive document artifacts of analysis/document tasks into the workspace KB
+    startKbAutoArchiver(system);
   }
   return g[GLOBAL_KEY] as RoutaSystem;
 }

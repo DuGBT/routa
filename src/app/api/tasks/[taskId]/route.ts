@@ -337,7 +337,8 @@ export async function PATCH(
     }
 
     // Auto-create worktree when entering dev column (if no worktree yet and codebase exists)
-    if (enteringDev && preferredCodebase && !nextTask.worktreeId) {
+    // Non-code tasks (analysis, document) skip worktree isolation
+    if (enteringDev && preferredCodebase && !nextTask.worktreeId && (nextTask.taskType ?? "code") === "code") {
       try {
         const worktreeService = new GitWorktreeService(system.worktreeStore, system.codebaseStore);
         const { branch, label } = buildKanbanWorktreeNaming(nextTask.id);

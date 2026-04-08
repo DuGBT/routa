@@ -152,16 +152,16 @@ export function HarnessRepoSignalsPanel({
       {!state.loading && !state.error && !unsupportedMessage && state.data ? (
         <div className={`mt-4 ${mode === "test" ? "grid gap-3 md:grid-cols-2" : "space-y-4"}`}>
           {mode === "build" ? (
-            <div className="overflow-hidden rounded-sm border border-desktop-border bg-desktop-bg-primary/80">
-              <div className="border-b border-desktop-border/70 px-4 py-3">
+            <div className="overflow-hidden rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80">
+              <div className="border-b border-slate-300 dark:border-slate-700/70 px-4 py-3">
                 <div className={`text-[10px] font-semibold uppercase tracking-[0.14em] ${tone.title}`}>{t.harness.repoSignals.overview}</div>
               </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full border-collapse text-left">
                   <tbody>
                     {summaryRows.map((row) => (
-                      <tr key={row.label} className="border-t border-desktop-border/60 first:border-t-0">
-                        <th className="w-28 px-4 py-3 align-top text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">
+                      <tr key={row.label} className="border-t border-slate-300 dark:border-slate-700/60 first:border-t-0">
+                        <th className="w-28 px-4 py-3 align-top text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">
                           {row.label}
                         </th>
                         <td className="px-4 py-3">
@@ -171,7 +171,7 @@ export function HarnessRepoSignalsPanel({
                                 {value}
                               </span>
                             )) : (
-                              <span className="text-[11px] text-desktop-text-secondary">{t.harness.repoSignals.noSignal}</span>
+                              <span className="text-[11px] text-slate-700 dark:text-slate-400">{t.harness.repoSignals.noSignal}</span>
                             )}
                           </div>
                         </td>
@@ -183,8 +183,8 @@ export function HarnessRepoSignalsPanel({
             </div>
           ) : null}
 
-          <div className={`overflow-hidden rounded-sm border border-desktop-border bg-desktop-bg-primary/80 ${mode === "test" ? "md:col-span-2" : ""}`}>
-            <div className="border-b border-desktop-border/70 px-4 py-3">
+          <div className={`overflow-hidden rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 ${mode === "test" ? "md:col-span-2" : ""}`}>
+            <div className="border-b border-slate-300 dark:border-slate-700/70 px-4 py-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <div className={`text-[10px] font-semibold uppercase tracking-[0.14em] ${tone.title}`}>{t.harness.repoSignals.entrypoints}</div>
@@ -193,18 +193,18 @@ export function HarnessRepoSignalsPanel({
             </div>
 
             {mode === "test" && summaryRows.length > 0 ? (
-              <div className="border-b border-desktop-border/70 px-4 py-2.5">
+              <div className="border-b border-slate-300 dark:border-slate-700/70 px-4 py-2.5">
                 <div className="grid gap-2 md:grid-cols-2">
                   {summaryRows.map((row) => (
                     <div key={row.label} className="space-y-1">
-                      <div className="text-[11px] font-semibold text-desktop-text-primary">{row.label}</div>
+                      <div className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{row.label}</div>
                       <div className="flex flex-wrap gap-1.5">
                         {row.values.length > 0 ? row.values.map((value) => (
                           <span key={`${row.label}-${value}`} className={`rounded-full border px-2.5 py-1 text-[10px] ${tone.badge}`}>
                             {value}
                           </span>
                         )) : (
-                          <span className="text-[11px] text-desktop-text-secondary">{t.harness.repoSignals.noSignal}</span>
+                          <span className="text-[11px] text-slate-700 dark:text-slate-400">{t.harness.repoSignals.noSignal}</span>
                         )}
                       </div>
                     </div>
@@ -217,7 +217,7 @@ export function HarnessRepoSignalsPanel({
               <div className="overflow-x-auto">
                 <table className="min-w-full border-collapse text-left">
                   <thead className="bg-white/60">
-                    <tr className="text-[10px] uppercase tracking-[0.12em] text-desktop-text-secondary">
+                    <tr className="text-[10px] uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">
                       <th className="px-4 py-2.5 font-semibold">Group</th>
                       <th className="px-4 py-2.5 font-semibold">Primary</th>
                       <th className="px-4 py-2.5 font-semibold">Command</th>
@@ -229,29 +229,29 @@ export function HarnessRepoSignalsPanel({
                       const primary = group.scripts[0];
                       const variants = group.scripts.slice(1);
                       return (
-                        <tr key={group.category} className="border-t border-desktop-border/60 first:border-t-0">
+                        <tr key={group.category} className="border-t border-slate-300 dark:border-slate-700/60 first:border-t-0">
                           <td className="px-4 py-3 align-top">
                             <div className="flex items-center gap-2">
-                              <span className="text-[11px] font-semibold text-desktop-text-primary">{group.label}</span>
+                              <span className="text-[11px] font-semibold text-slate-900 dark:text-slate-200">{group.label}</span>
                               <span className={`rounded-full border px-2 py-0.5 text-[10px] ${tone.badge}`}>{group.scripts.length}</span>
                             </div>
                           </td>
-                          <td className="px-4 py-3 align-top text-[11px] font-semibold text-desktop-text-primary">
+                          <td className="px-4 py-3 align-top text-[11px] font-semibold text-slate-900 dark:text-slate-200">
                             {primary?.name ?? "—"}
                           </td>
                           <td className="px-4 py-3 align-top">
-                            <div className="max-w-full break-all font-mono text-[10px] leading-5 text-desktop-text-secondary">
+                            <div className="max-w-full break-all font-mono text-[10px] leading-5 text-slate-700 dark:text-slate-400">
                               {primary?.command ?? "—"}
                             </div>
                           </td>
                           <td className="px-4 py-3 align-top">
                             <div className="flex flex-wrap gap-2">
                               {variants.length > 0 ? summarizeScripts(variants, 3, t.harness.repoSignals.moreSuffix.replace('{count}', `${variants.length - 3}`)).map((value) => (
-                                <span key={`${group.category}-${value}`} className="rounded-full border border-desktop-border bg-desktop-bg-primary px-2.5 py-1 text-[10px] text-desktop-text-secondary">
+                                <span key={`${group.category}-${value}`} className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2.5 py-1 text-[10px] text-slate-700 dark:text-slate-400">
                                   {value}
                                 </span>
                               )) : (
-                                <span className="text-[11px] text-desktop-text-secondary">{t.harness.repoSignals.noVariants}</span>
+                                <span className="text-[11px] text-slate-700 dark:text-slate-400">{t.harness.repoSignals.noVariants}</span>
                               )}
                             </div>
                           </td>
@@ -262,7 +262,7 @@ export function HarnessRepoSignalsPanel({
                 </table>
               </div>
             ) : (
-              <div className="px-4 py-5 text-[11px] text-desktop-text-secondary">
+              <div className="px-4 py-5 text-[11px] text-slate-700 dark:text-slate-400">
                 {t.harness.repoSignals.noMatchingScripts}
               </div>
             )}

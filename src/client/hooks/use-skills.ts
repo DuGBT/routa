@@ -22,7 +22,6 @@ import {
   CatalogInstallResult,
 } from "../skill-client";
 import {
-  getDesktopApiBaseUrl,
   logRuntime,
   toErrorMessage,
 } from "../utils/diagnostics";
@@ -69,7 +68,7 @@ export function useSkills(
   baseUrl: string = ""
 ): UseSkillsState & UseSkillsActions {
   // In Tauri desktop static mode, resolve the embedded Rust server URL
-  const effectiveBaseUrl = baseUrl || getDesktopApiBaseUrl();
+  const effectiveBaseUrl = baseUrl || "";
   const clientRef = useRef(new SkillClient(effectiveBaseUrl));
   const [state, setState] = useState<UseSkillsState>({
     skills: [],

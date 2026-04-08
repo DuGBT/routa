@@ -6,9 +6,7 @@ const meta = {
   title: "Workspace/Workspace Page Header",
   component: WorkspacePageHeader,
   tags: ["autodocs"],
-  parameters: {
-    desktopTheme: true,
-  },
+  parameters: {},
   args: {
     title: "Default Workspace",
     workspaceId: "default",

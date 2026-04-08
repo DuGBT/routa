@@ -27,6 +27,7 @@ export class PgNoteStore implements NoteStore {
         parentNoteId: note.metadata.parentNoteId,
         linkedTaskId: note.metadata.linkedTaskId,
         customMetadata: note.metadata.custom,
+        wikiFrontmatter: note.metadata.wikiFrontmatter,
         createdAt: note.createdAt,
         updatedAt: note.updatedAt,
       })
@@ -42,6 +43,7 @@ export class PgNoteStore implements NoteStore {
           parentNoteId: note.metadata.parentNoteId,
           linkedTaskId: note.metadata.linkedTaskId,
           customMetadata: note.metadata.custom,
+          wikiFrontmatter: note.metadata.wikiFrontmatter,
           updatedAt: new Date(),
         },
       });
@@ -103,6 +105,7 @@ export class PgNoteStore implements NoteStore {
       parentNoteId: row.parentNoteId ?? undefined,
       linkedTaskId: row.linkedTaskId ?? undefined,
       custom: (row.customMetadata as Record<string, string>) ?? undefined,
+      wikiFrontmatter: (row.wikiFrontmatter as import("../models/note").WikiFrontmatter) ?? undefined,
     };
 
     return {

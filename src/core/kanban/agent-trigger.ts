@@ -14,6 +14,14 @@ export interface TaskPromptSummaryContext {
   evidenceSummary?: TaskEvidenceSummary;
   storyReadiness?: TaskStoryReadiness;
   investValidation?: TaskInvestValidation;
+  knowledgeContext?: KbContextEntry[];
+}
+
+/** A knowledge base entry injected into a task prompt */
+export interface KbContextEntry {
+  slug: string;
+  title: string;
+  summary: string;
 }
 
 function formatHandoffRequestType(
@@ -57,6 +65,52 @@ export function getInternalApiOrigin(): string {
 
   const port = process.env.PORT ?? "3000";
   return `http://127.0.0.1:${port}`;
+}
+
+/**
+ * Build knowledge base context for a task by matching task labels and scope against KB entries.
+ * Labels starting with "ref:" are treated as KB tag hints.
+ * The scope field (describing involved files/modules) is used as fallback query text.
+ *
+ * Pulls from a hybrid index of:
+ *   - workspace notes carrying wikiFrontmatter (workspace-private, primary)
+ *   - repo-level fs wiki entries at docs/references/wiki/ (shared baseline)
+ */
+export async function buildKnowledgeContext(
+  taskLabels: string[],
+  workspaceId: string,
+  scope?: string,
+  maxEntries = 3,
+): Promise<KbContextEntry[]> {
+  const refLabels = taskLabels
+    .filter((label) => label.startsWith("ref:"))
+    .map((label) => label.slice(4).toLowerCase());
+
+  const scopeText = scope?.trim();
+  if (refLabels.length === 0 && !scopeText) return [];
+
+  try {
+    const { buildHybridKbIndex, queryKb } = await import("@/core/knowledge");
+    const { getRoutaSystem } = await import("../routa-system");
+    const system = getRoutaSystem();
+    const index = await buildHybridKbIndex({
+      workspaceId,
+      noteStore: system.noteStore,
+      repoRoot: process.cwd(),
+    });
+
+    const query = refLabels.length > 0
+      ? refLabels.join(" ") + (scopeText ? ` ${scopeText}` : "")
+      : scopeText!;
+    const result = queryKb(index, query, refLabels.length > 0 ? refLabels : undefined, maxEntries);
+    return result.matches.map((m) => ({
+      slug: m.slug,
+      title: m.title,
+      summary: m.summary,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export function buildTaskPrompt(
@@ -202,7 +256,9 @@ export function buildTaskPrompt(
       ]
     : [];
 
-  const devVerificationSection = currentColumnId === "dev"
+  const isCodeTask = (task.taskType ?? "code") === "code";
+
+  const devVerificationSection = currentColumnId === "dev" && isCodeTask
     ? [
         "## Dev Verification Safety",
         "",
@@ -304,6 +360,28 @@ export function buildTaskPrompt(
     ...laneRunHistorySection,
     ...laneHandoffSection,
     ...devVerificationSection,
+    ...(summaryContext?.knowledgeContext && summaryContext.knowledgeContext.length > 0
+      ? [
+          "## Knowledge Base References",
+          "",
+          "The following knowledge base entries are relevant to this task. Use `query_knowledge_base` for more details.",
+          "",
+          ...summaryContext.knowledgeContext.map(
+            (entry) => `- **${entry.title}** (${entry.slug}): ${entry.summary}`,
+          ),
+          "",
+        ]
+      : []),
+    ...(task.taskType && task.taskType !== "code"
+      ? [
+          "## Task Type: " + task.taskType.toUpperCase(),
+          "",
+          task.taskType === "analysis"
+            ? "Focus on reading source files, analyzing patterns, and producing structured findings. Use `provide_artifact` with type 'document' to deliver your analysis report."
+            : "Focus on producing a well-structured document. Use `provide_artifact` with type 'document' to deliver the final document.",
+          "",
+        ]
+      : []),
     "## Available MCP Tools",
     "",
     "You have access to the following MCP tools for task management:",

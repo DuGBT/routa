@@ -1,4 +1,4 @@
-# Routa.js — Multi-agent coordination platform with dual-backend architecture (Next.js + Rust/Axum).
+# Routa.js — AI development platform with Claude Code agent coordination (Next.js).
 
 ## Repository Map
 
@@ -13,7 +13,7 @@
 - `docs/fitness/`: Executable quality/testing/contract rulebook consumed by `entrix`.
 - `docs/REFACTOR.md`: Long-file refactor playbook.
 - `docs/references/`: Distilled external references for frequent dependencies.
-- `docs/release-guide.md`: Full release guide for CLI/Desktop/distribution.
+- `docs/release-guide.md`: Full release guide for CLI/distribution.
 - `docs/RELEASE_CHECKLIST.md`: Quick release checklist.
 - `tools/entrix/docs/adr/README.md`: Entrix-specific ADRs and long-file heuristics.
 
@@ -48,8 +48,6 @@ When starting work on this repository, read in this order:
 
 - Use `agent-browser` (or Electron/browser skills) for manual walkthroughs and visual evidence capture.
 - Use Playwright e2e for automated UI coverage.
-- Tauri UI smoke path: `npm run tauri dev`, then validate via `http://127.0.0.1:3210/`.
-- If Tauri routes look wrong, verify fallback mapping in `crates/routa-server/src/lib.rs` and placeholders in `out/workspace/__placeholder__/`.
 - For large or cross-core changes, run graph probes first: `entrix graph impact`, `entrix graph test-radius`, or `entrix graph review-context`.
 - Temporary frontend debug `console.log` is allowed during diagnosis; remove all debug logs before finish.
 

@@ -14,7 +14,7 @@
  * See acp-presets.ts for available presets.
  */
 
-import {type AcpAgentPreset, getPresetByIdWithRegistry, resolveCommand,} from "./acp-presets";
+import {type AcpAgentPreset, getPresetById, resolveCommand,} from "./acp-presets";
 import {AcpProcess} from "@/core/acp/acp-process";
 import {AcpProcessManager} from "@/core/acp/acp-process-manager";
 
@@ -67,7 +67,7 @@ export async function buildConfigFromPreset(
   extraEnv?: Record<string, string>,
   mcpConfigs?: string[]
 ): Promise<AcpProcessConfig> {
-  const preset = await getPresetByIdWithRegistry(presetId);
+  const preset = getPresetById(presetId);
   if (!preset) {
     throw new Error(
       `Unknown ACP preset: "${presetId}". Check available providers or install from ACP Registry.`
@@ -86,7 +86,7 @@ export async function buildConfigFromPreset(
   // Append --cwd as command-line argument for providers that support it
   // - OpenCode: uses --cwd flag
   // - Others: rely on process cwd + session/new cwd param (ACP protocol)
-  if (preset.id === "opencode") {
+  if (preset.id === "claude") {
     args.push("--cwd", cwd);
   }
   // Note: Some providers may require additional flags for cwd support.
@@ -97,15 +97,15 @@ export async function buildConfigFromPreset(
     args.push(...extraArgs);
   }
 
-  // Merge preset env with extraEnv
-  const mergedEnv = { ...preset.env, ...extraEnv };
+  // Merge extraEnv (preset env was removed in simplification)
+  const mergedEnv = extraEnv;
 
   return {
     preset,
     command,
     args,
     cwd,
-    env: Object.keys(mergedEnv).length > 0 ? mergedEnv : undefined,
+    env: mergedEnv && Object.keys(mergedEnv).length > 0 ? mergedEnv : undefined,
     displayName: preset.name,
     mcpConfigs,
   };

@@ -28,8 +28,8 @@ export function DesktopShellHeader({
 
   return (
     <header
-      className="h-10 shrink-0 flex items-center border-b border-desktop-border bg-desktop-bg-tertiary backdrop-blur-md select-none"
-      data-testid="desktop-shell-header"
+      className="h-10 shrink-0 flex items-center border-b border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-700 backdrop-blur-md select-none"
+ data-testid="desktop-shell-header"
     >
       <div className="w-20 h-full app-drag-region" />
 
@@ -38,14 +38,14 @@ export function DesktopShellHeader({
           workspaceHref ? (
           <Link
             href={workspaceHref}
-            className="flex items-center gap-1.5 rounded-xl border border-desktop-border bg-desktop-bg-secondary px-2.5 py-1.5 text-[11px] text-desktop-text-primary transition-colors hover:bg-desktop-bg-active"
-          >
-            <Folder className="w-3 h-3 text-desktop-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
+            className="flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2.5 py-1.5 text-[11px] text-slate-900 dark:text-slate-200 transition-colors hover:bg-blue-100 dark:bg-blue-900"
+ >
+            <Folder className="w-3 h-3 text-slate-700 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             <span className="max-w-30 truncate">{workspaceLabel}</span>
           </Link>
           ) : (
-            <div className="flex items-center gap-1.5 rounded-xl border border-desktop-border bg-desktop-bg-secondary px-2.5 py-1.5 text-[11px] text-desktop-text-secondary">
-              <Folder className="w-3 h-3 text-desktop-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
+            <div className="flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2.5 py-1.5 text-[11px] text-slate-700 dark:text-slate-400">
+              <Folder className="w-3 h-3 text-slate-700 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
               <span className="max-w-30 truncate">{workspaceLabel}</span>
             </div>
           )

@@ -40,50 +40,6 @@ export const API_BASED_PROVIDERS: ApiBasedProvider[] = [
     envKeyName: 'ANTHROPIC_AUTH_TOKEN',
     status: 'requires_config',
   },
-  {
-    id: 'opencode-sdk',
-    name: 'OpenCode SDK',
-    description: 'Connect to a remote OpenCode server via SDK (recommended for serverless)',
-    requiresApiKey: false,
-    envServerUrlName: 'OPENCODE_SERVER_URL',
-    status: 'requires_config',
-  },
-  {
-    id: 'openai-api',
-    name: 'OpenAI API',
-    description: 'OpenAI GPT models via API',
-    apiEndpoint: 'https://api.openai.com/v1',
-    requiresApiKey: true,
-    envKeyName: 'OPENAI_API_KEY',
-    status: 'requires_config',
-  },
-  {
-    id: 'anthropic-api',
-    name: 'Anthropic API',
-    description: 'Claude models via API',
-    apiEndpoint: 'https://api.anthropic.com/v1',
-    requiresApiKey: true,
-    envKeyName: 'ANTHROPIC_API_KEY',
-    status: 'requires_config',
-  },
-  {
-    id: 'gemini-api',
-    name: 'Google Gemini API',
-    description: 'Gemini models via API',
-    apiEndpoint: 'https://generativelanguage.googleapis.com/v1',
-    requiresApiKey: true,
-    envKeyName: 'GOOGLE_API_KEY',
-    status: 'requires_config',
-  },
-  {
-    id: 'deepseek-api',
-    name: 'DeepSeek API',
-    description: 'DeepSeek models via API',
-    apiEndpoint: 'https://api.deepseek.com/v1',
-    requiresApiKey: true,
-    envKeyName: 'DEEPSEEK_API_KEY',
-    status: 'requires_config',
-  },
 ];
 
 /**
@@ -106,7 +62,7 @@ export function detectConfiguredApiProviders(): ApiBasedProvider[] {
  */
 export function getServerlessLimitation(): string {
   return `
-⚠️ CLI-based providers (codex-acp, gemini CLI, copilot CLI, etc.) are not available in serverless environments like Vercel.
+CLI-based providers are not available in serverless environments like Vercel.
 
 This is because:
 - Serverless functions cannot spawn long-running child processes
@@ -117,30 +73,13 @@ This is because:
 
 1. **Use Claude Code SDK** (recommended for Vercel):
    - Set ANTHROPIC_AUTH_TOKEN=your-api-token
-   - Optionally set ANTHROPIC_BASE_URL for custom endpoints (e.g., BigModel)
+   - Optionally set ANTHROPIC_BASE_URL for custom endpoints
    - Works natively in serverless environments
 
-2. **Use OpenCode SDK** (alternative for serverless):
-   - Run \`opencode serve\` on a VPS or local machine
-   - Set OPENCODE_SERVER_URL=http://your-server:4096
-   - The SDK connects to your remote OpenCode server
-
-3. **Use API-based providers**:
-   - Configure API keys in environment variables
-   - Use OpenAI API, Anthropic API, Google Gemini API, etc.
-   - These work natively in serverless environments
-
-3. **Deploy with a persistent server**:
+2. **Deploy with a persistent server**:
    - Use a VPS, Docker container, or traditional hosting
    - Install CLI tools in the server environment
    - Run the full routa-js application with CLI support
-
-To configure providers, add environment variables:
-- OPENCODE_SERVER_URL=http://your-server:4096 (for OpenCode SDK)
-- OPENAI_API_KEY=sk-...
-- ANTHROPIC_API_KEY=sk-ant-...
-- GOOGLE_API_KEY=...
-- DEEPSEEK_API_KEY=sk-...
 `.trim();
 }
 

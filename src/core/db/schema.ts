@@ -18,6 +18,7 @@ import {
 } from "drizzle-orm/pg-core";
 import type { KanbanColumn } from "../models/kanban";
 import type { TaskLaneHandoff, TaskLaneSession } from "../models/task";
+import type { WikiFrontmatter } from "../models/note";
 
 // ─── Workspaces ─────────────────────────────────────────────────────
 
@@ -67,6 +68,7 @@ export const tasks = pgTable("tasks", {
   title: text("title").notNull(),
   objective: text("objective").notNull(),
   comment: text("comment"),
+  taskType: text("task_type").notNull().default("code"),
   scope: text("scope"),
   acceptanceCriteria: jsonb("acceptance_criteria").$type<string[]>(),
   verificationCommands: jsonb("verification_commands").$type<string[]>(),
@@ -141,6 +143,8 @@ export const notes = pgTable(
     parentNoteId: text("parent_note_id"),
     linkedTaskId: text("linked_task_id"),
     customMetadata: jsonb("custom_metadata").$type<Record<string, string>>(),
+    /** Structured frontmatter for notes that act as KB/wiki entries (presence = wiki entry) */
+    wikiFrontmatter: jsonb("wiki_frontmatter").$type<WikiFrontmatter>(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
@@ -552,7 +556,7 @@ export const specialists = pgTable("specialists", {
 
 export const artifacts = pgTable("artifacts", {
   id: text("id").primaryKey(),
-  /** Type: screenshot | test_results | code_diff | logs */
+  /** Type: screenshot | test_results | code_diff | logs | document */
   type: text("type").notNull(),
   /** Task this artifact is associated with */
   taskId: text("task_id").notNull(),

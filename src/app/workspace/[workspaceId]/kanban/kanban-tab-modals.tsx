@@ -116,13 +116,13 @@ export function KanbanCodebaseModal({
                 <button
                   onClick={onRequestRemoveCodebase}
                   className="text-sm text-rose-500 hover:text-rose-600 dark:text-rose-400 dark:hover:text-rose-300"
-                >
+ >
                   {t.common.remove}
                 </button>
                 <button
                   onClick={onStartEditCodebase}
                   className="text-sm text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300"
-                >
+ >
                   {t.common.edit}
                 </button>
               </>
@@ -130,7 +130,7 @@ export function KanbanCodebaseModal({
             <button
               onClick={onClose}
               className="text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-            >
+ >
               {t.common.close}
             </button>
           </div>
@@ -174,7 +174,7 @@ export function KanbanCodebaseModal({
                       onClick={() => setShowReplaceAllConfirm(true)}
                       disabled={editSaving || replacingAll}
                       className="mt-2 text-xs font-medium text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300"
-                    >
+ >
                       {t.kanbanModals.replaceAllRepos}
                     </button>
                   </div>
@@ -187,7 +187,7 @@ export function KanbanCodebaseModal({
                 onClick={handleCancelEditCodebase}
                 disabled={editSaving || replacingAll}
                 className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#191c28]"
-              >
+ >
                 {t.common.cancel}
               </button>
             </div>
@@ -251,7 +251,7 @@ export function KanbanCodebaseModal({
                               onClick={() => void handleDeleteIssueBranches(removableIssueBranches)}
                               disabled={removableIssueBranches.some((branch) => deletingBranchSet.has(branch))}
                               className="rounded-lg border border-rose-200 px-2.5 py-1 text-[10px] font-medium text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-rose-900/40 dark:text-rose-300 dark:hover:bg-rose-900/10"
-                            >
+ >
                               {removableIssueBranches.some((branch) => deletingBranchSet.has(branch))
                                 ? t.kanbanModals.removing
                                 : t.kanbanModals.clearIssueBranches.replace("{count}", String(removableIssueBranches.length))}
@@ -327,7 +327,7 @@ export function KanbanCodebaseModal({
                         type="button"
                         onClick={() => setSelectedWorktreeIds(allWorktreesSelected ? [] : sortedWorktrees.map((worktree) => worktree.id))}
                         className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-white dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#191c28]"
-                      >
+ >
                         {allWorktreesSelected ? t.kanbanModals.clearSelection : t.tasks.selectAll}
                       </button>
                       <button
@@ -335,7 +335,7 @@ export function KanbanCodebaseModal({
                         onClick={() => void handleDeleteCodebaseWorktrees(selectedWorktrees)}
                         disabled={selectedWorktrees.length === 0 || bulkActionBusy}
                         className="rounded-lg border border-rose-200 px-3 py-1.5 text-xs font-medium text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-rose-900/40 dark:text-rose-300 dark:hover:bg-rose-900/10"
-                      >
+ >
                         {bulkActionBusy
                           ? t.kanbanModals.removing
                           : t.kanbanModals.removeSelected.replace("{count}", String(selectedWorktrees.length))}
@@ -364,16 +364,16 @@ export function KanbanCodebaseModal({
                                   });
                                 }}
                                 className="h-4 w-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500 dark:border-slate-600 dark:bg-[#0f1117]"
-                              />
+ />
                             </label>
                             <div className="min-w-0 flex-1 space-y-2">
                             <div className="flex flex-wrap items-center gap-2">
                               <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${worktree.status === "active"
-                                  ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
-                                  : worktree.status === "creating"
-                                    ? "bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-300"
-                                    : "bg-rose-100 text-rose-700 dark:bg-rose-900/20 dark:text-rose-300"
-                                }`}>{worktree.status}</span>
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300"
+ : worktree.status === "creating"
+ ? "bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-300"
+ : "bg-rose-100 text-rose-700 dark:bg-rose-900/20 dark:text-rose-300"
+ }`}>{worktree.status}</span>
                               <span className="font-mono text-xs text-slate-700 dark:text-slate-300">{worktree.branch}</span>
                               <span className="text-[11px] text-slate-400 dark:text-slate-500">{t.kanban.baseLabel} {worktree.baseBranch}</span>
                               {linkedTasks.length > 0 && (
@@ -410,7 +410,7 @@ export function KanbanCodebaseModal({
                               onClick={() => void handleDeleteCodebaseWorktrees([worktree])}
                               disabled={worktreeDeleting || bulkActionBusy}
                               className="rounded-lg border border-rose-200 px-3 py-1.5 text-xs font-medium text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-rose-900/40 dark:text-rose-300 dark:hover:bg-rose-900/10"
-                            >
+ >
                               {worktreeDeleting ? t.kanbanModals.removing : t.common.remove}
                             </button>
                           </div>
@@ -433,7 +433,7 @@ export function KanbanCodebaseModal({
                     onClick={() => void handleReclone()}
                     disabled={recloning}
                     className="rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-600 disabled:opacity-50"
-                  >
+ >
                     {recloning ? t.kanbanModals.cloning : t.kanbanModals.reclone}
                   </button>
                 </div>
@@ -515,10 +515,10 @@ function BranchChip({
   return (
     <div
       className={`inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] ${
-        issueBranch
-          ? "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/40 dark:bg-amber-900/10 dark:text-amber-300"
-          : "border-slate-200 bg-white text-slate-600 dark:border-slate-700 dark:bg-[#12141c] dark:text-slate-300"
-      }`}
+ issueBranch
+ ? "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/40 dark:bg-amber-900/10 dark:text-amber-300"
+ : "border-slate-200 bg-white text-slate-600 dark:border-slate-700 dark:bg-[#12141c] dark:text-slate-300"
+ }`}
     >
       <span className="truncate font-mono">{branch}</span>
       {isCurrent && (
@@ -537,7 +537,7 @@ function BranchChip({
           onClick={onDelete}
           disabled={deleting}
           className="rounded-full p-0.5 text-rose-500 transition hover:bg-rose-100 hover:text-rose-600 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-rose-900/20 dark:hover:text-rose-300"
-          aria-label={labels.removeBranchLabel.replace("{branch}", branch)}
+ aria-label={labels.removeBranchLabel.replace("{branch}", branch)}
           title={labels.removeBranchLabel.replace("{branch}", branch)}
         >
           <Trash2 className={`h-3 w-3 ${deleting ? "animate-pulse" : ""}`} />
@@ -590,14 +590,14 @@ export function KanbanDeleteCodebaseModal({
               onClick={onCancel}
               disabled={deletingCodebase}
               className="flex-1 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-300 dark:hover:bg-[#191c28]"
-            >
+ >
               {t.common.cancel}
             </button>
             <button
               onClick={() => void onConfirm()}
               disabled={deletingCodebase}
               className="flex-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
-            >
+ >
               {deletingCodebase ? t.kanbanModals.removing : t.common.remove}
             </button>
           </div>
@@ -656,14 +656,14 @@ export function KanbanReplaceAllReposModal({
               onClick={onCancel}
               disabled={replacingAll}
               className="flex-1 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-300 dark:hover:bg-[#191c28]"
-            >
+ >
               {t.common.cancel}
             </button>
             <button
               onClick={() => void onConfirm()}
               disabled={replacingAll}
               className="flex-1 rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50"
-            >
+ >
               {replacingAll ? t.kanbanModals.replacing : t.kanbanModals.replaceAll}
             </button>
           </div>
@@ -713,14 +713,14 @@ export function KanbanDeleteTaskModal({
               onClick={onCancel}
               disabled={isDeleting}
               className="flex-1 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-300 dark:hover:bg-[#191c28]"
-            >
+ >
               {t.common.cancel}
             </button>
             <button
               onClick={() => void onConfirm()}
               disabled={isDeleting}
               className="flex-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
-            >
+ >
               {isDeleting ? t.kanbanModals.deleting : t.common.delete}
             </button>
           </div>
@@ -747,7 +747,7 @@ export function KanbanMoveBlockedModal({
         role="dialog"
         aria-modal="true"
         className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-[#1c1f2e] dark:bg-[#12141c] animate-in zoom-in-95 duration-150"
-      >
+ >
         <div className="p-6">
           <div className="flex items-start gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/20">
@@ -763,7 +763,7 @@ export function KanbanMoveBlockedModal({
             <button
               onClick={onClose}
               className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-300 dark:hover:bg-[#191c28]"
-            >
+ >
               {t.common.dismiss}
             </button>
           </div>

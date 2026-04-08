@@ -1258,7 +1258,7 @@ Used by verification agents to request evidence from implementation agents.`,
       {
         fromAgentId: z.string().describe("ID of the requesting agent"),
         toAgentId: z.string().describe("ID of the agent to provide the artifact"),
-        artifactType: z.enum(["screenshot", "test_results", "code_diff", "logs"]).describe("Type of artifact"),
+        artifactType: z.enum(["screenshot", "test_results", "code_diff", "logs", "document"]).describe("Type of artifact"),
         taskId: z.string().describe("Task ID this artifact is for"),
         context: z.string().optional().describe("Context or instructions for the request"),
       },
@@ -1279,7 +1279,7 @@ Used by verification agents to request evidence from implementation agents.`,
 Can be in response to a request or proactively provided.`,
       {
         agentId: z.string().describe("ID of the providing agent"),
-        type: z.enum(["screenshot", "test_results", "code_diff", "logs"]).describe("Type of artifact"),
+        type: z.enum(["screenshot", "test_results", "code_diff", "logs", "document"]).describe("Type of artifact"),
         taskId: z.string().describe("Task ID this artifact is for"),
         content: z.string().describe("Artifact content (base64 for images, text for others)"),
         context: z.string().optional().describe("Description or context"),
@@ -1308,7 +1308,7 @@ Can be in response to a request or proactively provided.`,
       "List artifacts for a task",
       {
         taskId: z.string().describe("Task ID to list artifacts for"),
-        type: z.enum(["screenshot", "test_results", "code_diff", "logs"]).optional().describe("Filter by type"),
+        type: z.enum(["screenshot", "test_results", "code_diff", "logs", "document"]).optional().describe("Filter by type"),
       },
       async (params) => {
         const result = await this.tools.listArtifacts({

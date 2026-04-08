@@ -3,8 +3,6 @@ import { getAcpProcessManager } from "@/core/acp/processer";
 import { getHttpSessionStore } from "@/core/acp/http-session-store";
 import { getPresetById } from "@/core/acp/acp-presets";
 import { isServerlessEnvironment } from "@/core/acp/api-based-providers";
-import { isOpencodeServerConfigured } from "@/core/acp/opencode-sdk-adapter";
-import { getDockerDetector, DEFAULT_DOCKER_AGENT_IMAGE } from "@/core/acp/docker";
 import { isClaudeCodeSdkConfigured } from "@/core/acp/claude-code-sdk-adapter";
 import type { AgentInstanceConfig } from "@/core/acp/agent-instance-factory";
 import { initRoutaOrchestrator } from "@/core/orchestration/orchestrator-singleton";
@@ -163,10 +161,10 @@ export async function handleSessionNew({
   const specialist = await loadSpecialistConfig(specialistId, specialistLocale);
   const customSystemPrompt = (p.systemPrompt as string | undefined)?.trim() || undefined;
 
-  const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "opencode";
+  const defaultProvider = isServerlessEnvironment() ? "claude-code-sdk" : "claude";
   const requestedProvider = (p.provider as string | undefined);
   const provider = specialistId === "team-agent-lead" &&
-    (requestedProvider ?? specialist?.defaultProvider ?? defaultProvider) === "opencode" &&
+    (requestedProvider ?? specialist?.defaultProvider ?? defaultProvider) === "claude" &&
     isClaudeCodeSdkConfigured()
     ? "claude-code-sdk"
     : requestedProvider ?? specialist?.defaultProvider ?? defaultProvider;
@@ -198,12 +196,6 @@ export async function handleSessionNew({
     return jsonrpcResponse(id ?? null, null, {
       code: -32602,
       message: "customCommand must be a non-empty string",
-    });
-  }
-  if (customArgs !== undefined && !customArgs.every((arg) => typeof arg === "string")) {
-    return jsonrpcResponse(id ?? null, null, {
-      code: -32602,
-      message: "customArgs must be an array of strings",
     });
   }
   if (!workspaceId) {
@@ -246,31 +238,12 @@ export async function handleSessionNew({
   const isClaudeCode = preset?.nonStandardApi === true || provider === "claude";
   const isWorkspaceAgent = isWorkspaceProvider(provider);
   const isClaudeCodeSdk = provider === "claude-code-sdk";
-  const isOpencodeSdk = provider === "opencode-sdk";
-  const isDockerOpenCode = provider === "docker-opencode";
 
-  if (isOpencodeSdk && !isOpencodeServerConfigured()) {
-    return jsonrpcResponse(id ?? null, null, {
-      code: -32002,
-      message: "OpenCode SDK not configured. Set OPENCODE_SERVER_URL or OPENCODE_API_KEY (or ANTHROPIC_AUTH_TOKEN) environment variable.",
-    });
-  }
   if (isClaudeCodeSdk && !isClaudeCodeSdkConfigured()) {
     return jsonrpcResponse(id ?? null, null, {
       code: -32002,
       message: "Claude Code SDK not configured. Set ANTHROPIC_AUTH_TOKEN environment variable.",
     });
-  }
-  if (isDockerOpenCode) {
-    const dockerStatus = await getDockerDetector().checkAvailability();
-    if (!dockerStatus.available) {
-      return jsonrpcResponse(id ?? null, null, {
-        code: -32003,
-        message: dockerStatus.error
-          ? `Docker unavailable: ${dockerStatus.error}`
-          : "Docker daemon is unavailable. Please start Docker or Colima first.",
-      });
-    }
   }
 
   const specialistSystemPrompt = customSystemPrompt ?? buildSpecialistSystemPrompt(specialist);
@@ -384,55 +357,12 @@ export async function handleSessionNew({
       let workspaceSessionAgentId: string | undefined;
 
       if (isWorkspaceAgent) {
-        const system = getRoutaSystem();
-        const effectiveRole = (role ?? "DEVELOPER") as AgentRole;
-        const agentResult = await system.tools.createAgent({
-          name: `workspace-${effectiveRole.toLowerCase()}-${sessionId.slice(0, 8)}`,
-          role: effectiveRole,
-          workspaceId,
-        });
-        if (!agentResult.success || !agentResult.data) {
-          throw new Error(agentResult.error ?? "Failed to create workspace session agent");
-        }
-        workspaceSessionAgentId = (agentResult.data as { agentId: string }).agentId;
+        throw new Error(
+          `Workspace agent provider (${provider}) is no longer supported. Use claude or claude-code-sdk instead.`,
+        );
       }
 
-      if (isWorkspaceAgent) {
-        const system = getRoutaSystem();
-        acpSessionId = await manager.createWorkspaceAgentSession(
-          sessionId,
-          cwd,
-          forwardSessionUpdate,
-          {
-            agentTools: system.tools,
-            workspaceId,
-            agentId: workspaceSessionAgentId,
-            sandboxId,
-          },
-        );
-      } else if (isOpencodeSdk) {
-        acpSessionId = await manager.createOpencodeSdkSession(
-          sessionId,
-          forwardSessionUpdate,
-        );
-      } else if (isDockerOpenCode) {
-        const dockerExtraEnv: Record<string, string> = {};
-        if (apiKey) {
-          dockerExtraEnv.ANTHROPIC_API_KEY = apiKey;
-          dockerExtraEnv.ANTHROPIC_AUTH_TOKEN = apiKey;
-        }
-        if (model) {
-          dockerExtraEnv.OPENCODE_MODEL = model;
-        }
-        acpSessionId = await manager.createDockerSession(
-          sessionId,
-          cwd,
-          forwardSessionUpdate,
-          process.env.ROUTA_DOCKER_OPENCODE_IMAGE ?? DEFAULT_DOCKER_AGENT_IMAGE,
-          Object.keys(dockerExtraEnv).length > 0 ? dockerExtraEnv : undefined,
-          authJson,
-        );
-      } else if (isClaudeCodeSdk) {
+      if (isClaudeCodeSdk) {
         const mcpConfigs = await buildMcpConfigForClaude(workspaceId, sessionId, toolMode, mcpProfile);
         const instanceConfig: AgentInstanceConfig = {
           model,
@@ -467,32 +397,9 @@ export async function handleSessionNew({
           undefined,
           allowedNativeTools,
         );
-      } else if (customCommand) {
-        console.log(`[ACP Route] Using custom provider: ${provider}`);
-        acpSessionId = await manager.createSessionFromInline(
-          sessionId,
-          customCommand,
-          customArgs ?? [],
-          cwd,
-          provider,
-          forwardSessionUpdate,
-        );
       } else {
-        const extraArgs: string[] = [];
-        if (model && model.trim()) {
-          extraArgs.push("-m", model.trim());
-        }
-        acpSessionId = await manager.createSession(
-          sessionId,
-          cwd,
-          forwardSessionUpdate,
-          provider,
-          modeId,
-          extraArgs.length > 0 ? extraArgs : undefined,
-          undefined,
-          workspaceId,
-          toolMode,
-          mcpProfile,
+        throw new Error(
+          `Unsupported provider: ${provider}. Only claude and claude-code-sdk are supported.`,
         );
       }
 
