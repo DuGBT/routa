@@ -228,7 +228,7 @@ export function OverviewA2UITab({
               <button
                 onClick={onInstallAgent}
                 className="text-[11px] text-amber-600 dark:text-amber-500 hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
-              >
+ >
                 + {t.a2ui.install}
               </button>
             }
@@ -252,7 +252,7 @@ export function OverviewA2UITab({
                   <span
                     key={sk.name}
                     className="inline-flex items-center px-2 py-1 rounded-md bg-slate-100 dark:bg-[#191c28] text-[11px] font-medium text-slate-600 dark:text-slate-400 border border-slate-200/50 dark:border-[#252838]"
-                  >
+ >
                     /{sk.name}
                   </span>
                 ))}
@@ -275,7 +275,7 @@ export function OverviewA2UITab({
             target="_blank"
             rel="noopener noreferrer"
             className="text-amber-500 hover:text-amber-600 transition-colors"
-          >
+ >
             {t.a2ui.protocolDocs}
           </a>
         </div>
@@ -283,9 +283,9 @@ export function OverviewA2UITab({
           <button
             onClick={() => { setShowTemplateGallery(!showTemplateGallery); setShowJsonPanel(false); }}
             className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium transition-colors ${showTemplateGallery
-                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                : "text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#191c28]"
-              }`}
+ ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+ : "text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#191c28]"
+ }`}
           >
             <LayoutGrid className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             {t.a2ui.templates}
@@ -293,23 +293,23 @@ export function OverviewA2UITab({
           <button
             onClick={() => { setShowJsonPanel(!showJsonPanel); setShowTemplateGallery(false); }}
             className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#191c28] transition-colors"
-          >
+ >
             <Plus className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             {t.a2ui.importLabel}
           </button>
           <button
             onClick={exportJson}
             className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#191c28] transition-colors"
-          >
+ >
             <Download className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
             {t.a2ui.exportLabel}
           </button>
           <button
             onClick={onToggleSource}
             className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium transition-colors ${showSource
-                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
-                : "text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#191c28]"
-              }`}
+ ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
+ : "text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#191c28]"
+ }`}
           >
             <CodeXml className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             {t.a2ui.sourceLabel}
@@ -328,7 +328,7 @@ export function OverviewA2UITab({
             <button
               onClick={() => setShowTemplateGallery(false)}
               className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-            >
+ >
               <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             </button>
           </div>
@@ -382,7 +382,7 @@ export function OverviewA2UITab({
               <div
                 key={tpl.id}
                 className="group flex flex-col gap-3 p-3 rounded-lg border border-slate-200/60 dark:border-[#252838] bg-slate-50 dark:bg-[#0e1019] hover:border-slate-300 dark:hover:border-[#2e3248] transition-colors"
-              >
+ >
                 <div className={`w-9 h-9 rounded-lg ${tpl.bg} flex items-center justify-center ${tpl.accent}`}>
                   {tpl.icon}
                 </div>
@@ -422,14 +422,14 @@ export function OverviewA2UITab({
                 <button
                   onClick={handleResetSource}
                   className="px-2 py-1 rounded text-[10px] font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#191c28] transition-colors"
-                >
+ >
                   {t.a2ui.reset}
                 </button>
               )}
               <button
                 onClick={handleApplySource}
                 className="px-2.5 py-1 rounded-md text-[10px] font-semibold text-white bg-amber-500 hover:bg-amber-600 transition-colors shadow-sm"
-              >
+ >
                 {t.a2ui.apply}
               </button>
             </div>
@@ -445,7 +445,7 @@ export function OverviewA2UITab({
             onChange={setSourceEditValue}
             maxHeight="480px"
             className="border-0"
-          />
+ />
         </div>
       )}
 
@@ -457,7 +457,7 @@ export function OverviewA2UITab({
             <button
               onClick={() => { setShowJsonPanel(false); setJsonError(null); }}
               className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-            >
+ >
               <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             </button>
           </div>
@@ -467,7 +467,7 @@ export function OverviewA2UITab({
             placeholder={sampleJson}
             rows={10}
             className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-[#252838] bg-slate-50 dark:bg-[#0e1019] text-[12px] text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 outline-none focus:ring-2 focus:ring-amber-500/30 resize-none font-mono leading-relaxed"
-          />
+ />
           {jsonError && (
             <div className="mt-2 text-[11px] text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded-md">
               {jsonError}
@@ -478,13 +478,13 @@ export function OverviewA2UITab({
               onClick={handleImportJson}
               disabled={!customJsonInput.trim()}
               className="px-4 py-2 rounded-lg text-[12px] font-medium text-white bg-amber-500 hover:bg-amber-600 disabled:opacity-40 transition-colors shadow-sm"
-            >
+ >
               {t.a2ui.renderSurface}
             </button>
             <button
               onClick={() => setCustomJsonInput(sampleJson)}
               className="px-3 py-2 rounded-lg text-[11px] font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
-            >
+ >
               {t.a2ui.loadExample}
             </button>
           </div>

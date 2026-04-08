@@ -94,7 +94,7 @@ function SkillCard({ skill }: { skill: AgentSkill }) {
           <button
             onClick={() => setExpanded(!expanded)}
             className="text-xs text-blue-500 dark:text-blue-400 hover:underline"
-          >
+ >
             {expanded ? "Hide examples" : `${skill.examples.length} example${skill.examples.length > 1 ? "s" : ""}`}
           </button>
           {expanded && (
@@ -120,7 +120,7 @@ function TaskRow({ task, onSelect }: { task: A2ATask; onSelect: (t: A2ATask) => 
     <button
       onClick={() => onSelect(task)}
       className="w-full text-left rounded-lg border border-slate-200 dark:border-slate-700/60 bg-white dark:bg-slate-800/50 px-4 py-3 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow transition-all group"
-    >
+ >
       <div className="flex items-center justify-between gap-2 min-w-0">
         <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 truncate">{task.id.slice(0, 8)}…</span>
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -277,7 +277,7 @@ export default function A2APage() {
                 value={workspaceId}
                 onChange={(e) => setWorkspaceId(e.target.value)}
                 className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
-              />
+ />
               <textarea
                 rows={3}
                 placeholder={t.a2aPage.describeWhatYouNeed}
@@ -287,7 +287,7 @@ export default function A2APage() {
                   if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) handleSend(e as unknown as React.FormEvent);
                 }}
                 className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2.5 text-sm text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 resize-none"
-              />
+ />
               {sendError && (
                 <p className="text-xs text-red-500 dark:text-red-400">{sendError}</p>
               )}
@@ -297,7 +297,7 @@ export default function A2APage() {
                   type="submit"
                   disabled={sending || !prompt.trim()}
                   className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 text-sm font-medium text-white transition-colors"
-                >
+ >
                   {sending ? (
                     <>
                       <span className="h-3 w-3 rounded-full border-2 border-white/40 border-t-white animate-spin" />
@@ -316,10 +316,10 @@ export default function A2APage() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors ${
-                  activeTab === tab
-                    ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm"
-                    : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
-                }`}
+ activeTab === tab
+ ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm"
+ : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+ }`}
               >
                 {tab === "tasks" ? `Tasks${tasks.length > 0 ? ` (${tasks.length})` : ""}` : tab === "card" ? "Agent Card" : "Skills"}
               </button>
@@ -337,7 +337,7 @@ export default function A2APage() {
                   onClick={fetchTasks}
                   disabled={loadingTasks}
                   className="text-xs text-blue-500 dark:text-blue-400 hover:underline disabled:opacity-50"
-                >
+ >
                   Refresh
                 </button>
               </div>
@@ -369,7 +369,7 @@ export default function A2APage() {
                   target="_blank"
                   rel="noreferrer"
                   className="text-xs text-blue-500 dark:text-blue-400 hover:underline"
-                >
+ >
                   Open ↗
                 </a>
               </div>
@@ -457,7 +457,7 @@ export default function A2APage() {
                   <button
                     onClick={() => setSelectedTask(null)}
                     className="text-xs text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
-                  >
+ >
                     ✕
                   </button>
                 </div>
@@ -525,10 +525,10 @@ export default function A2APage() {
               ].map((ep, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className={`rounded px-1 py-0.5 text-[10px] font-semibold flex-shrink-0 ${
-                    ep.method === "GET"
-                      ? "bg-sky-100 text-sky-600 dark:bg-sky-900/30 dark:text-sky-400"
-                      : "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400"
-                  }`}>
+ ep.method === "GET"
+ ? "bg-sky-100 text-sky-600 dark:bg-sky-900/30 dark:text-sky-400"
+ : "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400"
+ }`}>
                     {ep.method}
                   </span>
                   <span className="text-slate-500 dark:text-slate-400 break-all">{ep.path}</span>

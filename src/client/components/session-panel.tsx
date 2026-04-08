@@ -153,7 +153,7 @@ export function SessionPanel({
           onClick={fetchSessions}
           disabled={loading}
           className="text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 transition-colors"
-        >
+ >
           {loading ? "..." : t.common.refresh}
         </button>
       </div>
@@ -357,7 +357,7 @@ function SessionItem({
   return (
     <div
       className="relative"
-      onMouseEnter={() => onSetHovered(s.sessionId)}
+ onMouseEnter={() => onSetHovered(s.sessionId)}
       onMouseLeave={() => onSetHovered(null)}
     >
       {isEditing ? (
@@ -368,14 +368,14 @@ function SessionItem({
             onSetEditingId(null);
           }}
           className="px-2 py-1.5"
-        >
+ >
           <input
             type="text"
             value={editName}
             onChange={(e) => onSetEditName(e.target.value)}
             autoFocus
             className="w-full text-xs px-1.5 py-1 rounded border border-blue-300 dark:border-blue-600 bg-white dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            onBlur={() => {
+ onBlur={() => {
               if (editName.trim()) {
                 onRename(s.sessionId, editName);
               }
@@ -415,7 +415,7 @@ function SessionItem({
                   onSetMenuOpen(menuOpen === s.sessionId ? null : s.sessionId);
                 }}
                 className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
-              >
+ >
                 <EllipsisVertical className="w-3 h-3 text-slate-400" fill="currentColor" viewBox="0 0 20 20"/>
               </button>
             )}
@@ -427,12 +427,12 @@ function SessionItem({
         <div
           ref={menuRef}
           className="absolute right-2 top-8 z-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md shadow-lg py-1 min-w-[100px]"
-        >
+ >
           <button
             type="button"
             onClick={() => onStartEdit(s)}
             className="w-full text-left px-3 py-1.5 text-xs hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
-          >
+ >
             {t.sessions.rename}
           </button>
           <button
@@ -442,7 +442,7 @@ function SessionItem({
               onDelete(s.sessionId);
             }}
             className="w-full text-left px-3 py-1.5 text-xs hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
-          >
+ >
             {t.common.delete}
           </button>
         </div>

@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { I18nProvider } from "@/i18n";
 import { ThemeInitializer } from "@/client/components/theme-initializer";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "Routa - Multi-Agent Coordinator",
@@ -19,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <head />
       <body className="antialiased">
         <ThemeInitializer />

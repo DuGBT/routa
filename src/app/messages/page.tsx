@@ -104,7 +104,7 @@ export default function MessagesPage() {
             onChange={(e) => setSelectedWorkspaceId(e.target.value)}
             disabled={workspacesLoading || workspaces.length === 0}
             className="mr-2 rounded-md border border-slate-200 bg-white px-2 py-1 text-xs text-slate-600 dark:border-[#1c1f2e] dark:bg-[#12141c] dark:text-slate-300"
-          >
+ >
             {workspaces.length === 0 ? (
               <option value="">No workspace</option>
             ) : (

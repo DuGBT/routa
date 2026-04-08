@@ -103,7 +103,7 @@ export function RepoSlideSessionPanel({
             <Link
               href={`/workspace/${workspaceId}/codebases/${codebaseId}/reposlide`}
               className="rounded-md border border-[var(--dt-border)] px-2.5 py-1 text-xs text-[var(--dt-text-primary)] hover:bg-[var(--dt-bg-active)]"
-            >
+ >
               {t.repoSlide.backToRepoSlide}
             </Link>
           )}
@@ -111,7 +111,7 @@ export function RepoSlideSessionPanel({
             type="button"
             onClick={() => void refreshTranscript()}
             className="rounded-md border border-[var(--dt-border)] px-2.5 py-1 text-xs text-[var(--dt-text-primary)] hover:bg-[var(--dt-bg-active)]"
-          >
+ >
             {t.repoSlide.refresh}
           </button>
         </div>
@@ -159,7 +159,7 @@ export function RepoSlideSessionPanel({
                   type="button"
                   onClick={() => void handleCopyPath()}
                   className="mt-2 rounded-md border border-[var(--dt-border)] px-2.5 py-1 text-xs text-[var(--dt-text-primary)] hover:bg-[var(--dt-bg-active)]"
-                >
+ >
                   {copied ? t.repoSlide.copied : t.repoSlide.copyPath}
                 </button>
                 {result.downloadUrl ? (
@@ -167,7 +167,7 @@ export function RepoSlideSessionPanel({
                     href={result.downloadUrl}
                     download
                     className="mt-2 ml-2 inline-flex rounded-md border border-[var(--dt-border)] px-2.5 py-1 text-xs text-[var(--dt-text-primary)] hover:bg-[var(--dt-bg-active)]"
-                  >
+ >
                     {t.repoSlide.downloadPptx}
                   </a>
                 ) : (

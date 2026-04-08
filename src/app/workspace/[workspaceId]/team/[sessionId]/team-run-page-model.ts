@@ -281,8 +281,8 @@ export function roleChipClass(roleId?: string, emphasis: "soft" | "strong" = "so
       strong: "border-slate-300 bg-slate-100 text-slate-800 dark:border-slate-400/30 dark:bg-slate-500/15 dark:text-slate-200",
     },
     neutral: {
-      soft: "border-desktop-border bg-desktop-bg-primary text-desktop-text-secondary",
-      strong: "border-desktop-border bg-desktop-bg-active text-desktop-text-primary",
+      soft: "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400",
+      strong: "border-slate-300 dark:border-slate-700 bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-slate-200",
     },
   };
   return styles[tone][emphasis];
@@ -300,7 +300,7 @@ export function roleAvatarClass(roleId?: string): string {
     ux: "bg-pink-100 text-pink-800 dark:bg-pink-500/15 dark:text-pink-200",
     ops: "bg-orange-100 text-orange-800 dark:bg-orange-500/15 dark:text-orange-200",
     general: "bg-slate-100 text-slate-800 dark:bg-slate-500/15 dark:text-slate-200",
-    neutral: "bg-desktop-bg-active text-desktop-text-primary",
+    neutral: "bg-blue-100 dark:bg-blue-900 text-slate-900 dark:text-slate-200",
   };
   return styles[tone];
 }

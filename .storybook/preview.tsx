@@ -4,22 +4,13 @@ import "../src/app/globals.css";
 
 const withThemeMode: Decorator = (Story, context) => {
   const colorMode = context.globals.colorMode === "dark" ? "dark" : "light";
-  const useDesktopTheme = context.parameters.desktopTheme ?? false;
-  const surfaceClassName = useDesktopTheme
-    ? "desktop-theme bg-desktop-bg-primary text-desktop-text-primary"
-    : "bg-[var(--background)] text-[var(--foreground)]";
 
   if (typeof document !== "undefined") {
     document.documentElement.classList.toggle("dark", colorMode === "dark");
   }
 
   return (
-    <div
-      className={[
-        "min-h-screen",
-        surfaceClassName,
-      ].join(" ")}
-    >
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       <Story />
     </div>
   );

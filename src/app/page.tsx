@@ -11,6 +11,7 @@ import {
   loadDefaultProviders,
   loadProviderConnections,
 } from "@/client/components/settings-panel";
+import { loadDockerOpencodeAuthJson } from "@/client/store/settings-storage";
 import { DesktopAppShell } from "@/client/components/desktop-app-shell";
 import { WorkspaceSwitcher } from "@/client/components/workspace-switcher";
 import { useAcp } from "@/client/hooks/use-acp";
@@ -323,7 +324,7 @@ export default function HomePage() {
                             <Link
                               href={activeWorkspaceId ? `/workspace/${activeWorkspaceId}/kanban` : "/"}
                               className="rounded-[26px] border border-black/6 bg-white/80 p-5 text-left transition-colors hover:bg-white dark:border-white/8 dark:bg-white/5 dark:hover:bg-white/8"
-                            >
+ >
                               <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
                                 看板
                               </div>
@@ -337,7 +338,7 @@ export default function HomePage() {
                             <Link
                               href={activeWorkspaceId ? `/workspace/${activeWorkspaceId}` : "/"}
                               className="rounded-[26px] border border-black/6 bg-white/80 p-5 text-left transition-colors hover:bg-white dark:border-white/8 dark:bg-white/5 dark:hover:bg-white/8"
-                            >
+ >
                               <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
                                 概览
                               </div>
@@ -355,7 +356,7 @@ export default function HomePage() {
                                 setShowSettingsPanel(true);
                               }}
                               className="rounded-[26px] border border-black/6 bg-white/80 p-5 text-left transition-colors hover:bg-white dark:border-white/8 dark:bg-white/5 dark:hover:bg-white/8"
-                            >
+ >
                               <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
                                 设置
                               </div>
@@ -369,7 +370,7 @@ export default function HomePage() {
                             <Link
                               href="/settings/harness"
                               className="rounded-[26px] border border-black/6 bg-white/80 p-5 text-left transition-colors hover:bg-white dark:border-white/8 dark:bg-white/5 dark:hover:bg-white/8"
-                            >
+ >
                               <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
                                 Harness
                               </div>
@@ -396,7 +397,7 @@ export default function HomePage() {
                                 <Link
                                   href={activeWorkspaceId ? `/workspace/${activeWorkspaceId}/kanban` : "/"}
                                   className="text-xs font-medium text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
-                                >
+ >
                                   查看全部
                                 </Link>
                               </div>
@@ -416,7 +417,7 @@ export default function HomePage() {
                                         key={board.id}
                                         href={`/workspace/${board.workspaceId}/kanban`}
                                         className="rounded-[22px] border border-black/6 bg-[#faf9f4] p-4 transition-colors hover:bg-white dark:border-white/8 dark:bg-white/4 dark:hover:bg-white/8"
-                                      >
+ >
                                         <div className="truncate text-base font-semibold text-slate-900 dark:text-slate-100">
                                           {board.name}
                                         </div>
@@ -446,7 +447,7 @@ export default function HomePage() {
                                     key={task.id}
                                     href={activeWorkspaceId ? `/workspace/${activeWorkspaceId}/kanban` : "/"}
                                     className="block rounded-[20px] border border-black/6 bg-[#faf9f4] p-4 transition-colors hover:bg-white dark:border-white/8 dark:bg-white/4 dark:hover:bg-white/8"
-                                  >
+ >
                                     <div className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
                                       {task.title}
                                     </div>
@@ -510,10 +511,10 @@ export default function HomePage() {
                       type="button"
                       onClick={() => setActiveWorkspaceId(workspace.id)}
                       className={`w-full rounded-2xl border px-4 py-3 text-left transition-colors ${
-                        active
-                          ? "border-[#9ec88e] bg-[#f6fbf2] text-slate-900 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.35)] dark:border-emerald-800/40 dark:bg-emerald-950/20 dark:text-slate-100"
-                          : "border-black/6 bg-white/70 text-slate-700 hover:bg-white dark:border-white/8 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/8"
-                      }`}
+ active
+ ? "border-[#9ec88e] bg-[#f6fbf2] text-slate-900 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.35)] dark:border-emerald-800/40 dark:bg-emerald-950/20 dark:text-slate-100"
+ : "border-black/6 bg-white/70 text-slate-700 hover:bg-white dark:border-white/8 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/8"
+ }`}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
@@ -543,7 +544,7 @@ export default function HomePage() {
                       key={session.sessionId}
                       href={`/workspace/${session.workspaceId}/sessions/${session.sessionId}`}
                       className="block rounded-2xl border border-black/6 bg-white/66 px-4 py-3 transition-colors hover:bg-white dark:border-white/8 dark:bg-white/5 dark:hover:bg-white/8"
-                    >
+ >
                       <div className="truncate text-sm font-medium text-slate-800 dark:text-slate-100">
                         {getSessionLabel(session)}
                       </div>
@@ -581,7 +582,7 @@ export default function HomePage() {
                   type="button"
                   onClick={handleOpenProviders}
                   className="mt-4 inline-flex rounded-full border border-black/8 bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-700 transition-colors hover:bg-slate-50 dark:border-white/8 dark:bg-white/6 dark:text-slate-200 dark:hover:bg-white/10"
-                >
+ >
                   打开模型设置
                 </button>
               </section>

@@ -1,256 +1,55 @@
-"use client";
+// ─── Re-export barrel ───────────────────────────────────────────────────────────
+// This module was decomposed into:
+//   @/client/types/settings-types   – types, constants, utility functions
+//   @/client/store/settings-storage  – localStorage CRUD (pure data layer)
+//
+// Re-exports are kept for backward compatibility and will be removed later.
 
-import type { AgentRole, ModelTier, SpecialistConfig } from "./specialist-manager";
+// Types & constants
+export {
+  AGENT_ROLES,
+  type AgentRoleKey,
+  ROLE_DESCRIPTIONS,
+  SETTINGS_PANEL_HEIGHT,
+  SETTINGS_PANEL_BODY_MAX_HEIGHT,
+  BASE_URL_SUGGESTIONS,
+  EMPTY_MODEL_FORM,
+  TIER_LABELS,
+  ROLE_CHIP,
+  EMPTY_SPECIALIST_FORM,
+  isCustomProvider,
+  type MemoryStats,
+  type MemoryResponse,
+  type AgentModelConfig,
+  type DefaultProviderSettings,
+  type ProviderConnectionConfig,
+  type ProviderConnectionsStorage,
+  type ModelDefinition,
+  type ProviderOption,
+  type SettingsPanelProps,
+  type SettingsTab,
+  type SpecialistForm,
+  type SpecialistsTabProps,
+  type GroupedSpecialists,
+} from "../types/settings-types";
 
-export const AGENT_ROLES = ["ROUTA", "CRAFTER", "GATE", "DEVELOPER"] as const;
-export type AgentRoleKey = (typeof AGENT_ROLES)[number];
-
-export const ROLE_DESCRIPTIONS: Record<AgentRoleKey, string> = {
-  ROUTA: "Coordinator – plans & delegates",
-  CRAFTER: "Implementation – writes code",
-  GATE: "Verification – reviews code",
-  DEVELOPER: "Solo – plans, implements & verifies",
-};
-
-const STORAGE_KEY = "routa.defaultProviders";
-const CONNECTIONS_STORAGE_KEY = "routa.providerConnections";
-const MODEL_DEFINITIONS_KEY = "routa.modelDefinitions";
-
-export const SETTINGS_PANEL_HEIGHT = "92vh";
-export const SETTINGS_PANEL_BODY_MAX_HEIGHT = "calc(92vh - 148px)";
-
-export interface MemoryStats {
-  heapUsedMB: number;
-  heapTotalMB: number;
-  externalMB: number;
-  rssMB: number;
-  arrayBuffersMB: number;
-  usagePercentage: number;
-  level: "normal" | "warning" | "critical";
-  timestamp: string;
-}
-
-export interface MemoryResponse {
-  current: MemoryStats;
-  peaks: {
-    heapUsedMB: number;
-    rssMB: number;
-  };
-  growthRateMBPerMinute: number;
-  sessionStore: {
-    sessionCount: number;
-    activeSseCount: number;
-    streamingCount: number;
-    totalHistoryMessages: number;
-    totalPendingNotifications: number;
-    staleSessionCount: number;
-  };
-  recommendations: string[];
-}
-
-export interface AgentModelConfig {
-  provider?: string;
-  model?: string;
-  maxTurns?: number;
-}
-
-export interface DefaultProviderSettings {
-  ROUTA?: AgentModelConfig;
-  CRAFTER?: AgentModelConfig;
-  GATE?: AgentModelConfig;
-  DEVELOPER?: AgentModelConfig;
-}
-
-export function loadDefaultProviders(): DefaultProviderSettings {
-  if (typeof window === "undefined") return {};
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return {};
-    const parsed: Record<string, unknown> = JSON.parse(raw);
-    const normalized: DefaultProviderSettings = {};
-    for (const role of AGENT_ROLES) {
-      const value = parsed[role];
-      if (!value) continue;
-      normalized[role] = typeof value === "string" ? { provider: value } : (value as AgentModelConfig);
-    }
-    return normalized;
-  } catch {
-    return {};
-  }
-}
-
-export function saveDefaultProviders(settings: DefaultProviderSettings): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-}
-
-export interface ProviderConnectionConfig {
-  baseUrl?: string;
-  apiKey?: string;
-  model?: string;
-}
-
-export type ProviderConnectionsStorage = Record<string, ProviderConnectionConfig>;
-
-export function loadProviderConnections(): ProviderConnectionsStorage {
-  if (typeof window === "undefined") return {};
-  try {
-    const raw = localStorage.getItem(CONNECTIONS_STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as ProviderConnectionsStorage) : {};
-  } catch {
-    return {};
-  }
-}
-
-export function loadProviderConnectionConfig(providerId: string): ProviderConnectionConfig {
-  return loadProviderConnections()[providerId] ?? {};
-}
-
-export function saveProviderConnections(storage: ProviderConnectionsStorage): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(CONNECTIONS_STORAGE_KEY, JSON.stringify(storage));
-}
-
-export interface ModelDefinition {
-  alias: string;
-  modelName: string;
-  baseUrl?: string;
-  apiKey?: string;
-}
-
-export function loadModelDefinitions(): ModelDefinition[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(MODEL_DEFINITIONS_KEY);
-    if (raw) return JSON.parse(raw) as ModelDefinition[];
-    // First load — seed with wcc defaults
-    saveModelDefinitions(DEFAULT_MODEL_DEFINITIONS);
-    return [...DEFAULT_MODEL_DEFINITIONS];
-  } catch {
-    return [];
-  }
-}
-
-export function saveModelDefinitions(defs: ModelDefinition[]): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(MODEL_DEFINITIONS_KEY, JSON.stringify(defs));
-}
-
-export function getModelDefinitionByAlias(alias: string): ModelDefinition | undefined {
-  if (!alias || typeof window === "undefined") return undefined;
-  return loadModelDefinitions().find((definition) => definition.alias === alias);
-}
-
-export interface ProviderOption {
-  id: string;
-  name: string;
-  status?: string;
-  source?: "static" | "registry";
-  command?: string;
-}
-
-export interface SettingsPanelProps {
-  open: boolean;
-  onClose: () => void;
-  providers: ProviderOption[];
-  initialTab?: SettingsTab;
-  onResetOnboarding?: () => void;
-  variant?: "modal" | "page";
-}
-
-export type SettingsTab =
-  | "providers"
-  | "registry"
-  | "roles"
-  | "specialists"
-  | "models"
-  | "mcp"
-  | "webhooks"
-  | "schedules"
-  | "workflows";
-
+// CSS class constants (kept here – they will migrate to shadcn components)
+/** @deprecated Use shadcn Input from @/components/ui/input instead */
 export const inputCls =
-  "w-full text-xs px-2 py-1.5 rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#1e2130] text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:outline-none";
-export const labelCls = "text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider";
-export const sectionHeadCls = "text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider";
-export const settingsCardCls = "rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-[#1e2130]";
+  "w-full text-xs px-2 py-1.5 rounded-md border border-border bg-background text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring focus:outline-none";
+/** @deprecated Use shadcn Label from @/components/ui/label instead */
+export const labelCls = "text-[10px] font-medium text-muted-foreground uppercase tracking-wider";
+export const sectionHeadCls = "text-xs font-semibold text-muted-foreground uppercase tracking-wider";
+export const settingsCardCls = "rounded-xl border border-border bg-card p-4 text-card-foreground";
 
-export const BASE_URL_SUGGESTIONS = [
-  "https://open.bigmodel.cn/api/anthropic",
-  "https://api.minimaxi.com/anthropic",
-  "https://api.deepseek.com/anthropic",
-  "https://api.moonshot.ai/anthropic",
-  "https://api.openai.com/v1",
-  "https://api.anthropic.com/v1",
-  "https://generativelanguage.googleapis.com/v1beta/openai",
-];
-
-/** Default model definitions pre-populated from wcc presets (first-load only) */
-export const DEFAULT_MODEL_DEFINITIONS: ModelDefinition[] = [
-  {
-    alias: "GLM-5 (智谱)",
-    modelName: "glm-5-turbo",
-    baseUrl: "https://open.bigmodel.cn/api/anthropic",
-    apiKey: "fd1bfd6ca8824eb2aaa05cbfce9a6c4c.5McSAWyvlCEdwf5W",
-  },
-  {
-    alias: "GLM-5.1 (智谱)",
-    modelName: "glm-5.1",
-    baseUrl: "https://open.bigmodel.cn/api/anthropic",
-    apiKey: "fd1bfd6ca8824eb2aaa05cbfce9a6c4c.5McSAWyvlCEdwf5W",
-  },
-  {
-    alias: "GLM-5V (智谱)",
-    modelName: "glm-5v-turbo",
-    baseUrl: "https://open.bigmodel.cn/api/anthropic",
-    apiKey: "fd1bfd6ca8824eb2aaa05cbfce9a6c4c.5McSAWyvlCEdwf5W",
-  },
-  {
-    alias: "MiniMax-M2.7",
-    modelName: "MiniMax-M2.7-highspeed",
-    baseUrl: "https://api.minimaxi.com/anthropic",
-    apiKey: "sk-cp-a-yX2ewtwObr0ojhAZ9jmFbj8cbE0YhHKXu0797rM33DSD9uCgXciw_Yrkw2noIiXJgkaHOlcGSn4XJsAIA9B_Ln39J74DmNobcEawxTr66dDOmimbi3674",
-  },
-];
-
-export const EMPTY_MODEL_FORM: ModelDefinition = { alias: "", modelName: "", baseUrl: "", apiKey: "" };
-
-export const TIER_LABELS: Record<ModelTier, string> = { FAST: "Fast", BALANCED: "Balanced", SMART: "Smart" };
-export const ROLE_CHIP: Record<AgentRole, string> = {
-  ROUTA: "role-chip-routa",
-  CRAFTER: "role-chip-crafter",
-  GATE: "role-chip-gate",
-  DEVELOPER: "role-chip-developer",
-};
-
-export interface SpecialistForm {
-  id: string;
-  name: string;
-  description: string;
-  role: AgentRole;
-  defaultModelTier: ModelTier;
-  systemPrompt: string;
-  roleReminder: string;
-  model: string;
-}
-
-export const EMPTY_SPECIALIST_FORM: SpecialistForm = {
-  id: "",
-  name: "",
-  description: "",
-  role: "CRAFTER",
-  defaultModelTier: "BALANCED",
-  systemPrompt: "",
-  roleReminder: "",
-  model: "",
-};
-
-export type SpecialistsTabProps = {
-  modelDefs: ModelDefinition[];
-};
-
-export type GroupedSpecialists = {
-  category: string;
-  label: string;
-  specialists: SpecialistConfig[];
-};
+// localStorage persistence
+export {
+  loadDefaultProviders,
+  saveDefaultProviders,
+  loadProviderConnections,
+  loadProviderConnectionConfig,
+  saveProviderConnections,
+  loadModelDefinitions,
+  saveModelDefinitions,
+  getModelDefinitionByAlias,
+} from "../store/settings-storage";

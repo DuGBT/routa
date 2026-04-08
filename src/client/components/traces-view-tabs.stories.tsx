@@ -7,7 +7,6 @@ const meta = {
   component: TracesViewTabs,
   tags: ["autodocs"],
   parameters: {
-    desktopTheme: true,
     layout: "padded",
   },
   argTypes: {

@@ -47,7 +47,7 @@ export function McpSettingsPageClient() {
             { label: "Scope", value: activeTab === "tools" ? "Tool explorer" : "Workspace integrations" },
           ]}
           extra={(
-            <div className="inline-flex rounded-full border border-desktop-border bg-desktop-bg-primary/60 p-1">
+            <div className="inline-flex rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 p-1">
               {TAB_META.map((tab) => {
                 const active = tab.key === activeTab;
                 return (
@@ -55,10 +55,10 @@ export function McpSettingsPageClient() {
                     key={tab.key}
                     href={tab.href}
                     className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${
-                      active
-                        ? "bg-desktop-bg-secondary text-desktop-text-primary shadow-sm"
-                        : "text-desktop-text-secondary hover:bg-desktop-bg-secondary/80 hover:text-desktop-text-primary"
-                    }`}
+ active
+ ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 shadow-sm"
+ : "text-slate-700 dark:text-slate-400 hover:bg-slate-100 dark:bg-slate-800/80 hover:text-slate-900 dark:text-slate-200"
+ }`}
                   >
                     {tab.label}
                   </Link>
@@ -70,7 +70,7 @@ export function McpSettingsPageClient() {
         {activeTab === "tools" ? (
           <McpToolsExplorer />
         ) : (
-          <div className="rounded-2xl border border-desktop-border bg-desktop-bg-secondary/70 shadow-sm">
+          <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/70 shadow-sm">
             <McpServersTab />
           </div>
         )}

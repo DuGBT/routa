@@ -48,9 +48,9 @@ export default function SchedulesSettingsPage() {
     >
       <div className="space-y-6">
         <SettingsPageHeader title={t.settingsExtended.schedulesPageTitle} />
-        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-desktop-border bg-desktop-bg-secondary/70 px-3 py-2 text-[11px] text-desktop-text-secondary">
-          <span className="font-medium text-desktop-text-primary">{t.settingsExtended.tickEndpoint}</span>
-          <code className="rounded bg-desktop-bg-primary px-1.5 py-0.5 font-mono text-desktop-text-primary">/api/schedules/tick</code>
+        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/70 px-3 py-2 text-[11px] text-slate-700 dark:text-slate-400">
+          <span className="font-medium text-slate-900 dark:text-slate-200">{t.settingsExtended.tickEndpoint}</span>
+          <code className="rounded bg-slate-50 dark:bg-slate-900 px-1.5 py-0.5 font-mono text-slate-900 dark:text-slate-200">/api/schedules/tick</code>
           <span>{t.settingsExtended.vercelCron}</span>
         </div>
         <SchedulePanel workspaceId={effectiveWorkspaceId || undefined} />

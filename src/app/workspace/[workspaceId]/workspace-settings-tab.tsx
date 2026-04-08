@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "@/i18n";
 import { RepoPicker } from "@/client/components/repo-picker";
+import { Modal } from "@/client/components/modal";
 import type { RepoSelection } from "@/client/components/repo-picker";
 
 interface CodebaseInfo {
@@ -132,7 +133,7 @@ export function WorkspaceSettingsTab({
               <span
                 key={cb.id}
                 className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#0d1018] px-2.5 py-1 text-xs text-slate-700 dark:text-slate-300"
-              >
+ >
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
                 <span className="max-w-50 truncate">{cb.label ?? cb.repoPath.split("/").pop() ?? cb.repoPath}</span>
                 <span className="text-[10px] text-slate-400 truncate max-w-40">{cb.repoPath}</span>
@@ -142,14 +143,14 @@ export function WorkspaceSettingsTab({
                 <button
                   onClick={() => handleEdit(cb)}
                   className="ml-0.5 w-4 h-4 flex items-center justify-center rounded text-slate-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"
-                  title={`Edit ${cb.label ?? cb.repoPath}`}
+ title={`Edit ${cb.label ?? cb.repoPath}`}
                 >
                   ✎
                 </button>
                 <button
                   onClick={() => void handleRemove(cb.id)}
                   className="w-4 h-4 flex items-center justify-center rounded text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors"
-                  title={`Remove ${cb.label ?? cb.repoPath}`}
+ title={`Remove ${cb.label ?? cb.repoPath}`}
                 >
                   ×
                 </button>
@@ -192,7 +193,7 @@ export function WorkspaceSettingsTab({
               onChange={(e) => setWorktreeRootDraft(e.target.value)}
               placeholder={defaultWorktreeRootHint}
               className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-700 outline-none focus:border-amber-400 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-200 font-mono text-xs"
-              data-testid="worktree-root-input"
+ data-testid="worktree-root-input"
             />
             <div className="mt-1.5 text-[11px] text-slate-400 dark:text-slate-500">
               {t.workspace.effectivePath}{" "}
@@ -213,7 +214,7 @@ export function WorkspaceSettingsTab({
             onClick={() => void onSaveWorktreeRoot()}
             disabled={worktreeRootState.saving}
             className="shrink-0 rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-60"
-            data-testid="save-worktree-root"
+ data-testid="save-worktree-root"
           >
             {worktreeRootState.saving ? t.workspace.saving : t.common.save}
           </button>
@@ -221,12 +222,7 @@ export function WorkspaceSettingsTab({
       </section>
 
       {/* ── Edit Codebase Modal ───────────────────────────────────── */}
-      {editingCodebase && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-[#1c1f2e] dark:bg-[#12141c]">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
-              {t.workspace.editRepository}
-            </h3>
+      <Modal open={!!editingCodebase} onClose={handleCancelEdit} title={t.workspace.editRepository} className="max-w-md">
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
@@ -249,13 +245,11 @@ export function WorkspaceSettingsTab({
                 onClick={handleCancelEdit}
                 disabled={editSaving}
                 className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-[#191c28]"
-              >
+ >
                 {t.common.cancel}
               </button>
             </div>
-          </div>
-        </div>
-      )}
+      </Modal>
     </div>
   );
 }

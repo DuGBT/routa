@@ -116,7 +116,7 @@ function KindBadge({ kind, label }: { kind: SpecSourceKind; label: string }) {
 
 function SpecTypeTag({ label }: { label: string }) {
   return (
-    <span className="inline-flex items-center rounded border border-desktop-border bg-desktop-bg-primary px-1.5 py-0.5 text-[9px] font-mono text-desktop-text-secondary">
+    <span className="inline-flex items-center rounded border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-1.5 py-0.5 text-[9px] font-mono text-slate-700 dark:text-slate-400">
       {label}
     </span>
   );
@@ -124,7 +124,7 @@ function SpecTypeTag({ label }: { label: string }) {
 
 function ChevronIcon({ expanded, className }: { expanded: boolean; className?: string }) {
   return (
-    <ChevronRight className={`h-3 w-3 text-desktop-text-secondary transition-transform ${expanded ? "rotate-90" : ""} ${className ?? ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
+    <ChevronRight className={`h-3 w-3 text-slate-700 dark:text-slate-400 transition-transform ${expanded ? "rotate-90" : ""} ${className ?? ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
   );
 }
 
@@ -149,12 +149,12 @@ function KiroFeatureTree({ features, labels }: { features: SpecFeature[]; labels
           <div key={feature.name}>
             <button
               type="button"
-              className="flex w-full items-center gap-1.5 rounded px-1.5 py-1 text-left text-[10px] hover:bg-desktop-bg-secondary/60"
-              onClick={() => toggle(feature.name)}
+              className="flex w-full items-center gap-1.5 rounded px-1.5 py-1 text-left text-[10px] hover:bg-slate-100 dark:bg-slate-800/60"
+ onClick={() => toggle(feature.name)}
             >
               <ChevronIcon expanded={isExpanded} />
-              <span className="font-medium text-desktop-text-primary">{feature.name}</span>
-              <span className="ml-auto text-[9px] text-desktop-text-secondary">
+              <span className="font-medium text-slate-900 dark:text-slate-200">{feature.name}</span>
+              <span className="ml-auto text-[9px] text-slate-700 dark:text-slate-400">
                 {labels.docsCount(feature.documents.length)}
               </span>
             </button>
@@ -162,7 +162,7 @@ function KiroFeatureTree({ features, labels }: { features: SpecFeature[]; labels
             {isExpanded && feature.documents.map((doc) => (
               <div key={doc.path} className="ml-5 flex items-center gap-1.5 rounded px-1.5 py-0.5 text-[10px]">
                 <SpecTypeTag label={labels.typeLabels[doc.type] ?? doc.type} />
-                <span className="min-w-0 truncate font-mono text-desktop-text-primary">{doc.path}</span>
+                <span className="min-w-0 truncate font-mono text-slate-900 dark:text-slate-200">{doc.path}</span>
               </div>
             ))}
           </div>
@@ -176,9 +176,9 @@ function FlatSpecList({ specs, labels }: { specs: SpecSource["children"]; labels
   return (
     <div className="space-y-0.5">
       {specs.map((spec) => (
-        <div key={spec.path} className="flex items-center gap-2 rounded px-1.5 py-0.5 text-[10px] hover:bg-desktop-bg-secondary/60">
+        <div key={spec.path} className="flex items-center gap-2 rounded px-1.5 py-0.5 text-[10px] hover:bg-slate-100 dark:bg-slate-800/60">
           <SpecTypeTag label={labels.typeLabels[spec.type] ?? spec.type} />
-          <span className="min-w-0 truncate font-mono text-desktop-text-primary">{spec.path}</span>
+          <span className="min-w-0 truncate font-mono text-slate-900 dark:text-slate-200">{spec.path}</span>
         </div>
       ))}
     </div>
@@ -192,41 +192,41 @@ function SpecSourceCard({ source, expanded, onToggle, labels }: { source: SpecSo
 
   return (
     <div className={`rounded-sm border transition-colors ${
-      expanded ? "border-desktop-accent bg-desktop-bg-primary" : "border-desktop-border bg-desktop-bg-primary/80 hover:bg-desktop-bg-primary"
-    }`}>
+ expanded ? "border-blue-500 bg-slate-50 dark:bg-slate-900" : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 hover:bg-slate-50 dark:bg-slate-900"
+ }`}>
       <button
         type="button"
         className="flex w-full items-start gap-3 px-3 py-2 text-left"
-        onClick={onToggle}
+ onClick={onToggle}
       >
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-desktop-border bg-desktop-bg-secondary text-[10px] font-bold text-desktop-text-primary">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-slate-900 dark:text-slate-200">
           {icon}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-[12px] font-semibold capitalize text-desktop-text-primary">{source.system}</span>
+            <span className="text-[12px] font-semibold capitalize text-slate-900 dark:text-slate-200">{source.system}</span>
             <KindBadge kind={source.kind} label={labels.kindLabels[source.kind]} />
             <ConfidenceBadge confidence={source.confidence} />
           </div>
           <div className="mt-0.5 flex items-center gap-2">
             <StatusBadge status={source.status} label={labels.statusLabels[source.status]} />
-            <span className="text-[10px] text-desktop-text-secondary">
+            <span className="text-[10px] text-slate-700 dark:text-slate-400">
               {source.rootPath}
             </span>
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {specCount > 0 && (
-            <span className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2 py-0.5 text-[10px] text-desktop-text-secondary">
+            <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[10px] text-slate-700 dark:text-slate-400">
               {labels.specCount(specCount)}
             </span>
           )}
-          <ChevronDown className={`h-3.5 w-3.5 text-desktop-text-secondary transition-transform ${expanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
+          <ChevronDown className={`h-3.5 w-3.5 text-slate-700 dark:text-slate-400 transition-transform ${expanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
         </div>
       </button>
 
       {expanded && (
-        <div className="max-h-80 overflow-y-auto border-t border-desktop-border px-3 py-2">
+        <div className="max-h-80 overflow-y-auto border-t border-slate-300 dark:border-slate-700 px-3 py-2">
           {hasFeatures ? (
             <KiroFeatureTree features={source.features!} labels={labels} />
           ) : source.children.length > 0 ? (
@@ -255,7 +255,7 @@ function SourceGroup({ title, sources, expandedKeys, onToggle, labels }: {
 
   return (
     <div>
-      <div className="mb-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">
+      <div className="mb-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">
         {title}
       </div>
       <div className="space-y-1.5">

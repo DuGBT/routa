@@ -68,12 +68,12 @@ function DecisionStatusBadge({ status }: { status: DesignDecisionStatus }) {
 
 function DecisionArtifactListRow({ artifact }: { artifact: DesignDecisionArtifact }) {
   return (
-    <div className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-[11px] hover:bg-desktop-bg-secondary/60">
-      <span className="min-w-0 flex-1 truncate text-desktop-text-primary" title={artifact.title}>
+    <div className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-[11px] hover:bg-slate-100 dark:bg-slate-800/60">
+      <span className="min-w-0 flex-1 truncate text-slate-900 dark:text-slate-200" title={artifact.title}>
         {artifact.title}
       </span>
       {artifact.type === "adr" ? <DecisionStatusBadge status={artifact.status} /> : null}
-      <span className="shrink-0 truncate font-mono text-[10px] text-desktop-text-secondary" title={artifact.path}>
+      <span className="shrink-0 truncate font-mono text-[10px] text-slate-700 dark:text-slate-400" title={artifact.path}>
         {artifact.path.split("/").pop() ?? artifact.path}
       </span>
     </div>
@@ -84,11 +84,11 @@ function DecisionSourceCard({ source }: { source: DesignDecisionSource }) {
   if (source.kind === "canonical-doc" && source.artifacts.length === 1) {
     const artifact = source.artifacts[0];
     return (
-      <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3">
+      <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <div className="text-[12px] font-semibold text-desktop-text-primary">{artifact.title}</div>
-            <div className="mt-1 text-[10px] text-desktop-text-secondary">{artifact.path}</div>
+            <div className="text-[12px] font-semibold text-slate-900 dark:text-slate-200">{artifact.title}</div>
+            <div className="mt-1 text-[10px] text-slate-700 dark:text-slate-400">{artifact.path}</div>
           </div>
           <ConfidenceBadge confidence={source.confidence} />
         </div>
@@ -97,18 +97,18 @@ function DecisionSourceCard({ source }: { source: DesignDecisionSource }) {
   }
 
   return (
-    <div className="rounded-sm border border-desktop-border bg-desktop-bg-primary/80">
+    <div className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80">
       <div className="px-3 py-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[12px] font-semibold text-desktop-text-primary">{source.label}</span>
+            <span className="text-[12px] font-semibold text-slate-900 dark:text-slate-200">{source.label}</span>
             <ConfidenceBadge confidence={source.confidence} />
           </div>
-          <div className="mt-1 text-[10px] text-desktop-text-secondary">{source.rootPath}</div>
+          <div className="mt-1 text-[10px] text-slate-700 dark:text-slate-400">{source.rootPath}</div>
         </div>
       </div>
 
-      <div className="space-y-1 border-t border-desktop-border px-3 py-2">
+      <div className="space-y-1 border-t border-slate-300 dark:border-slate-700 px-3 py-2">
         {source.artifacts.map((artifact) => <DecisionArtifactListRow key={artifact.id} artifact={artifact} />)}
       </div>
     </div>
@@ -135,7 +135,7 @@ function SourceGroup({
 
   return (
     <div className="space-y-2">
-      <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">{title}</div>
+      <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">{title}</div>
       <div className="space-y-3">
         {sources.map((source) => (
           <DecisionSourceCard

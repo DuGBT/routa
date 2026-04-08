@@ -3,29 +3,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { desktopAwareFetch } from "../utils/diagnostics";
 import { Select } from "./select";
+import { Modal } from "./modal";
 import { useTranslation } from "@/i18n";
-import { SquarePen, Trash2, X, Briefcase } from "lucide-react";
+import { SquarePen, Trash2 } from "lucide-react";
+import type { AgentRole, ModelTier, SpecialistConfig } from "../types/settings-types";
+export type { AgentRole, ModelTier, SpecialistConfig } from "../types/settings-types";
 
 
 // ─── Types ─────────────────────────────────────────────────────────────────
-
-export interface SpecialistConfig {
-  id: string;
-  name: string;
-  description?: string;
-  role: AgentRole;
-  defaultModelTier: ModelTier;
-  systemPrompt: string;
-  roleReminder: string;
-  source: "user" | "bundled" | "hardcoded";
-  enabled?: boolean;
-  defaultProvider?: string;
-  defaultAdapter?: string;
-  model?: string;
-}
-
-export type AgentRole = "ROUTA" | "CRAFTER" | "GATE" | "DEVELOPER";
-export type ModelTier = "FAST" | "BALANCED" | "SMART";
 
 // Helper functions to get labels from translation
 function getRoleLabels(t: ReturnType<typeof useTranslation>["t"]): Record<AgentRole, string> {
@@ -227,40 +212,20 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
     resetForm();
   };
 
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+    <Modal open={open} onClose={onClose} title={t.specialists.manageSpecialists} className="max-w-4xl max-h-[90vh] overflow-hidden">
+      <div className="flex items-center justify-end mb-3">
+        <button
+          onClick={handleSync}
+          disabled={syncing}
+          className="px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-md hover:bg-slate-200 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors"
+ >
+          {syncing ? `${t.common.loading}...` : t.specialists.sync}
+        </button>
+      </div>
 
-      {/* Dialog */}
-      <div className="relative bg-white dark:bg-[#1a1d2e] rounded-xl shadow-2xl w-full max-w-4xl mx-4 overflow-hidden border border-slate-200 dark:border-slate-700 max-h-[90vh] flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <Briefcase className="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-            <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{t.specialists.manageSpecialists}</h2>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleSync}
-              disabled={syncing}
-              className="px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 rounded-md hover:bg-slate-200 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors"
-            >
-              {syncing ? `${t.common.loading}...` : t.specialists.sync}
-            </button>
-            <button
-              onClick={onClose}
-              className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-            >
-              <X className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-            </button>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 overflow-auto p-5">
+      {/* Content */}
+      <div className="overflow-auto p-0 -mx-6 px-6 pb-2 max-h-[calc(90vh-120px)]">
           {error && (
             <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
               <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
@@ -277,7 +242,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                 <button
                   onClick={() => setShowCreateForm(true)}
                   className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
-                >
+ >
                   {t.specialists.newSpecialist}
                 </button>
               </div>
@@ -287,18 +252,18 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                   <div
                     key={specialist.id}
                     className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700"
-                  >
+ >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="font-medium text-slate-900 dark:text-slate-100">{specialist.name}</h3>
                           <span className={`px-2 py-0.5 text-xs rounded-full ${
-                            specialist.source === "user"
-                              ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
-                              : specialist.source === "bundled"
-                              ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                              : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
-                          }`}>
+ specialist.source === "user"
+ ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
+ : specialist.source === "bundled"
+ ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+ : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
+ }`}>
                             {t.specialists.source[specialist.source] || specialist.source}
                           </span>
                           <span className="px-2 py-0.5 text-xs rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
@@ -330,13 +295,13 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                             <button
                               onClick={() => handleEdit(specialist)}
                               className="p-1.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
-                            >
+ >
                               <SquarePen className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                             </button>
                             <button
                               onClick={() => handleDelete(specialist.id)}
                               className="p-1.5 text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
-                            >
+ >
                               <Trash2 className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                             </button>
                           </>
@@ -374,7 +339,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                       disabled={!!editingId}
                       placeholder={t.specialists.idPlaceholder}
                       className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 disabled:opacity-50 disabled:bg-slate-100 dark:disabled:bg-slate-800"
-                    />
+ />
                   </div>
 
                   {/* Name */}
@@ -388,7 +353,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       placeholder={t.specialists.namePlaceholder}
                       className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400"
-                    />
+ />
                   </div>
                 </div>
 
@@ -403,7 +368,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
                     placeholder={t.specialists.descriptionPlaceholder}
                     className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400"
-                  />
+ />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -416,7 +381,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                       value={form.role}
                       onChange={(e) => setForm({ ...form, role: e.target.value as AgentRole })}
                       className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100"
-                    >
+ >
                       {Object.entries(getRoleLabels(t)).map(([key, label]) => (
                         <option key={key} value={key}>
                           {label} - {getRoleDescriptions(t)[key as AgentRole]}
@@ -434,7 +399,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                       value={form.defaultModelTier}
                       onChange={(e) => setForm({ ...form, defaultModelTier: e.target.value as ModelTier })}
                       className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100"
-                    >
+ >
                       {Object.entries(getTierLabels(t)).map(([key, label]) => (
                         <option key={key} value={key}>
                           {label}
@@ -456,7 +421,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                       onChange={(e) => setForm({ ...form, defaultProvider: e.target.value })}
                       placeholder={t.specialists.defaultProviderPlaceholder}
                       className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400"
-                    />
+ />
                     <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                       {t.specialists.defaultProviderHint}
                     </p>
@@ -473,7 +438,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                       onChange={(e) => setForm({ ...form, defaultAdapter: e.target.value })}
                       placeholder={t.specialists.defaultAdapterPlaceholder}
                       className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400"
-                    />
+ />
                     <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                       {t.specialists.defaultAdapterHint}
                     </p>
@@ -491,7 +456,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                     onChange={(e) => setForm({ ...form, model: e.target.value })}
                     placeholder={t.specialists.modelOverridePlaceholder}
                     className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400"
-                  />
+ />
                   <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                     {t.specialists.modelOverrideHint}
                   </p>
@@ -508,7 +473,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                     placeholder={t.specialists.systemPromptPlaceholder}
                     rows={8}
                     className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 font-mono"
-                  />
+ />
                 </div>
 
                 {/* Role Reminder */}
@@ -522,7 +487,7 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                     onChange={(e) => setForm({ ...form, roleReminder: e.target.value })}
                     placeholder={t.specialists.roleReminderPlaceholder}
                     className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400"
-                  />
+ />
                 </div>
 
                 {/* Actions */}
@@ -531,14 +496,14 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
                     onClick={handleCancelEdit}
                     disabled={loading}
                     className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors"
-                  >
+ >
                     {t.specialists.cancel}
                   </button>
                   <button
                     onClick={handleSave}
                     disabled={loading || !form.id || !form.name || !form.systemPrompt}
                     className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
+ >
                     {loading ? t.specialists.saving : editingId ? t.common.update : t.common.create}
                   </button>
                 </div>
@@ -546,7 +511,6 @@ export function SpecialistManager({ open, onClose }: SpecialistManagerProps) {
             </>
           )}
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }

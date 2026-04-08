@@ -94,10 +94,10 @@ export function HarnessFloatingNav({ sections }: HarnessFloatingNavProps) {
     <div ref={menuRef} className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
       {/* 展开的菜单项 */}
       {isOpen && (
-        <div className="mb-2 rounded-2xl border border-desktop-border bg-white/95 shadow-2xl backdrop-blur-sm dark:bg-[#1a1d2e]/95">
+        <div className="mb-2 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white/95 shadow-2xl backdrop-blur-sm dark:bg-[#1a1d2e]/95">
           <div className="max-h-[60vh] min-w-55 overflow-y-auto p-2">
             <div className="mb-2 px-3 py-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">
                 {t.settings.harness.quickNavigation}
               </div>
             </div>
@@ -109,13 +109,13 @@ export function HarnessFloatingNav({ sections }: HarnessFloatingNavProps) {
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
                     className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-[11px] transition-colors ${
-                      isActive
-                        ? "bg-desktop-accent/10 font-semibold text-desktop-accent"
-                        : "text-desktop-text-primary hover:bg-desktop-bg-secondary/80"
-                    }`}
+ isActive
+ ? "bg-blue-500/10 font-semibold text-blue-500"
+ : "text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:bg-slate-800/80"
+ }`}
                   >
                     {section.icon && (
-                      <span className={isActive ? "text-desktop-accent" : "text-desktop-text-secondary"}>
+                      <span className={isActive ? "text-blue-500" : "text-slate-700 dark:text-slate-400"}>
                         {section.icon}
                       </span>
                     )}
@@ -131,10 +131,10 @@ export function HarnessFloatingNav({ sections }: HarnessFloatingNavProps) {
       {/* 浮动按钮 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-12 w-12 items-center justify-center rounded-full border border-desktop-border bg-white shadow-lg transition-all hover:scale-105 hover:shadow-xl dark:bg-[#1a1d2e]"
-        aria-label={isOpen ? t.settings.harness.collapseNavigation : t.settings.harness.expandNavigation}
+        className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white shadow-lg transition-all hover:scale-105 hover:shadow-xl dark:bg-[#1a1d2e]"
+ aria-label={isOpen ? t.settings.harness.collapseNavigation : t.settings.harness.expandNavigation}
       >
-        <ChevronUp className={`h-5 w-5 text-desktop-text-primary transition-transform ${isOpen ? "rotate-0" : "rotate-180"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
+        <ChevronUp className={`h-5 w-5 text-slate-900 dark:text-slate-200 transition-transform ${isOpen ? "rotate-0" : "rotate-180"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
       </button>
     </div>
   );

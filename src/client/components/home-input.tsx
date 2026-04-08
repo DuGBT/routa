@@ -351,7 +351,7 @@ export function HomeInput({
                       type="button"
                       onClick={() => setSelectedSpecialistId(null)}
                       className="ml-0.5 text-amber-400 transition-colors hover:text-amber-700 dark:hover:text-amber-200"
-                      title="Switch to built-in role"
+ title="Switch to built-in role"
                       aria-label={t.common.clearSpecialist}
                     >
                       ×
@@ -364,7 +364,7 @@ export function HomeInput({
                       type="button"
                       onClick={() => setShowSpecialistDropdown((v) => !v)}
                       className="flex items-center gap-1 rounded-lg border border-transparent px-1.5 py-1 text-xs text-slate-500 transition-all hover:border-slate-200 hover:bg-slate-100 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-800"
-                      title="Switch specialist"
+ title="Switch specialist"
                     >
                       <ChevronDown className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                     </button>
@@ -374,8 +374,8 @@ export function HomeInput({
                           {specialists.map((s) => (
                             <button key={s.id} onClick={() => { setSelectedSpecialistId(s.id); setShowSpecialistDropdown(false); }}
                               className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${
-                                s.id === selectedSpecialistId ? "bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-300" : "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                              }`}>
+ s.id === selectedSpecialistId ? "bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-300" : "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+ }`}>
                               <div className="font-medium truncate">{s.name}</div>
                               {s.description && <div className="text-[10px] text-slate-400 dark:text-slate-500 truncate mt-0.5">{s.description}</div>}
                               {s.defaultProvider && <div className="text-[10px] text-slate-300 dark:text-slate-600 mt-0.5 font-mono">provider:{s.defaultProvider}</div>}
@@ -394,20 +394,20 @@ export function HomeInput({
                   <button type="button" onClick={() => setSelectedRole("ROUTA")}
                     title="Multi-agent orchestration — spawns specialized agents for complex multi-step tasks (Routa)"
                     className={`flex items-center gap-1.5 rounded-[14px] px-3 py-1.5 text-xs font-medium transition-all ${
-                      selectedRole === "ROUTA"
-                        ? "bg-blue-600 text-white shadow-[0_14px_26px_-18px_rgba(37,99,235,0.68)] dark:bg-blue-500 dark:text-white"
-                        : "text-slate-500 hover:bg-blue-50/70 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-slate-300"
-                    }`}>
+ selectedRole === "ROUTA"
+ ? "bg-blue-600 text-white shadow-[0_14px_26px_-18px_rgba(37,99,235,0.68)] dark:bg-blue-500 dark:text-white"
+ : "text-slate-500 hover:bg-blue-50/70 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-slate-300"
+ }`}>
                     <Sun className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={selectedRole === "ROUTA" ? 2.5 : 2}/>
                     {t.home.multiAgent}
                   </button>
                   <button type="button" onClick={() => setSelectedRole("CRAFTER")}
                     title="Single-agent implementation — best for focused coding tasks (Crafter)"
                     className={`flex items-center gap-1.5 rounded-[14px] px-3 py-1.5 text-xs font-medium transition-all ${
-                      selectedRole === "CRAFTER"
-                        ? "bg-amber-500 text-white shadow-[0_14px_26px_-18px_rgba(245,158,11,0.65)] dark:bg-amber-500 dark:text-white"
-                        : "text-slate-500 hover:bg-amber-50/70 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-slate-300"
-                    }`}>
+ selectedRole === "CRAFTER"
+ ? "bg-amber-500 text-white shadow-[0_14px_26px_-18px_rgba(245,158,11,0.65)] dark:bg-amber-500 dark:text-white"
+ : "text-slate-500 hover:bg-amber-50/70 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-slate-300"
+ }`}>
                     <Zap className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={selectedRole === "CRAFTER" ? 2.5 : 2}/>
                     {t.home.crafter}
                   </button>
@@ -420,7 +420,7 @@ export function HomeInput({
                     <div className="relative" ref={specialistDropdownRef}>
                       <button type="button" onClick={() => setShowSpecialistDropdown((v) => !v)}
                         className="flex items-center gap-1.5 rounded-lg border border-dashed border-slate-300 px-2 py-1 text-xs text-slate-500 transition-all hover:border-amber-300 hover:bg-slate-100 hover:text-amber-600 dark:border-slate-700 dark:text-slate-400 dark:hover:border-amber-700 dark:hover:bg-slate-800 dark:hover:text-amber-300"
-                        title="Use a custom specialist instead">
+ title="Use a custom specialist instead">
                         <CircleUser className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
                         Custom
                         <ChevronDown className="w-2.5 h-2.5 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
@@ -456,7 +456,7 @@ export function HomeInput({
                   type="button"
                   onClick={() => setShowWorkspaceDropdown((v) => !v)}
                   className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#1c1f2e] border border-transparent hover:border-slate-200 dark:hover:border-[#2a2d3d] transition-all"
-                >
+ >
                   <Folder className="w-3.5 h-3.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
                   <span className="max-w-[120px] truncate">
                     {activeWorkspace?.title ?? t.workspace.workspaces}
@@ -472,10 +472,10 @@ export function HomeInput({
                           key={ws.id}
                           onClick={() => handleWorkspaceChange(ws.id)}
                           className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2 ${
-                            ws.id === selectedWorkspaceId
-                              ? "bg-amber-50 dark:bg-amber-900/15 text-amber-700 dark:text-amber-400"
-                              : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#1f2233]"
-                          }`}
+ ws.id === selectedWorkspaceId
+ ? "bg-amber-50 dark:bg-amber-900/15 text-amber-700 dark:text-amber-400"
+ : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#1f2233]"
+ }`}
                         >
                           <Folder className="w-3.5 h-3.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}/>
                           {ws.title}
@@ -558,16 +558,16 @@ export function HomeInput({
                 className={skillPillClass}
               >
                 <span className={`text-[11px] font-mono font-medium transition-colors truncate ${
-                  isHero
-                    ? "text-slate-500 group-hover:text-sky-600 dark:text-slate-400 dark:group-hover:text-sky-300"
-                    : "text-slate-500 group-hover:text-amber-600 dark:text-slate-400 dark:group-hover:text-amber-400"
-                }`}>
+ isHero
+ ? "text-slate-500 group-hover:text-sky-600 dark:text-slate-400 dark:group-hover:text-sky-300"
+ : "text-slate-500 group-hover:text-amber-600 dark:text-slate-400 dark:group-hover:text-amber-400"
+ }`}>
                   /{skill.name}
                 </span>
                 {skill.description && (
                   <span className={`text-[10px] leading-snug line-clamp-1 ${
-                    isHero ? "text-slate-400 dark:text-slate-500" : "text-slate-400 dark:text-slate-600"
-                  }`}>
+ isHero ? "text-slate-400 dark:text-slate-500" : "text-slate-400 dark:text-slate-600"
+ }`}>
                     {skill.description}
                   </span>
                 )}

@@ -13,8 +13,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useWorkspaces } from "@/client/hooks/use-workspaces";
 import { desktopAwareFetch } from "@/client/utils/diagnostics";
 import { Select } from "./select";
+import { Modal } from "./modal";
 import { useTranslation } from "@/i18n";
-import { PieChart, SquarePen, Trash2, X, Play } from "lucide-react";
+import { PieChart, SquarePen, Trash2, Play } from "lucide-react";
 
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -192,7 +193,7 @@ function WorkflowDag({ steps, onStepClick }: WorkflowDagProps) {
         width={svgWidth}
         height={svgHeight}
         className="block"
-        aria-label="Workflow DAG visualization"
+ aria-label="Workflow DAG visualization"
       >
         <defs>
           <marker
@@ -260,7 +261,7 @@ function WorkflowDag({ steps, onStepClick }: WorkflowDagProps) {
                 fontWeight="600"
                 fill={color.text}
                 className="select-none"
-              >
+ >
                 {node.label.length > 18 ? node.label.slice(0, 17) + "…" : node.label}
               </text>
               <text
@@ -271,7 +272,7 @@ function WorkflowDag({ steps, onStepClick }: WorkflowDagProps) {
                 fill={color.text}
                 opacity="0.8"
                 className="select-none"
-              >
+ >
                 {node.specialist}
               </text>
             </g>
@@ -336,22 +337,8 @@ function EditorModal({ workflow, onClose, onSaved }: EditorModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-white dark:bg-[#1a1d2e] rounded-xl shadow-2xl w-full max-w-2xl mx-4 flex flex-col border border-slate-200 dark:border-slate-700" style={{ maxHeight: "85vh" }}>
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700 shrink-0">
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-            {isNew ? t.workflows.newWorkflow : `${t.workflows.editLabel}${workflow!.name}`}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-          >
-            <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-          </button>
-        </div>
-
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3">
+    <Modal open onClose={onClose} title={isNew ? t.workflows.newWorkflow : `${t.workflows.editLabel}${workflow!.name}`} className="max-w-2xl max-h-[85vh]">
+        <div className="min-h-0 overflow-y-auto space-y-3">
           {isNew && (
             <div>
               <label htmlFor="workflow-id-input" className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
@@ -364,7 +351,7 @@ function EditorModal({ workflow, onClose, onSaved }: EditorModalProps) {
                 onChange={(e) => setId(e.target.value)}
                 placeholder="e.g. my-workflow"
                 className="w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-[#1e2130] text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-1 focus:ring-blue-500 focus:outline-none font-mono"
-              />
+ />
               <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
                 Used as the filename (letters, numbers, hyphens, underscores only)
               </p>
@@ -383,7 +370,7 @@ function EditorModal({ workflow, onClose, onSaved }: EditorModalProps) {
               rows={20}
               spellCheck={false}
               className="w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-[#0f1117] text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-blue-500 focus:outline-none font-mono resize-y"
-              placeholder="Workflow YAML..."
+ placeholder="Workflow YAML..."
             />
           </div>
 
@@ -396,19 +383,18 @@ function EditorModal({ workflow, onClose, onSaved }: EditorModalProps) {
           <button
             onClick={onClose}
             className="px-3 py-1.5 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-          >
+ >
             Cancel
           </button>
           <button
             onClick={handleSave}
             disabled={saving || (isNew && !id.trim())}
             className="px-3 py-1.5 text-xs font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
+ >
             {saving ? t.workflows.saving : t.common.save}
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
@@ -465,22 +451,8 @@ function ExecuteModal({ workflow, onClose }: ExecuteModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-white dark:bg-[#1a1d2e] rounded-xl shadow-2xl w-full max-w-lg mx-4 flex flex-col border border-slate-200 dark:border-slate-700">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700">
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-            Run: {workflow.name}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-          >
-            <X className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-          </button>
-        </div>
-
-        <div className="px-4 py-4 space-y-3">
+    <Modal open onClose={onClose} title={`Run: ${workflow.name}`} className="max-w-lg">
+        <div className="space-y-3">
           <div>
             <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
               Workspace
@@ -490,7 +462,7 @@ function ExecuteModal({ workflow, onClose }: ExecuteModalProps) {
               onChange={(e) => setSelectedWorkspaceId(e.target.value)}
               disabled={executing || workspacesHook.loading || workspacesHook.workspaces.length === 0}
               className="w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-[#0f1117] text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-            >
+ >
               {workspacesHook.workspaces.length === 0 ? (
                 <option value="">No active workspace</option>
               ) : (
@@ -512,7 +484,7 @@ function ExecuteModal({ workflow, onClose }: ExecuteModalProps) {
               onChange={(e) => setPayload(e.target.value)}
               rows={4}
               className="w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-[#0f1117] text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-blue-500 focus:outline-none font-mono resize-none"
-              placeholder="JSON payload or description for this workflow run..."
+ placeholder="JSON payload or description for this workflow run..."
             />
           </div>
 
@@ -528,7 +500,7 @@ function ExecuteModal({ workflow, onClose }: ExecuteModalProps) {
           <button
             onClick={onClose}
             className="px-3 py-1.5 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-          >
+ >
             {result ? t.common.close : t.common.cancel}
           </button>
           {!result && (
@@ -536,13 +508,12 @@ function ExecuteModal({ workflow, onClose }: ExecuteModalProps) {
               onClick={handleExecute}
               disabled={executing || workspacesHook.loading || !selectedWorkspaceId}
               className="px-3 py-1.5 text-xs font-medium rounded-md bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
+ >
               {executing ? t.common.running : `▶ ${t.workflows.run}`}
             </button>
           )}
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
@@ -585,7 +556,7 @@ function WorkflowCard({ workflow, onEdit, onDelete, onRun }: WorkflowCardProps) 
   return (
     <div
       className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1e2130] overflow-hidden"
-      data-testid={`workflow-card-${workflow.id}`}
+ data-testid={`workflow-card-${workflow.id}`}
     >
       {/* Header */}
       <div className="px-3 py-2.5 flex items-start gap-2">
@@ -611,7 +582,7 @@ function WorkflowCard({ workflow, onEdit, onDelete, onRun }: WorkflowCardProps) 
           <button
             onClick={() => onRun(workflow)}
             className="p-1.5 rounded-md text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors"
-            title={t.workflows.runWorkflow}
+ title={t.workflows.runWorkflow}
             aria-label={`${t.workflows.runWorkflow} ${workflow.name}`}
           >
             <Play className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"/>
@@ -619,7 +590,7 @@ function WorkflowCard({ workflow, onEdit, onDelete, onRun }: WorkflowCardProps) 
           <button
             onClick={() => setExpanded((v) => !v)}
             className="p-1.5 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-            title={expanded ? t.workflows.collapse : t.workflows.showGraph}
+ title={expanded ? t.workflows.collapse : t.workflows.showGraph}
             aria-label={expanded ? `${t.workflows.collapse} ${workflow.name}` : `${t.workflows.showGraph} ${workflow.name}`}
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -629,7 +600,7 @@ function WorkflowCard({ workflow, onEdit, onDelete, onRun }: WorkflowCardProps) 
           <button
             onClick={() => onEdit(workflow)}
             className="p-1.5 rounded-md text-blue-500 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
-            title={t.workflows.editWorkflow}
+ title={t.workflows.editWorkflow}
             aria-label={`${t.workflows.editWorkflow} ${workflow.name}`}
           >
             <SquarePen className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
@@ -638,10 +609,10 @@ function WorkflowCard({ workflow, onEdit, onDelete, onRun }: WorkflowCardProps) 
             onClick={handleDelete}
             onBlur={() => setDeletePending(false)}
             className={`p-1.5 rounded-md transition-colors ${
-              deletePending
-                ? "text-white bg-red-500 hover:bg-red-600"
-                : "text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30"
-            }`}
+ deletePending
+ ? "text-white bg-red-500 hover:bg-red-600"
+ : "text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30"
+ }`}
             title={deletePending ? t.workflows.deleteConfirm : t.workflows.deleteWorkflow}
             aria-label={deletePending ? `${t.workflows.deleteConfirm} ${workflow.name}` : `${t.workflows.deleteWorkflow} ${workflow.name}`}
           >
@@ -721,7 +692,7 @@ export function WorkflowPanel() {
         <button
           onClick={() => setEditTarget(null)}
           className="px-2.5 py-1 text-xs font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-          aria-label={t.workflows.createNew}
+ aria-label={t.workflows.createNew}
         >
           + {t.workflows.newWorkflow}
         </button>

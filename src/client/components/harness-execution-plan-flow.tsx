@@ -197,8 +197,8 @@ function getStatusTone(status: EdgeStatus | undefined) {
       };
     default:
       return {
-        badge: "border-desktop-border bg-desktop-bg-secondary text-desktop-text-secondary",
-        border: "border-desktop-border",
+        badge: "border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400",
+        border: "border-slate-300 dark:border-slate-700",
         glow: "",
       };
   }
@@ -216,14 +216,14 @@ function PlanNodeView({ data }: NodeProps<Node<PlanNodeData>>) {
         ? ""
       : "w-[292px]";
   const kindLabelClass = data.kind === "dimension"
-    ? "text-[11px] font-semibold uppercase tracking-[0.18em] text-desktop-text-secondary"
-    : "text-[10px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary";
+    ? "text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-700 dark:text-slate-400"
+    : "text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400";
   const titleClass = data.kind === "dimension"
-    ? "mt-1 text-[18px] font-semibold leading-7 text-desktop-text-primary [overflow-wrap:anywhere]"
-    : "mt-1 overflow-hidden text-[15px] font-semibold leading-6 text-desktop-text-primary [overflow-wrap:anywhere]";
+    ? "mt-1 text-[18px] font-semibold leading-7 text-slate-900 dark:text-slate-200 [overflow-wrap:anywhere]"
+    : "mt-1 overflow-hidden text-[15px] font-semibold leading-6 text-slate-900 dark:text-slate-200 [overflow-wrap:anywhere]";
   const subtitleClass = data.kind === "dimension"
-    ? "mt-1 overflow-hidden text-[14px] leading-7 text-desktop-text-secondary"
-    : "mt-1 overflow-hidden text-[13px] leading-6 text-desktop-text-secondary";
+    ? "mt-1 overflow-hidden text-[14px] leading-7 text-slate-700 dark:text-slate-400"
+    : "mt-1 overflow-hidden text-[13px] leading-6 text-slate-700 dark:text-slate-400";
   const contentPaddingClass = data.kind === "metric" ? "px-3 py-2" : "px-4 py-3";
   const heightClass = data.kind === "metric"
     ? "h-[184px]"
@@ -237,23 +237,23 @@ function PlanNodeView({ data }: NodeProps<Node<PlanNodeData>>) {
   if (data.kind === "lane") {
     return (
       <div
-        className="rounded-sm border border-desktop-border bg-desktop-bg-primary/40 px-3 py-1.5"
-        style={{ width: data.frameWidth ?? 640, height: data.frameHeight ?? 220 }}
+        className="rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 px-3 py-1.5"
+ style={{ width: data.frameWidth ?? 640, height: data.frameHeight ?? 220 }}
       >
         <Handle
           id="entry"
           type="target"
           position={Position.Top}
           style={{ left: data.entryOffsetPx ?? (data.frameWidth ?? 640) / 2 }}
-          className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border"
-        />
+          className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700"
+ />
         <Handle
           id="exit"
           type="source"
           position={Position.Bottom}
           style={{ left: data.exitOffsetPx ?? (data.frameWidth ?? 640) / 2 }}
-          className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border"
-        />
+          className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700"
+ />
       </div>
     );
   }
@@ -261,26 +261,26 @@ function PlanNodeView({ data }: NodeProps<Node<PlanNodeData>>) {
   if (data.kind === "anchor") {
     return (
       <div className="relative h-0 w-0 overflow-visible">
-        <Handle id="top" type="target" position={Position.Top} className="!h-2 !w-2 !border-0 !bg-desktop-border" />
-        <Handle id="bottom" type="source" position={Position.Bottom} className="!h-2 !w-2 !border-0 !bg-desktop-border" />
+        <Handle id="top" type="target" position={Position.Top} className="!h-2 !w-2 !border-0 !border-slate-300 dark:border-slate-700" />
+        <Handle id="bottom" type="source" position={Position.Bottom} className="!h-2 !w-2 !border-0 !border-slate-300 dark:border-slate-700" />
       </div>
     );
   }
 
   return (
     <div className="relative">
-      <Handle id="top" type="target" position={Position.Top} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="left" type="target" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="right" type="target" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="bottom" type="source" position={Position.Bottom} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="left" type="source" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
-      <Handle id="right" type="source" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !bg-desktop-border" />
+      <Handle id="top" type="target" position={Position.Top} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="left" type="target" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="right" type="target" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="bottom" type="source" position={Position.Bottom} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="left" type="source" position={Position.Left} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
+      <Handle id="right" type="source" position={Position.Right} className="!h-2.5 !w-2.5 !border-0 !border-slate-300 dark:border-slate-700" />
       <button
         type="button"
         onClick={() => {
           data.onToggle?.();
         }}
-        className={`${widthClass} ${heightClass} ${contentPaddingClass} flex flex-col overflow-hidden rounded-sm border bg-desktop-bg-primary text-left transition ${tone.border} ${tone.glow} ${interactive ? "cursor-pointer hover:bg-desktop-bg-secondary/90" : "cursor-default"}`}
+        className={`${widthClass} ${heightClass} ${contentPaddingClass} flex flex-col overflow-hidden rounded-sm border bg-slate-50 dark:bg-slate-900 text-left transition ${tone.border} ${tone.glow} ${interactive ? "cursor-pointer hover:bg-slate-100 dark:bg-slate-800/90" : "cursor-default"}`}
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -304,14 +304,14 @@ function PlanNodeView({ data }: NodeProps<Node<PlanNodeData>>) {
         {visibleMeta.length > 0 ? (
           <div className="mt-3 flex flex-wrap gap-1.5">
             {visibleMeta.map((item) => (
-              <span key={item} className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-2 py-0.5 text-[10px] text-desktop-text-secondary">
+              <span key={item} className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[10px] text-slate-700 dark:text-slate-400">
                 {item}
               </span>
             ))}
           </div>
         ) : null}
         {interactive && data.kind !== "dimension" ? (
-          <div className="mt-3 text-[10px] text-desktop-text-secondary">
+          <div className="mt-3 text-[10px] text-slate-700 dark:text-slate-400">
             {data.expanded ? t.harness.executionPlan.clickToCollapseMetrics : t.harness.executionPlan.clickToExpandMetrics}
           </div>
         ) : null}
@@ -681,9 +681,9 @@ export function HarnessExecutionPlanFlow({
     <>
       <div className="flex flex-wrap items-center gap-2">
         {!embedded ? (
-          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-desktop-text-secondary">{t.settings.harness.entrixFitness}</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-700 dark:text-slate-400">{t.settings.harness.entrixFitness}</div>
         ) : null}
-        <div className="rounded-full border border-desktop-border bg-desktop-bg-primary p-0.5">
+        <div className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-0.5">
           {(["fast", "normal", "deep"] as const).map((tier) => {
             const tierLabels: Record<string, string> = {
               fast: t.harness.executionPlan.tierFast,
@@ -698,10 +698,10 @@ export function HarnessExecutionPlanFlow({
                   onTierChange(tier);
                 }}
                 className={`rounded-full px-2.5 py-1 text-[10px] transition-colors ${
-                  selectedTier === tier
-                    ? "bg-desktop-accent text-desktop-accent-text"
-                    : "text-desktop-text-secondary hover:bg-desktop-bg-secondary"
-                }`}
+ selectedTier === tier
+ ? "bg-blue-500 text-white"
+ : "text-slate-700 dark:text-slate-400 hover:bg-slate-100 dark:bg-slate-800"
+ }`}
               >
                 {tierLabels[tier] || tier}
               </button>
@@ -723,8 +723,8 @@ export function HarnessExecutionPlanFlow({
                 };
               });
             }}
-            className="rounded-full border border-desktop-border bg-desktop-bg-primary px-2.5 py-1 text-[10px] text-desktop-text-secondary"
-          >
+            className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2.5 py-1 text-[10px] text-slate-700 dark:text-slate-400"
+ >
             {expandedDimensions.size > 0 ? t.harness.executionPlan.hideMetrics : t.harness.executionPlan.showMetrics}
           </button>
         ) : null}
@@ -739,7 +739,7 @@ export function HarnessExecutionPlanFlow({
       </div>
 
       {loading ? (
-        <div className="mt-4 rounded-xl border border-desktop-border bg-desktop-bg-primary/80 px-4 py-5 text-[11px] text-desktop-text-secondary">
+        <div className="mt-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-4 py-5 text-[11px] text-slate-700 dark:text-slate-400">
           {t.harness.executionPlan.buildingTopology}
         </div>
       ) : null}
@@ -756,7 +756,7 @@ export function HarnessExecutionPlanFlow({
 
       {!unsupportedMessage && plan ? (
         <div className="mt-4">
-          <div className="overflow-hidden rounded-sm border border-desktop-border bg-desktop-bg-primary">
+          <div className="overflow-hidden rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
             <div style={{ height: graph.minHeight }}>
               <ReactFlow
                 key={flowKey}
@@ -801,8 +801,8 @@ export function HarnessExecutionPlanFlow({
 
   return (
     <section className={variant === "compact"
-      ? "rounded-sm border border-desktop-border bg-desktop-bg-primary/60 p-4"
-      : "rounded-sm border border-desktop-border bg-desktop-bg-secondary/40 p-4"}
+ ? "rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 p-4"
+ : "rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/40 p-4"}
     >
       {content}
     </section>

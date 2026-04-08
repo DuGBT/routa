@@ -6,9 +6,7 @@ const meta = {
   title: "Workspace/Overview Card",
   component: OverviewCard,
   tags: ["autodocs"],
-  parameters: {
-    desktopTheme: true,
-  },
+  parameters: {},
   args: {
     eyebrow: "Primary surface",
     title: "Kanban board",

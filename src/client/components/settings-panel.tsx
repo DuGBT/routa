@@ -34,7 +34,7 @@ import {
   type SettingsPanelProps,
   type SettingsTab,
 } from "./settings-panel-shared";
-import { ArrowLeft, RefreshCw, Settings, TriangleAlert, X } from "lucide-react";
+import { ArrowLeft, RefreshCw, Settings, X } from "lucide-react";
 
 export {
   getModelDefinitionByAlias,
@@ -54,7 +54,6 @@ export type {
   ProviderConnectionsStorage,
   SettingsPanelProps,
 } from "./settings-panel-shared";
-
 function OnboardingSettingsSection({ onResetOnboarding }: { onResetOnboarding?: () => void }) {
   const { t } = useTranslation();
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(() => {
@@ -82,10 +81,10 @@ function OnboardingSettingsSection({ onResetOnboarding }: { onResetOnboarding?: 
           </p>
         </div>
         <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${
-          hasCompletedOnboarding
-            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/12 dark:text-emerald-300"
-            : "bg-amber-100 text-amber-700 dark:bg-amber-500/12 dark:text-amber-300"
-        }`}>
+ hasCompletedOnboarding
+ ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/12 dark:text-emerald-300"
+ : "bg-amber-100 text-amber-700 dark:bg-amber-500/12 dark:text-amber-300"
+ }`}>
           {hasCompletedOnboarding ? t.settings.onboardingSection.completed : t.settings.onboardingSection.available}
         </span>
       </div>
@@ -94,7 +93,7 @@ function OnboardingSettingsSection({ onResetOnboarding }: { onResetOnboarding?: 
           type="button"
           onClick={handleReset}
           className="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-        >
+ >
           {t.settings.onboardingSection.showAgain}
         </button>
       </div>
@@ -138,12 +137,12 @@ function SystemInfoFooter() {
                 {t.settings.sessions} {memoryStats.sessionStore.sessionCount}
               </span>
               <span className={`shrink-0 ${
-                memoryStats.current.level === "critical"
-                  ? "text-red-500"
-                  : memoryStats.current.level === "warning"
-                    ? "text-amber-500"
-                    : "text-emerald-500"
-              }`}>
+ memoryStats.current.level === "critical"
+ ? "text-red-500"
+ : memoryStats.current.level === "warning"
+ ? "text-amber-500"
+ : "text-emerald-500"
+ }`}>
                 {memoryStats.current.level}
               </span>
             </>
@@ -155,7 +154,7 @@ function SystemInfoFooter() {
           onClick={fetchData}
           disabled={loading}
           className="shrink-0 rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 disabled:opacity-50 dark:hover:bg-slate-800 dark:hover:text-slate-300"
-          title={t.settings.refreshSystemInfo}
+ title={t.settings.refreshSystemInfo}
           type="button"
         >
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
@@ -223,7 +222,7 @@ function RolesTab({
                 onChange={(event) => onChange(role, "model", event.target.value)}
                 placeholder={modelDefs.length > 0 ? "select alias or type model" : "e.g. claude-3-5-haiku"}
                 className="flex-1 text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-[#1e2130] text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-1 focus:ring-blue-500 focus:outline-none font-mono"
-              />
+ />
             </div>
           ))}
         </div>
@@ -268,7 +267,7 @@ function ProviderCatalogSection({ allProviders }: ProviderCatalogSectionProps) {
               <div
                 key={provider.id}
                 className="flex items-center justify-between px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1e2130]"
-              >
+ >
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
@@ -288,12 +287,12 @@ function ProviderCatalogSection({ allProviders }: ProviderCatalogSectionProps) {
                   {provider.status && (
                     <span
                       className={`px-2 py-0.5 text-[10px] rounded ${
-                        provider.status === "available"
-                          ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
-                          : provider.status === "checking"
-                            ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
-                            : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
-                      }`}
+ provider.status === "available"
+ ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+ : provider.status === "checking"
+ ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300"
+ : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
+ }`}
                     >
                       {provider.status}
                     </span>
@@ -321,7 +320,7 @@ function WebhooksTab() {
           <button
             onClick={() => setShowFullPanel(false)}
             className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-            title={t.settings.backToOverview}
+ title={t.settings.backToOverview}
           >
             <ArrowLeft className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
@@ -367,6 +366,7 @@ function WebhooksTab() {
     </div>
   );
 }
+
 
 // ─── Main Settings Panel ───────────────────────────────────────────────────
 export function SettingsPanel({ open, onClose, providers, initialTab, onResetOnboarding, variant = "modal" }: SettingsPanelProps) {
@@ -456,14 +456,14 @@ function SettingsPanelContent({ onClose, providers, initialTab, onResetOnboardin
 
   if (isPageVariant) {
     return (
-      <div className="flex h-full min-h-0 bg-desktop-bg-primary text-desktop-text-primary">
+      <div className="flex h-full min-h-0 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-200">
         <SettingsCenterNav activeConfigTab={activeTab} />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="border-b border-desktop-border px-8 py-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-desktop-text-tertiary">{t.settings.preferences}</p>
-            <h1 className="mt-2 text-3xl font-semibold text-desktop-text-primary">{activeTabMeta.label}</h1>
-            <p className="mt-2 max-w-2xl text-sm text-desktop-text-secondary">
+          <header className="border-b border-slate-300 dark:border-slate-700 px-8 py-8">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">{t.settings.preferences}</p>
+            <h1 className="mt-2 text-3xl font-semibold text-slate-900 dark:text-slate-200">{activeTabMeta.label}</h1>
+            <p className="mt-2 max-w-2xl text-sm text-slate-700 dark:text-slate-400">
               {activeTab === "providers" && t.settings.providersDesc}
               {activeTab === "registry" && t.settings.registryDesc}
               {activeTab === "roles" && t.settings.rolesDesc}
@@ -483,7 +483,7 @@ function SettingsPanelContent({ onClose, providers, initialTab, onResetOnboardin
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
       <div
         className="relative mx-4 flex h-full max-h-[92vh] w-[calc(100vw-2rem)] max-w-6xl flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-[#1a1d2e]"
-        style={{ height: SETTINGS_PANEL_HEIGHT }}
+ style={{ height: SETTINGS_PANEL_HEIGHT }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700 shrink-0">
@@ -506,10 +506,10 @@ function SettingsPanelContent({ onClose, providers, initialTab, onResetOnboardin
           {TAB_DEFS.map(({ key, label }) => (
             <button key={key} onClick={() => handleTabChange(key)}
               className={`flex-1 px-3 py-2 text-xs font-medium transition-colors ${
-                activeTab === key
-                  ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-              }`}>
+ activeTab === key
+ ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
+ : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+ }`}>
               {label}
             </button>
           ))}

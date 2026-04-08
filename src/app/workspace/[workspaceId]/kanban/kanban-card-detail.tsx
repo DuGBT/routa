@@ -1,41 +1,24 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { Maximize2, Minimize2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { AcpProviderInfo } from "@/client/acp-client";
 import type { CodebaseData } from "@/client/hooks/use-workspaces";
 import { desktopAwareFetch } from "@/client/utils/diagnostics";
-import { Select } from "@/client/components/select";
-import {
-  type EffectiveTaskAutomation,
-  resolveEffectiveTaskAutomation,
-  resolveKanbanAutomationStep,
-} from "@/core/kanban/effective-task-automation";
-import { formatArtifactSummary, resolveKanbanTransitionArtifacts } from "@/core/kanban/transition-artifacts";
-import { getKanbanAutomationSteps, type KanbanAutomationStep } from "@/core/models/kanban";
+import { resolveKanbanTransitionArtifacts } from "@/core/kanban/transition-artifacts";
 import type { KanbanColumnInfo, SessionInfo, TaskInfo, WorktreeInfo } from "../types";
 import { KanbanCardActivityPanel } from "./kanban-card-activity";
-import { KanbanDescriptionEditor } from "./kanban-description-editor";
-import { FileRow, formatChangeSummary } from "./kanban-file-changes-panel";
 import type { KanbanTaskChanges } from "./kanban-file-changes-types";
-import { MarkdownViewer } from "@/client/components/markdown/markdown-viewer";
-import {
-  createKanbanSpecialistResolver,
-  getOrderedSessionIds,
-  getSpecialistName,
-  type KanbanSpecialistOption as SpecialistOption,
-} from "./kanban-card-session-utils";
+import { getOrderedSessionIds, type KanbanSpecialistOption as SpecialistOption } from "./kanban-card-session-utils";
+import type { KanbanSpecialistLanguage } from "./kanban-specialist-language";
 export { KanbanCardActivityBar } from "./kanban-card-activity";
 import { KanbanCardArtifacts } from "./kanban-card-artifacts";
-import { getKanbanSessionCopy } from "./i18n/kanban-session-copy";
-import {
-  findSpecialistById,
-  getSpecialistDisplayName,
-  getLanguageSpecificSpecialistId,
-  KANBAN_SPECIALIST_LANGUAGE_LABELS,
-  type KanbanSpecialistLanguage,
-} from "./kanban-specialist-language";
 import { useTranslation } from "@/i18n";
+import { CardDetailHeader } from "./kanban-card-detail/header";
+import { DescriptionSection } from "./kanban-card-detail/description";
+import { ExecutionSection } from "./kanban-card-detail/execution-section";
+import { RepositoriesWorktreeRow } from "./kanban-card-detail/repositories-worktree";
+import { StoryReadinessPanel, EvidenceBundlePanel, TaskChangesPanel } from "./kanban-card-detail/readiness-panels";
+import { DetailSection } from "./kanban-card-detail/shared";
 
 export interface KanbanCardDetailProps {
   task: TaskInfo;
@@ -62,92 +45,7 @@ export interface KanbanCardDetailProps {
   onToggleFullscreen?: (next: boolean) => void;
 }
 
-const ROLE_OPTIONS = ["CRAFTER", "ROUTA", "GATE", "DEVELOPER"];
 type KanbanDetailTabId = "description" | "readiness" | "execution" | "changes" | "evidence" | "runs";
-
-function getProviderName(providerId: string | undefined, availableProviders: AcpProviderInfo[]): string {
-  if (!providerId) return "Workspace default";
-  return availableProviders.find((provider) => provider.id === providerId)?.name ?? providerId;
-}
-
-function formatAgentCardTarget(agentCardUrl?: string): string | undefined {
-  const trimmed = agentCardUrl?.trim();
-  if (!trimmed) return undefined;
-
-  try {
-    const parsed = new URL(trimmed);
-    return `${parsed.hostname}${parsed.pathname !== "/" ? parsed.pathname : ""}`;
-  } catch {
-    return trimmed.replace(/^https?:\/\//, "");
-  }
-}
-
-function formatEffectiveAutomationTarget(
-  automation: EffectiveTaskAutomation,
-  availableProviders: AcpProviderInfo[],
-  specialists: SpecialistOption[],
-): string {
-  if (automation.transport === "a2a") {
-    const specialist = getSpecialistName(
-      automation.specialistId,
-      automation.specialistName,
-      specialists,
-    );
-    return [
-      "A2A",
-      automation.role ?? "DEVELOPER",
-      specialist,
-      formatAgentCardTarget(automation.agentCardUrl),
-      automation.skillId ? `skill:${automation.skillId}` : undefined,
-    ].filter(Boolean).join(" · ");
-  }
-
-  return [
-    getProviderName(automation.providerId, availableProviders),
-    automation.role ?? "DEVELOPER",
-    getSpecialistName(automation.specialistId, automation.specialistName, specialists),
-  ].join(" · ");
-}
-
-function getPromptFailureMessage(task: TaskInfo, sessionInfo: SessionInfo | null | undefined): string | null {
-  if (sessionInfo?.acpStatus === "error" && sessionInfo.acpError) {
-    return sessionInfo.acpError;
-  }
-  return task.lastSyncError ?? null;
-}
-
-function isExpiredEmbeddedSessionFailure(message: string | null | undefined): boolean {
-  if (!message) return false;
-  return message.includes("embedded ACP processes cannot be resumed on a different instance");
-}
-
-function formatAutomationStepSummary(
-  step: KanbanAutomationStep,
-  availableProviders: AcpProviderInfo[],
-  specialists: SpecialistOption[],
-  autoProviderId?: string | null,
-): string {
-  const resolvedStep = resolveKanbanAutomationStep(
-    step,
-    createKanbanSpecialistResolver(specialists),
-    { autoProviderId: autoProviderId ?? undefined },
-  ) ?? step;
-  if ((resolvedStep.transport ?? "acp") === "a2a") {
-    return [
-      "A2A",
-      resolvedStep.role ?? "DEVELOPER",
-      getSpecialistName(resolvedStep.specialistId, resolvedStep.specialistName, specialists),
-      formatAgentCardTarget(resolvedStep.agentCardUrl),
-      resolvedStep.skillId ? `skill:${resolvedStep.skillId}` : undefined,
-    ].filter(Boolean).join(" · ");
-  }
-
-  return [
-    getProviderName(resolvedStep.providerId, availableProviders),
-    resolvedStep.role ?? "DEVELOPER",
-    getSpecialistName(resolvedStep.specialistId, resolvedStep.specialistName, specialists),
-  ].join(" · ");
-}
 
 export function KanbanCardDetail({
   task,
@@ -239,19 +137,15 @@ export function KanbanCardDetail({
     if (activeTab !== "changes" || taskChanges) {
       return;
     }
-
     let cancelled = false;
     setTaskChangesLoading(true);
-
     void (async () => {
       try {
         const response = await desktopAwareFetch(`/api/tasks/${encodeURIComponent(task.id)}/changes`, {
           cache: "no-store",
         });
         const payload = await response.json() as { changes?: KanbanTaskChanges; error?: string };
-        if (cancelled) {
-          return;
-        }
+        if (cancelled) return;
         if (!response.ok) {
           throw new Error(payload.error ?? t.common.unavailable);
         }
@@ -275,93 +169,41 @@ export function KanbanCardDetail({
         }
       }
     })();
-
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [activeTab, task.id, taskChanges, t.common.unavailable, t.kanbanDetail.repo]);
 
   return (
     <div className="h-full w-full overflow-y-auto">
       <div className={`mx-auto flex min-h-full max-w-6xl flex-col ${compactMode ? "gap-3 p-3" : "gap-4 p-5"}`}>
-        <section className={`border-b border-slate-200/80 pb-3 dark:border-[#232736] ${compactMode ? "pt-0.5" : "pt-1"}`}>
-          <div className={`flex items-center justify-between gap-3 ${compactMode ? "mb-1.5" : "mb-2"}`}>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
-              {t.kanbanDetail.cardDetail}
-            </div>
-            <div className="flex items-center gap-1.5">
-              {onToggleFullscreen ? (
-                <button
-                  type="button"
-                  onClick={() => onToggleFullscreen(!isFullscreen)}
-                  className="inline-flex h-6 w-6 items-center justify-center border border-slate-300/80 text-slate-500 transition-colors hover:border-amber-400 hover:text-amber-700 dark:border-slate-700 dark:text-slate-300 dark:hover:border-amber-700 dark:hover:text-amber-200"
-                  aria-label={isFullscreen ? t.kanbanDetail.exitFullscreen : t.kanbanDetail.enterFullscreen}
-                  title={isFullscreen ? t.kanbanDetail.exitFullscreen : t.kanbanDetail.enterFullscreen}
-                >
-                  {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
-                </button>
-              ) : null}
-              <button
-                type="button"
-                onClick={onRefresh}
-                className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700 dark:border-slate-700 dark:bg-[#0d1018] dark:text-slate-300 dark:hover:border-amber-700 dark:hover:bg-amber-900/20 dark:hover:text-amber-200"
-              >
-                {t.common.refresh}
-              </button>
-            </div>
-          </div>
-            <textarea
-              ref={titleInputRef}
-              value={displayedTitle}
-            onFocus={() => {
-              setEditTitle(task.title);
-              setIsTitleEditing(true);
-            }}
-            onChange={(event) => setEditTitle(event.target.value)}
-            onBlur={async () => {
-              setIsTitleEditing(false);
-              if (editTitle !== task.title) {
-                await onPatchTask(task.id, { title: editTitle });
-                onRefresh();
-              }
-            }}
-            rows={isTitleEditing ? 2 : 1}
-            className={`w-full resize-none border-0 bg-transparent px-0 py-0 font-semibold leading-tight text-slate-950 outline-none focus:border-transparent focus:ring-0 dark:text-slate-50 ${compactMode ? "text-lg" : "text-xl"}`}
-          />
-          <div className={`flex flex-wrap items-center ${compactMode ? "mt-2 gap-1.5" : "mt-3 gap-2"}`}>
-            <MetaSelect
-              label={t.kanbanDetail.priority}
-              value={displayedPriority}
-              compact={compactMode}
-              options={[
-                { value: "low", label: t.kanbanDetail.low },
-                { value: "medium", label: t.kanbanDetail.medium },
-                { value: "high", label: t.kanbanDetail.high },
-                { value: "urgent", label: t.kanbanDetail.urgent },
-              ]}
-              onChange={async (value) => {
-                setEditPriority(value);
-                await onPatchTask(task.id, { priority: value });
-                onRefresh();
-              }}
-            />
-            <MetaBadge label="Column" value={task.columnId ?? "backlog"} compact={compactMode} />
-            {orderedSessionIds.length > 0 && (
-              <MetaBadge label="Runs" value={String(orderedSessionIds.length)} compact={compactMode} />
-            )}
-            {task.githubNumber && (
-              <MetaBadge label="GitHub" value={`#${task.githubNumber}`} compact={compactMode} />
-            )}
-            {(task.labels ?? []).map((label) => (
-              <span
-                key={label}
-                className={`inline-flex items-center rounded-full border border-amber-200 bg-amber-50 font-medium text-amber-800 dark:border-amber-900/40 dark:bg-amber-900/10 dark:text-amber-200 ${compactMode ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-1 text-[11px]"}`}
-              >
-                {label}
-              </span>
-            ))}
-          </div>
-        </section>
+        <CardDetailHeader
+          task={task}
+          compact={compactMode}
+          editTitle={editTitle}
+          isTitleEditing={isTitleEditing}
+          editPriority={displayedPriority}
+          orderedSessionIds={orderedSessionIds}
+          onTitleFocus={() => {
+            setEditTitle(task.title);
+            setIsTitleEditing(true);
+          }}
+          onTitleChange={(value) => setEditTitle(value)}
+          onTitleBlur={async () => {
+            setIsTitleEditing(false);
+            if (editTitle !== task.title) {
+              await onPatchTask(task.id, { title: editTitle });
+              onRefresh();
+            }
+          }}
+          onPriorityChange={async (value) => {
+            setEditPriority(value);
+            await onPatchTask(task.id, { priority: value });
+            onRefresh();
+          }}
+          onRefresh={onRefresh}
+          onToggleFullscreen={onToggleFullscreen}
+          isFullscreen={isFullscreen}
+          titleInputRef={titleInputRef}
+        />
 
         <div className="border-b border-slate-200/80 dark:border-[#232736]">
           <div className="flex min-w-0 gap-1 overflow-x-auto pb-1">
@@ -375,10 +217,10 @@ export function KanbanCardDetail({
                     setTabSelections((current) => ({ ...current, [tabStateKey]: tab.id }));
                   }}
                   className={`shrink-0 border-b-2 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
-                    active
-                      ? "border-b-amber-600 text-slate-900 dark:border-b-amber-400 dark:text-slate-100"
-                      : "border-b-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-                  }`}
+ active
+ ? "border-b-amber-600 text-slate-900 dark:border-b-amber-400 dark:text-slate-100"
+ : "border-b-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+ }`}
                   aria-pressed={active}
                 >
                   {tab.label}
@@ -391,78 +233,39 @@ export function KanbanCardDetail({
         <div className={compactMode ? "space-y-3" : "space-y-4"}>
           {activeTab === "description" && (
             <>
-              <section className={compactMode ? "space-y-2 border-b border-slate-200/80 py-2 dark:border-[#232736]" : "space-y-2 border-b border-slate-200/70 py-2.5 dark:border-[#232736]"}>
-                <KanbanDescriptionEditor
-                  value={displayedObjective}
-                  compact={compactMode}
-                  onEditingChange={(nextEditing) => {
-                    if (nextEditing) {
-                      setEditObjective(task.objective ?? "");
-                    }
-                    setIsDescriptionEditing(nextEditing);
-                  }}
-                  onSave={async (nextObjective) => {
-                    if (nextObjective !== (task.objective ?? "")) {
-                      setEditObjective(nextObjective);
-                      await onPatchTask(task.id, { objective: nextObjective });
-                      onRefresh();
-                    }
-                  }}
-                />
-              </section>
-
-              <DetailSection
-                title={t.kanbanDetail.progressNotes}
-                description={compactMode ? undefined : t.kanbanDetail.progressNotesHint}
+              <DescriptionSection
+                task={task}
                 compact={compactMode}
-              >
-                <div className={`border-b border-slate-200/70 py-2 dark:border-slate-700 ${compactMode ? "px-3" : "px-4"}`}>
-                  <div className="text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
-                    {t.kanbanDetail.appendedComments}
-                  </div>
-                  {task.comment?.trim() ? (
-                    <div className={compactMode ? "mt-2 px-3 py-2.5" : "mt-2 px-4 py-2.5"}>
-                      <MarkdownViewer
-                        content={task.comment}
-                        className="prose prose-sm max-w-none text-slate-800 dark:prose-invert dark:text-slate-200"
-                      />
-                    </div>
-                  ) : (
-                    <div className={`text-sm text-slate-500 dark:text-slate-400 ${compactMode ? "mt-2 px-3 py-2.5" : "mt-2 px-4 py-2.5"}`}>
-                      {t.kanbanDetail.noProgressNotesYet}
-                    </div>
-                  )}
-                </div>
-              </DetailSection>
-
-              <DetailSection
-                title={t.kanbanDetail.testCases}
-                description={compactMode ? undefined : t.kanbanDetail.testCasesHint}
-                compact={compactMode}
-              >
-                <textarea
-                  ref={testCasesInputRef}
-                  value={displayedTestCases}
-                  onFocus={() => {
-                    setEditTestCases((task.testCases ?? []).join("\n"));
-                    setIsTestCasesEditing(true);
-                  }}
-                  onChange={(event) => setEditTestCases(event.target.value)}
-                  onBlur={async () => {
-                    setIsTestCasesEditing(false);
-                    const normalizedCurrent = (task.testCases ?? []).join("\n");
-                    if (editTestCases !== normalizedCurrent) {
-                      await onPatchTask(task.id, {
-                        testCases: editTestCases.split("\n").map((item) => item.trim()).filter(Boolean),
-                      });
-                      onRefresh();
-                    }
-                  }}
-                  rows={compactMode ? 4 : 5}
-                  placeholder={t.kanbanDetail.testCasesPlaceholder}
-                  className="focus:ring-offset-0 w-full border border-slate-200/80 bg-transparent px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-400 dark:border-slate-700 dark:bg-transparent dark:text-slate-100"
-                />
-              </DetailSection>
+                displayedObjective={displayedObjective}
+                displayedTestCases={displayedTestCases}
+                editTestCases={editTestCases}
+                isTestCasesEditing={isTestCasesEditing}
+                onDescriptionEditingChange={setIsDescriptionEditing}
+                onEditObjectiveInit={() => setEditObjective(task.objective ?? "")}
+                onDescriptionSave={async (nextObjective) => {
+                  if (nextObjective !== (task.objective ?? "")) {
+                    setEditObjective(nextObjective);
+                    await onPatchTask(task.id, { objective: nextObjective });
+                    onRefresh();
+                  }
+                }}
+                onTestCasesFocus={() => {
+                  setEditTestCases((task.testCases ?? []).join("\n"));
+                  setIsTestCasesEditing(true);
+                }}
+                onTestCasesChange={(value) => setEditTestCases(value)}
+                onTestCasesBlur={async () => {
+                  setIsTestCasesEditing(false);
+                  const normalizedCurrent = (task.testCases ?? []).join("\n");
+                  if (editTestCases !== normalizedCurrent) {
+                    await onPatchTask(task.id, {
+                      testCases: editTestCases.split("\n").map((item) => item.trim()).filter(Boolean),
+                    });
+                    onRefresh();
+                  }
+                }}
+                testCasesInputRef={testCasesInputRef}
+              />
 
               <ExecutionSection
                 task={task}

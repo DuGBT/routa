@@ -85,7 +85,7 @@ function SpecViewer({ specNote, onDeleteNote }: {
             onClick={() => onDeleteNote(specNote.id)}
             title={t.common.deleteSpec}
             className="p-0.5 rounded text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-          >
+ >
             <X className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
         )}
@@ -96,7 +96,7 @@ function SpecViewer({ specNote, onDeleteNote }: {
           <MarkdownViewer
             content={specNote.content || t.common.noSpecContentYet}
             className="text-[12px] text-slate-700 dark:text-slate-300"
-          />
+ />
         ) : (
           <div className="h-full rounded-xl border border-dashed border-blue-200 bg-blue-50/60 px-3 py-4 text-[12px] text-blue-700 dark:border-blue-900/50 dark:bg-blue-950/20 dark:text-blue-200">
             {t.common.noSpecNoteYet}
@@ -144,7 +144,7 @@ function TaskSnapshotSummary({
               type="button"
               onClick={onOpenSpec}
               className="px-2 py-1 rounded-md text-[10px] font-medium text-blue-600 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
-            >
+ >
               Spec
             </button>
           )}
@@ -153,7 +153,7 @@ function TaskSnapshotSummary({
               type="button"
               onClick={onOpenTasks}
               className="px-2 py-1 rounded-md text-[10px] font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors"
-            >
+ >
               Open Tasks
             </button>
           )}
@@ -165,7 +165,7 @@ function TaskSnapshotSummary({
           onClick={onOpenSpec}
           data-testid="session-spec-preview"
           className="mx-3 mb-3 flex w-[calc(100%-1.5rem)] flex-col gap-1 rounded-lg border border-blue-100 bg-white/80 px-3 py-2 text-left transition-colors hover:border-blue-200 hover:bg-white dark:border-blue-900/40 dark:bg-[#121722] dark:hover:border-blue-800"
-        >
+ >
           <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-500 dark:text-blue-300">
             Spec Preview
           </span>
@@ -173,7 +173,7 @@ function TaskSnapshotSummary({
             <span
               key={`${index}-${line}`}
               className="text-[11px] leading-5 text-slate-600 dark:text-slate-300 line-clamp-1"
-            >
+ >
               {line}
             </span>
           ))}
@@ -286,7 +286,7 @@ function SessionsSplitPane({
     <div ref={containerRef} className="flex-1 min-h-0 flex flex-col overflow-hidden">
       <div
         className="min-h-0 overflow-y-auto"
-        style={(hasTasks || hasSpec) ? { flexBasis: `${splitRatio * 100}%` } : undefined}
+ style={(hasTasks || hasSpec) ? { flexBasis: `${splitRatio * 100}%` } : undefined}
       >
         <SessionContextPanel
           sessionId={sessionId}
@@ -300,14 +300,14 @@ function SessionsSplitPane({
         <>
           <div
             className="hidden md:flex h-2 shrink-0 cursor-row-resize items-center justify-center border-y border-slate-100 bg-slate-50/90 transition-colors hover:bg-blue-50 dark:border-slate-800 dark:bg-[#13151d] dark:hover:bg-blue-950/20"
-            onMouseDown={() => setIsDraggingSplit(true)}
+ onMouseDown={() => setIsDraggingSplit(true)}
             data-testid="session-sidebar-split-handle"
           >
             <div className="h-1 w-10 rounded-full bg-slate-300 dark:bg-slate-600" />
           </div>
           <div
             className="min-h-44 shrink-0 overflow-hidden"
-            style={{ flexBasis: `${(1 - splitRatio) * 100}%` }}
+ style={{ flexBasis: `${(1 - splitRatio) * 100}%` }}
           >
           <TaskSnapshotSummary
             taskCount={taskCount}
@@ -427,7 +427,7 @@ function MiniTaskList({
             key={item.id}
             data-testid="session-task-snapshot-item"
             className="w-full flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171a23] px-2.5 py-2"
-          >
+ >
             <span className={`mt-1 w-1.5 h-1.5 rounded-full shrink-0 ${STATUS_COLORS[item.status] ?? "bg-slate-300"}`} />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
@@ -452,7 +452,7 @@ function MiniTaskList({
                 }
               }}
               className="shrink-0 inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1 text-[10px] font-medium text-emerald-700 transition-colors hover:bg-emerald-100 disabled:cursor-wait disabled:opacity-60 dark:border-emerald-900/40 dark:bg-emerald-900/20 dark:text-emerald-300 dark:hover:bg-emerald-900/30"
-              title={`${item.actionLabel ?? "Run"} ${item.title}`}
+ title={`${item.actionLabel ?? "Run"} ${item.title}`}
             >
               <Play className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
               {executingId === item.id ? "Running" : (item.actionLabel ?? "Run")}
@@ -477,21 +477,21 @@ function TabButton({ active, label, badge, badgePulse, icon, onClick }: {
     <button
       onClick={onClick}
       className={`flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium rounded-t-md border-b-2 transition-colors whitespace-nowrap ${
-        active
-          ? "border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/10"
-          : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
-      }`}
+ active
+ ? "border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/10"
+ : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+ }`}
     >
       {icon}
       {label}
       {badge != null && badge > 0 && (
         <span className={`text-[9px] font-bold px-1 py-0.5 rounded-full leading-none ${
-          badgePulse
-            ? "bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-300 animate-pulse"
-            : active
-              ? "bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300"
-              : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
-        }`}>
+ badgePulse
+ ? "bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-300 animate-pulse"
+ : active
+ ? "bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300"
+ : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
+ }`}>
           {badge > 99 ? "99+" : badge}
         </span>
       )}
@@ -560,7 +560,7 @@ export function LeftSidebar({
     <>
       <aside
         className={`shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#13151d] flex flex-col relative transition-[width] duration-200
-          ${showMobileSidebar ? "fixed inset-y-13 left-0 z-40 shadow-2xl overflow-hidden rounded-r-2xl" : "hidden md:flex overflow-hidden"}
+ ${showMobileSidebar ? "fixed inset-y-13 left-0 z-40 shadow-2xl overflow-hidden rounded-r-2xl" : "hidden md:flex overflow-hidden"}
         `}
         style={{ width: isDesktopCollapsed ? "44px" : showMobileSidebar ? "min(360px, calc(100vw - 16px))" : `${width}px` }}
       >
@@ -570,7 +570,7 @@ export function LeftSidebar({
             <button
               onClick={onToggleCollapse}
               className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-              title={t.common.expandSidebar}
+ title={t.common.expandSidebar}
             >
               <ChevronsRight className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             </button>
@@ -580,7 +580,7 @@ export function LeftSidebar({
               onClick={() => { onCreateSession(""); }}
               disabled={!canCreateSession}
               className="p-1.5 rounded-md text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-              title={t.common.newSession}
+ title={t.common.newSession}
             >
               <Plus className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             </button>
@@ -633,7 +633,7 @@ export function LeftSidebar({
                     onToggleCollapse();
                   }}
                   className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors shrink-0"
-                  title={showMobileSidebar ? t.nav.closeSidebar : t.common.collapseSidebar}
+ title={showMobileSidebar ? t.nav.closeSidebar : t.common.collapseSidebar}
                 >
                   <ChevronsLeft className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                 </button>
@@ -655,7 +655,7 @@ export function LeftSidebar({
                   disabled={!canCreateSession}
                   title={t.common.newSession}
                   className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                >
+ >
                   <Plus className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                   <span className="hidden sm:inline">{t.common.new}</span>
                 </button>

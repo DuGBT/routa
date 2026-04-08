@@ -343,7 +343,7 @@ export function SchedulePanel({ workspaceId }: { workspaceId?: string }) {
         <button
           onClick={openCreate}
           className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
-        >
+ >
           <Plus className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           {t.schedules.newSchedule}
         </button>
@@ -414,7 +414,7 @@ function ScheduleEmptyState({ onAdd }: { onAdd: () => void }) {
       <button
         onClick={onAdd}
         className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
-      >
+ >
         {t.schedules.createFirst}
       </button>
     </div>
@@ -455,7 +455,7 @@ function ScheduleForm({
           onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
           placeholder="e.g. Nightly Dependency Update"
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-          required
+ required
         />
       </div>
 
@@ -470,7 +470,7 @@ function ScheduleForm({
             value={form.cronMode === "preset" ? form.cronExpr : "__custom__"}
             onChange={(e) => onPresetChange(e.target.value)}
             className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-          >
+ >
             {CRON_PRESETS.map((p) => (
               <option key={p.value} value={p.value}>{p.label}</option>
             ))}
@@ -485,7 +485,7 @@ function ScheduleForm({
                 onChange={(e) => setForm((p) => ({ ...p, cronExpr: e.target.value }))}
                 placeholder="0 2 * * *"
                 className="w-full px-3 py-2 text-sm font-mono bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-                required
+ required
               />
               <p className="mt-1 text-xs text-slate-400 font-mono">min  hour  dom  mon  dow</p>
             </div>
@@ -510,7 +510,7 @@ function ScheduleForm({
           value={form.agentId}
           onChange={(e) => setForm((p) => ({ ...p, agentId: e.target.value }))}
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100"
-          required
+ required
         >
           <option value="">— Select an agent —</option>
           {specialists.length > 0 ? (
@@ -538,7 +538,7 @@ function ScheduleForm({
           rows={4}
           placeholder="Check for outdated npm packages and create a PR with the updates. Run tests to verify nothing broke..."
           className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100 resize-none"
-          required
+ required
         />
         <p className="mt-1 text-xs text-slate-400">
           Tip: You can reference <code className="px-1 bg-slate-100 dark:bg-slate-800 rounded">{"{timestamp}"}</code>,{" "}
@@ -559,7 +559,7 @@ function ScheduleForm({
             rows={2}
             placeholder="Leave blank to use Task Prompt directly. When set, this overrides the task prompt."
             className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-slate-100 resize-none"
-          />
+ />
         </div>
       </details>
 
@@ -570,7 +570,7 @@ function ScheduleForm({
           checked={form.enabled}
           onChange={(e) => setForm((p) => ({ ...p, enabled: e.target.checked }))}
           className="accent-blue-600"
-        />
+ />
         <span className="text-sm text-slate-700 dark:text-slate-300">{t.common.enabled}</span>
       </label>
 
@@ -580,14 +580,14 @@ function ScheduleForm({
           type="button"
           onClick={onCancel}
           className="px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-        >
+ >
           {t.common.cancel}
         </button>
         <button
           type="submit"
           disabled={saving}
           className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg transition-colors"
-        >
+ >
           {saving ? t.common.loading : editId ? t.schedules.editSchedule : t.schedules.newSchedule}
         </button>
       </div>
@@ -629,10 +629,10 @@ function ScheduleCard({ schedule, onEdit, onDelete, onToggle, onRunNow, isRunnin
 
   return (
     <div className={`bg-white dark:bg-slate-800/50 border rounded-xl p-4 transition-colors ${
-      schedule.enabled
-        ? "border-slate-200 dark:border-slate-700"
-        : "border-slate-100 dark:border-slate-800 opacity-60"
-    }`}>
+ schedule.enabled
+ ? "border-slate-200 dark:border-slate-700"
+ : "border-slate-100 dark:border-slate-800 opacity-60"
+ }`}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1">
@@ -679,12 +679,12 @@ function ScheduleCard({ schedule, onEdit, onDelete, onToggle, onRunNow, isRunnin
           onClick={onToggle}
           title={schedule.enabled ? t.schedules.disableSchedule : t.schedules.enableSchedule}
           className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors shrink-0 mt-0.5 ${
-            schedule.enabled ? "bg-blue-600" : "bg-slate-300 dark:bg-slate-600"
-          }`}
+ schedule.enabled ? "bg-blue-600" : "bg-slate-300 dark:bg-slate-600"
+ }`}
         >
           <span
             className="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
-            style={{ transform: schedule.enabled ? "translateX(18px)" : "translateX(4px)" }}
+ style={{ transform: schedule.enabled ? "translateX(18px)" : "translateX(4px)" }}
           />
         </button>
       </div>
@@ -696,7 +696,7 @@ function ScheduleCard({ schedule, onEdit, onDelete, onToggle, onRunNow, isRunnin
           disabled={isRunning || !schedule.enabled}
           title={schedule.enabled ? t.schedules.runScheduleNow : t.schedules.enableToRun}
           className="flex items-center gap-1 px-2.5 py-1 text-xs bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-700 dark:hover:bg-slate-300 rounded-md transition-colors disabled:opacity-40"
-        >
+ >
           {isRunning ? (
             <span className="w-3 h-3 border border-white/50 dark:border-slate-900/50 border-t-white dark:border-t-slate-900 rounded-full animate-spin" />
           ) : (
@@ -708,7 +708,7 @@ function ScheduleCard({ schedule, onEdit, onDelete, onToggle, onRunNow, isRunnin
         <button
           onClick={onEdit}
           className="flex items-center gap-1 px-2.5 py-1 text-xs text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-colors"
-        >
+ >
           <SquarePen className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           {t.common.edit}
         </button>
@@ -716,7 +716,7 @@ function ScheduleCard({ schedule, onEdit, onDelete, onToggle, onRunNow, isRunnin
         <button
           onClick={onDelete}
           className="flex items-center gap-1 px-2.5 py-1 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors ml-auto"
-        >
+ >
           <Trash2 className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           {t.common.delete}
         </button>

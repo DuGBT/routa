@@ -177,19 +177,19 @@ export function RepoSlidePageClient() {
   }, [acp, codebaseId, data, router, selectableProvider, workspaceId]);
 
   const content = (
-    <div className="flex h-full flex-col bg-desktop-bg-primary" data-testid="reposlide-root">
-      <div className="flex shrink-0 items-center justify-between border-b border-desktop-border px-4 py-3">
+    <div className="flex h-full flex-col bg-slate-50 dark:bg-slate-900" data-testid="reposlide-root">
+      <div className="flex shrink-0 items-center justify-between border-b border-slate-300 dark:border-slate-700 px-4 py-3">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => router.back()}
-            className="text-xs text-desktop-text-secondary hover:text-desktop-text-primary"
-          >
+            className="text-xs text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:text-slate-200"
+ >
             ← Back
           </button>
           <div>
-            <div className="text-sm font-semibold text-desktop-text-primary">RepoSlide</div>
-            <div className="text-xs text-desktop-text-secondary">
+            <div className="text-sm font-semibold text-slate-900 dark:text-slate-200">RepoSlide</div>
+            <div className="text-xs text-slate-700 dark:text-slate-400">
               Agent-driven deck generation via `slide-skill`
             </div>
           </div>
@@ -201,7 +201,7 @@ export function RepoSlidePageClient() {
             onClick={handleLaunch}
             disabled={loading || launching || !data || !selectableProvider || !data.launch.skillAvailable}
             className="rounded-lg bg-[var(--dt-accent)] px-3 py-2 text-sm font-medium text-[var(--dt-accent-text)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
+ >
             {launching ? "Launching…" : "Launch RepoSlide"}
           </button>
         </div>
@@ -209,7 +209,7 @@ export function RepoSlidePageClient() {
 
       <div className="flex-1 overflow-auto px-5 py-5">
         {loading && (
-          <div className="text-sm text-desktop-text-secondary">Loading RepoSlide context…</div>
+          <div className="text-sm text-slate-700 dark:text-slate-400">Loading RepoSlide context…</div>
         )}
         {error && (
           <div className="rounded-xl border border-rose-300/50 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-500/30 dark:bg-rose-950/20 dark:text-rose-300">
@@ -219,7 +219,7 @@ export function RepoSlidePageClient() {
         {!loading && !error && data && (
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-4">
             <section className="grid gap-4 lg:grid-cols-[1.3fr_0.9fr]">
-              <div className="rounded-2xl border border-desktop-border bg-white p-5 shadow-sm dark:bg-[#12141c]">
+              <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-white p-5 shadow-sm dark:bg-[#12141c]">
                 <div className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--dt-accent)]">
                   Target Repository
                 </div>
@@ -252,7 +252,7 @@ export function RepoSlidePageClient() {
                 )}
               </div>
 
-              <div className="rounded-2xl border border-desktop-border bg-white p-5 shadow-sm dark:bg-[#12141c]">
+              <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-white p-5 shadow-sm dark:bg-[#12141c]">
                 <div className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--dt-accent)]">
                   Launch Plan
                 </div>
@@ -279,7 +279,7 @@ export function RepoSlidePageClient() {
             </section>
 
             <section className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-              <div className="rounded-2xl border border-desktop-border bg-white p-5 shadow-sm dark:bg-[#12141c]">
+              <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-white p-5 shadow-sm dark:bg-[#12141c]">
                 <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                   Entry Points & Anchors
                 </h2>
@@ -293,7 +293,7 @@ export function RepoSlidePageClient() {
                     <div
                       key={`${item.path}-${item.reason ?? item.name}`}
                       className="rounded-xl border border-slate-200 px-3 py-3 dark:border-slate-800"
-                    >
+ >
                       <div className="font-mono text-xs text-slate-500 dark:text-slate-400">
                         {item.path}
                       </div>
@@ -305,7 +305,7 @@ export function RepoSlidePageClient() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-desktop-border bg-white p-5 shadow-sm dark:bg-[#12141c]">
+              <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-white p-5 shadow-sm dark:bg-[#12141c]">
                 <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                   Largest Top-level Areas
                 </h2>
@@ -319,7 +319,7 @@ export function RepoSlidePageClient() {
                     <div
                       key={directory.path}
                       className="rounded-xl border border-slate-200 px-4 py-3 dark:border-slate-800"
-                    >
+ >
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <div className="text-sm font-medium text-slate-900 dark:text-slate-100">
@@ -335,7 +335,7 @@ export function RepoSlidePageClient() {
                           <span
                             key={`${directory.path}-${child.name}`}
                             className="rounded-full border border-slate-200 px-2 py-1 text-[11px] text-slate-600 dark:border-slate-800 dark:text-slate-300"
-                          >
+ >
                             {child.type === "directory" ? `${child.name}/` : child.name}
                           </span>
                         ))}
@@ -346,7 +346,7 @@ export function RepoSlidePageClient() {
               </div>
             </section>
 
-            <section className="rounded-2xl border border-desktop-border bg-white p-5 shadow-sm dark:bg-[#12141c]">
+            <section className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-white p-5 shadow-sm dark:bg-[#12141c]">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
@@ -397,7 +397,7 @@ function InfoCard({
   emptyLabel: string;
 }) {
   return (
-    <div className="rounded-2xl border border-desktop-border bg-white p-5 shadow-sm dark:bg-[#12141c]">
+    <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-white p-5 shadow-sm dark:bg-[#12141c]">
       <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
         {title}
       </h2>
@@ -409,7 +409,7 @@ function InfoCard({
           <span
             key={item}
             className="rounded-full border border-slate-200 px-2 py-1 text-[11px] text-slate-600 dark:border-slate-800 dark:text-slate-300"
-          >
+ >
             {item}
           </span>
         ))}

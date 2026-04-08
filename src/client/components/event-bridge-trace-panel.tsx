@@ -146,7 +146,7 @@ function ThoughtBubble({ event }: { event: WorkspaceAgentEvent & { type: "though
     <button
       onClick={() => setExpanded(!expanded)}
       className="group my-1 flex w-full items-start gap-2 rounded-lg border border-slate-100/50 bg-slate-50/50 px-3 py-1.5 text-left transition-colors hover:bg-slate-100/70 dark:border-slate-800/20 dark:bg-slate-900/10 dark:hover:bg-slate-900/20"
-    >
+ >
       <span className="shrink-0 pt-0.5 text-[10px] text-slate-500">💭</span>
       <p className={`text-[11px] text-slate-500 dark:text-slate-400 italic leading-relaxed ${expanded ? "" : "line-clamp-2"}`}>
         {event.content}
@@ -264,7 +264,7 @@ function TerminalCard({ event }: { event: WorkspaceAgentEvent & { type: "termina
               language="bash"
               variant="simple"
               className="!border-0 !rounded-none"
-              wordWrap={true}
+ wordWrap={true}
             />
           )}
         </div>
@@ -552,9 +552,9 @@ export function EventBridgeTracePanel({ sessionId, traces }: EventBridgeTracePan
             key={key}
             onClick={() => setFilter(key)}
             className={`px-2 py-1 text-[11px] font-medium rounded-md whitespace-nowrap transition-colors ${filter === key
-              ? active
-              : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
-              }`}
+ ? active
+ : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+ }`}
           >
             {label}
           </button>

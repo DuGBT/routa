@@ -1019,7 +1019,7 @@ export function TiptapInput({
                 return (
                 <div
                   className="fixed w-72 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1e2130] shadow-xl z-[9999] flex flex-col"
-                  style={{ left: pos.left, maxHeight: `${pos.maxHeight}px`, ...(pos.bottom !== undefined ? { bottom: pos.bottom } : {}), ...(pos.top !== undefined ? { top: pos.top } : {}) }}
+                  style={{ left: pos.left, bottom: pos.bottom, top: pos.top, maxHeight: `${pos.maxHeight}px` }}
                 >
                   {/* Search */}
                   <div className="p-2 border-b border-slate-100 dark:border-slate-800">
@@ -1030,7 +1030,7 @@ export function TiptapInput({
                       onChange={(e) => setModelFilter(e.target.value)}
                       placeholder={t.chatPanel.filterModels}
                       className="w-full px-2 py-1 text-xs rounded border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:ring-1 focus:ring-blue-500 text-slate-800 dark:text-slate-200"
-                    />
+ />
                   </div>
                   <div className="overflow-y-auto flex-1">
                     {/* Default option */}
@@ -1038,10 +1038,10 @@ export function TiptapInput({
                       type="button"
                       onClick={() => { setSelectedModel(""); setModelDropdownOpen(false); }}
                       className={`w-full text-left px-3 py-1.5 text-xs transition-colors ${
-                        !selectedModel
-                          ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
-                          : "hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300"
-                      }`}
+ !selectedModel
+ ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
+ : "hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300"
+ }`}
                     >
                       <span className="font-medium">{t.chatPanel.defaultModel}</span>
                     </button>
@@ -1053,10 +1053,10 @@ export function TiptapInput({
                           type="button"
                           onClick={() => { setSelectedModel(m); setModelDropdownOpen(false); setModelFilter(""); }}
                           className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center gap-2 ${
-                            m === selectedModel
-                              ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
-                              : "hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300"
-                          }`}
+ m === selectedModel
+ ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
+ : "hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300"
+ }`}
                         >
                           <span className="text-slate-400 dark:text-slate-500 font-mono text-[10px] shrink-0">
                             {m.split("/")[0]}
@@ -1156,10 +1156,10 @@ function ModeChip({
       type="button"
       onClick={onClick}
       className={`px-2 py-0.5 rounded text-[10px] border transition-colors ${
-        active
-          ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800"
-          : "bg-transparent text-slate-500 border-slate-200 hover:bg-slate-100 dark:text-slate-400 dark:border-slate-700 dark:hover:bg-slate-800"
-      }`}
+ active
+ ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800"
+ : "bg-transparent text-slate-500 border-slate-200 hover:bg-slate-100 dark:text-slate-400 dark:border-slate-700 dark:hover:bg-slate-800"
+ }`}
     >
       {label}
     </button>

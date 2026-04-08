@@ -78,22 +78,22 @@ export function HarnessQuickStartCard({
   const StatItem = ({ stat }: { stat: typeof stats[0] }) => (
     <button
       onClick={() => onNavigateToSection(stat.section)}
-      className="flex items-center gap-2 rounded-md border border-desktop-border bg-desktop-bg-primary px-2 py-1.5 transition-colors hover:bg-desktop-bg-active"
-    >
+      className="flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2 py-1.5 transition-colors hover:bg-blue-100 dark:bg-blue-900"
+ >
       <div className={`text-[14px] font-bold leading-none ${colorClasses[stat.color as keyof typeof colorClasses]}`}>
         {stat.value}
       </div>
-      <div className="text-[10px] uppercase tracking-wide text-desktop-text-secondary">
+      <div className="text-[10px] uppercase tracking-wide text-slate-700 dark:text-slate-400">
         {stat.label}
       </div>
     </button>
   );
 
   return (
-    <div className="rounded-lg border border-desktop-border bg-desktop-bg-secondary/80 p-2.5">
+    <div className="rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 p-2.5">
       <div className="mb-1.5 flex items-center gap-1.5">
-        <Zap className="h-4 w-4 text-desktop-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"/>
-        <h2 className="text-[12px] font-semibold text-desktop-text-primary">
+        <Zap className="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"/>
+        <h2 className="text-[12px] font-semibold text-slate-900 dark:text-slate-200">
           {t.settings.harness.quickStart.title || "快速开始"}
         </h2>
       </div>
@@ -112,13 +112,13 @@ export function HarnessQuickStartCard({
             <button
               key={action.id}
               onClick={action.onClick}
-              className="group flex items-center gap-1.5 rounded-md border border-desktop-border bg-desktop-bg-primary px-2 py-1.5 text-left transition-colors hover:bg-desktop-bg-active"
-            >
-              <div className="shrink-0 text-desktop-accent">
+              className="group flex items-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2 py-1.5 text-left transition-colors hover:bg-blue-100 dark:bg-blue-900"
+ >
+              <div className="shrink-0 text-blue-500">
                 {action.icon}
               </div>
               <div className="min-w-0">
-                <div className="text-[10px] font-semibold leading-tight text-desktop-text-primary">
+                <div className="text-[10px] font-semibold leading-tight text-slate-900 dark:text-slate-200">
                   {action.title}
                 </div>
               </div>

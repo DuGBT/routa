@@ -140,7 +140,7 @@ function getAuditStatusClass(status: "ok" | "heuristic" | "error") {
 
 function getScoreCardClass(score: number | null, maxScore: number) {
   if (score == null) {
-    return "border-desktop-border bg-desktop-bg-primary/80 text-desktop-text-primary";
+    return "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 text-slate-900 dark:text-slate-200";
   }
 
   const ratio = maxScore > 0 ? score / maxScore : 0;
@@ -167,13 +167,13 @@ function AuditScoreCard({
   return (
     <div className={`group relative rounded-sm border px-2.5 py-2 ${getScoreCardClass(value, maxScore)}`}>
       <div className="flex items-center gap-1.5">
-        <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">{label}</div>
+        <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">{label}</div>
         {description ? (
           <>
             <span
               aria-label={`${label} 说明`}
               className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-current/20 text-[9px] font-semibold text-current/70"
-            >
+ >
               ?
             </span>
             <div className="pointer-events-none absolute left-2.5 top-full z-20 mt-2 w-52 rounded-lg border border-slate-200 bg-slate-950 px-3 py-2 text-[10px] font-medium leading-4 text-white opacity-0 shadow-xl transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100">
@@ -399,9 +399,9 @@ export function HarnessAgentInstructionsPanel({
     >
 
       {showAuditPanel ? (
-        <div className="mt-3 rounded-sm border border-desktop-border bg-desktop-bg-secondary/50 px-3 py-3">
+        <div className="mt-3 rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/50 px-3 py-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">
               Instruction audit
             </div>
             <div className="flex flex-wrap items-center gap-2">
@@ -412,14 +412,14 @@ export function HarnessAgentInstructionsPanel({
                   disabled={rerunButtonDisabled}
                   aria-busy={resolvedInstructionsState.loading}
                   title={rerunUnavailableReason ?? "Re-run specialist audit"}
-                  className="inline-flex items-center gap-1 rounded-full border border-desktop-accent/40 bg-desktop-accent/12 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-desktop-accent transition-colors hover:bg-desktop-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
-                >
+                  className="inline-flex items-center gap-1 rounded-full border border-blue-500/40 bg-blue-500/12 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-blue-500 transition-colors hover:bg-blue-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+ >
                   <RefreshCw className="h-3 w-3" viewBox="0 0 20 20" fill="none" aria-hidden="true"/>
                   {resolvedInstructionsState.loading ? "Running..." : "Re-run audit"}
                 </button>
               ) : null}
               {rerunUnavailableReason ? (
-                <span className="rounded-full border border-desktop-accent/40 bg-desktop-accent/12 px-2 py-1 text-[10px] text-desktop-accent">
+                <span className="rounded-full border border-blue-500/40 bg-blue-500/12 px-2 py-1 text-[10px] text-blue-500">
                   {rerunUnavailableReason}
                 </span>
               ) : null}
@@ -433,12 +433,12 @@ export function HarnessAgentInstructionsPanel({
                 </span>
               ) : null}
               {auditSummary ? (
-                <span className="text-[10px] text-desktop-text-secondary">
+                <span className="text-[10px] text-slate-700 dark:text-slate-400">
                   {auditSummary.provider} · {(auditSummary.durationMs / 1000).toFixed(1)}s
                 </span>
               ) : null}
               {resolvedInstructionsState.loading ? (
-                <span className="rounded-full border border-desktop-accent/30 bg-desktop-accent/10 px-2 py-1 text-[10px] font-medium text-desktop-accent">
+                <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-2 py-1 text-[10px] font-medium text-blue-500">
                   Running specialist audit...
                 </span>
               ) : null}
@@ -446,7 +446,7 @@ export function HarnessAgentInstructionsPanel({
           </div>
 
           {!auditSummary ? (
-            <div className="mt-2 text-[11px] text-desktop-text-secondary">
+            <div className="mt-2 text-[11px] text-slate-700 dark:text-slate-400">
               Audit has not been run yet in this view. Click Re-run audit to generate a fresh summary.
             </div>
           ) : auditSummary.status === "error" ? (
@@ -454,7 +454,7 @@ export function HarnessAgentInstructionsPanel({
               {auditSummary.error ?? "Audit execution failed."}
             </div>
           ) : compactMode ? (
-            <div className="mt-2 text-[11px] text-desktop-text-secondary">
+            <div className="mt-2 text-[11px] text-slate-700 dark:text-slate-400">
               {auditSummary.totalScore == null ? "总分：—" : `总分：${auditSummary.totalScore}/20`}
               {auditSummary.overall ? ` · 结论：${auditSummary.overall}` : ""}
             </div>
@@ -487,7 +487,7 @@ export function HarnessAgentInstructionsPanel({
                   maxScore={5}
                 />
               </div>
-              <div className="mt-2 text-[11px] text-desktop-text-secondary">
+              <div className="mt-2 text-[11px] text-slate-700 dark:text-slate-400">
                 {auditSummary.overall ? `结论：${auditSummary.overall}` : "结论：—"}
                 {auditSummary.oneSentence ? ` · ${auditSummary.oneSentence}` : ""}
               </div>
@@ -519,7 +519,7 @@ export function HarnessAgentInstructionsPanel({
         <div className="mt-3">
           <div className={`grid gap-4 ${contentGridClass}`}>
           <div className={`flex ${contentPanelHeightClass} min-h-0 flex-col`}>
-            <div className="min-h-0 flex-1 overflow-auto rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-2 py-2 harness-instructions-tree">
+            <div className="min-h-0 flex-1 overflow-auto rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-2 py-2 harness-instructions-tree">
               <UncontrolledTreeEnvironment
                 dataProvider={treeDataProvider}
                 getItemTitle={(item) => item.data.title}
@@ -545,9 +545,9 @@ export function HarnessAgentInstructionsPanel({
                 }}
                 renderItemTitle={({ item, title }) => (
                   <div className="flex min-w-0 items-center gap-2">
-                    <span className="truncate text-[11px] font-medium text-desktop-text-primary">{title}</span>
+                    <span className="truncate text-[11px] font-medium text-slate-900 dark:text-slate-200">{title}</span>
                     {"level" in item.data && item.data.level > 0 ? (
-                      <span className="rounded-full border border-desktop-border bg-desktop-bg-secondary px-1.5 py-0.5 text-[9px] text-desktop-text-secondary">
+                      <span className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 text-[9px] text-slate-700 dark:text-slate-400">
                         h{item.data.level}
                       </span>
                     ) : null}
@@ -560,11 +560,11 @@ export function HarnessAgentInstructionsPanel({
           </div>
 
           <div className={`flex ${contentPanelHeightClass} min-h-0 flex-col`}>
-            <div className="min-h-0 flex-1 overflow-auto rounded-sm border border-desktop-border bg-desktop-bg-primary/80 px-4 py-3">
+            <div className="min-h-0 flex-1 overflow-auto rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-4 py-3">
               <MarkdownViewer
                 content={selectedSection?.content ?? resolvedInstructionsState.data.source}
-                className="text-[12px] leading-6 text-desktop-text-primary"
-              />
+                className="text-[12px] leading-6 text-slate-900 dark:text-slate-200"
+ />
             </div>
           </div>
           </div>

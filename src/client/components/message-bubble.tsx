@@ -162,8 +162,8 @@ function ThoughtBubble({content}: { content: string }) {
                 </div>
                 <div
                     className={`px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-700 whitespace-pre-wrap transition-all duration-150 dark:border-slate-800/50 dark:bg-slate-900/10 dark:text-slate-300 ${
-                        expanded ? "max-h-60 overflow-y-auto" : "max-h-[2.8em] overflow-hidden"
-                    }`}
+ expanded ? "max-h-60 overflow-y-auto" : "max-h-[2.8em] overflow-hidden"
+ }`}
                 >
                     {displayContent}
                 </div>
@@ -472,9 +472,9 @@ export function AskUserQuestionBubble({
                                                 : updateSingleAnswer(item.question, option.label)}
                                             title={option.description}
                                             className={`rounded-md border px-2 py-0.5 text-[11px] transition-colors ${selected
-                                                ? "border-amber-500 bg-amber-500 text-white dark:bg-amber-600"
-                                                : "border-amber-200 dark:border-amber-700/50 bg-white/80 dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:border-amber-400 dark:hover:border-amber-600"
-                                            } ${!isAwaitingInput ? "cursor-default" : "cursor-pointer"}`}
+ ? "border-amber-500 bg-amber-500 text-white dark:bg-amber-600"
+ : "border-amber-200 dark:border-amber-700/50 bg-white/80 dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:border-amber-400 dark:hover:border-amber-600"
+ } ${!isAwaitingInput ? "cursor-default" : "cursor-pointer"}`}
                                         >
                                             {option.label}
                                         </button>
@@ -498,7 +498,7 @@ export function AskUserQuestionBubble({
                             onClick={handleSubmit}
                             disabled={submitting || questions.length === 0}
                             className="rounded-md bg-amber-600 px-2.5 py-1 text-[11px] font-medium text-white transition-colors hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-50"
-                        >
+ >
                             {submitting ? "..." : t.messageBubble.submit}
                         </button>
                     </div>
@@ -539,7 +539,7 @@ function TaskBubble({
                     type="button"
                     onClick={() => setExpanded((e) => !e)}
                     className="w-full px-3 py-2 flex items-center gap-2 text-left"
-                >
+ >
                     <span className={`w-2 h-2 rounded-full shrink-0 ${statusColor}`}/>
                     <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 shrink-0">
             {t.messageBubble.task}{subagentType ? ` [${subagentType}]` : ""}
@@ -630,7 +630,7 @@ function UsageBadge({used, size, costAmount, costCurrency}: {
         <div className="flex justify-center">
             <div
                 className="relative group inline-flex items-center justify-center cursor-help"
-                title={`${formatTokens(used)}${size ? ` / ${formatTokens(size)}` : ""} tokens${costAmount !== undefined && costAmount > 0 ? ` · $${costAmount.toFixed(4)} ${costCurrency ?? "USD"}` : ""}`}
+ title={`${formatTokens(used)}${size ? ` / ${formatTokens(size)}` : ""} tokens${costAmount !== undefined && costAmount > 0 ? ` · $${costAmount.toFixed(4)} ${costCurrency ?? "USD"}` : ""}`}
             >
                 {/* Circular progress indicator */}
                 <svg width="40" height="40" className="transform -rotate-90">
@@ -643,7 +643,7 @@ function UsageBadge({used, size, costAmount, costCurrency}: {
                         stroke="currentColor"
                         strokeWidth="3"
                         className="text-slate-200 dark:text-slate-700"
-                    />
+ />
                     {/* Progress circle */}
                     {size && (
                         <circle
@@ -657,7 +657,7 @@ function UsageBadge({used, size, costAmount, costCurrency}: {
                             strokeDashoffset={strokeDashoffset}
                             strokeLinecap="round"
                             className="transition-all duration-300"
-                        />
+ />
                     )}
                 </svg>
 
@@ -692,7 +692,7 @@ function InfoBubble({content, rawData}: { content: string; rawData?: Record<stri
                 <div className="max-w-xl w-full rounded-lg bg-slate-50 dark:bg-[#161922] border border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 overflow-hidden">
                     <button
                         className="w-full flex items-center gap-1.5 px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-[#1e2230] transition-colors text-left"
-                        onClick={() => setExpanded(v => !v)}
+ onClick={() => setExpanded(v => !v)}
                     >
                         <span className="opacity-60">{expanded ? "▾" : "▸"}</span>
                         <span className="font-mono">{content}</span>

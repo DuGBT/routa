@@ -50,10 +50,10 @@ export function FluencyRadarChart({ report, compact = false }: { report: Fitness
   const polygonPoints = points.map(({ point }) => `${point.x},${point.y}`).join(" ");
 
   return (
-    <section className="rounded-2xl border border-desktop-border bg-white/80 p-4 dark:bg-white/6">
+    <section className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-white/80 p-4 dark:bg-white/6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">Readiness radar</div>
+          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">Readiness radar</div>
         </div>
       </div>
 
@@ -82,8 +82,8 @@ export function FluencyRadarChart({ report, compact = false }: { report: Fitness
                   x={labelPoint.x}
                   y={labelPoint.y}
                   textAnchor={labelPoint.x < center - 8 ? "end" : labelPoint.x > center + 8 ? "start" : "middle"}
-                  className="fill-current text-[9px] text-desktop-text-secondary"
-                >
+                  className="fill-current text-[9px] text-slate-700 dark:text-slate-400"
+ >
                   {points[index].label}
                 </text>
               </g>
@@ -109,10 +109,10 @@ export function FluencyLevelLadder({ report, compact = false }: { report: Fitnes
   const nextLevel = report.nextLevel;
 
   return (
-    <section className="rounded-2xl border border-desktop-border bg-white/80 p-4 dark:bg-white/6">
+    <section className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-white/80 p-4 dark:bg-white/6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">Level ladder</div>
+          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">Level ladder</div>
         </div>
       </div>
 
@@ -127,23 +127,23 @@ export function FluencyLevelLadder({ report, compact = false }: { report: Fitnes
             <div key={level} className="flex items-center gap-3">
               <div
                 className={`flex shrink-0 items-center justify-center rounded-full border text-[11px] font-semibold ${
-                  compact ? "h-7 w-7" : "h-8 w-8"
-                } ${
+ compact ? "h-7 w-7" : "h-8 w-8"
+ } ${
                   isCurrent
                     ? "border-blue-300 bg-blue-50 text-blue-700"
                     : isNext
                       ? "border-amber-300 bg-amber-50 text-amber-700"
                       : isCompleted
                         ? "border-emerald-300 bg-emerald-50 text-emerald-700"
-                        : "border-desktop-border bg-desktop-bg-primary text-desktop-text-secondary"
+                        : "border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400"
                 }`}
               >
                 {index + 1}
               </div>
-              <div className="min-w-0 flex-1 rounded-xl border border-desktop-border bg-desktop-bg-primary/80 px-3 py-2">
+              <div className="min-w-0 flex-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-2">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="text-sm font-semibold text-desktop-text-primary">{levelName}</div>
-                  <div className="text-[10px] uppercase tracking-[0.12em] text-desktop-text-secondary">
+                  <div className="text-sm font-semibold text-slate-900 dark:text-slate-200">{levelName}</div>
+                  <div className="text-[10px] uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">
                     {isCurrent ? t.fitness.levels.current : isNext ? t.fitness.levels.target : isCompleted ? t.fitness.levels.cleared : t.fitness.levels.locked}
                   </div>
                 </div>
@@ -171,10 +171,10 @@ export function FluencyBlockerBarChart({ blockers, compact = false }: { blockers
   const max = Math.max(...rows.map((row) => row.count), 1);
 
   return (
-    <section className="rounded-2xl border border-desktop-border bg-white/80 p-4 dark:bg-white/6">
+    <section className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-white/80 p-4 dark:bg-white/6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">Blocker impact</div>
+          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">Blocker impact</div>
         </div>
       </div>
 
@@ -182,18 +182,18 @@ export function FluencyBlockerBarChart({ blockers, compact = false }: { blockers
         {rows.length > 0 ? rows.map((row) => (
           <div key={row.dimension} className="space-y-1">
             <div className="flex items-center justify-between gap-3 text-[11px]">
-              <span className="font-medium text-desktop-text-primary">{humanizeToken(row.dimension)}</span>
-              <span className="text-desktop-text-secondary">{row.count}</span>
+              <span className="font-medium text-slate-900 dark:text-slate-200">{humanizeToken(row.dimension)}</span>
+              <span className="text-slate-700 dark:text-slate-400">{row.count}</span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-desktop-bg-primary">
+            <div className="h-2 overflow-hidden rounded-full bg-slate-50 dark:bg-slate-900">
               <div
                 className="h-full rounded-full bg-amber-400"
-                style={{ width: `${(row.count / max) * 100}%` }}
+ style={{ width: `${(row.count / max) * 100}%` }}
               />
             </div>
           </div>
         )) : (
-          <div className="rounded-xl border border-dashed border-desktop-border px-3 py-5 text-sm text-desktop-text-secondary">
+          <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 px-3 py-5 text-sm text-slate-700 dark:text-slate-400">
             当前没有 blocker，可以把重点放在能力提升或趋势对比上。
           </div>
         )}

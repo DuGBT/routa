@@ -205,13 +205,13 @@ export function MermaidRenderer({
       <div ref={containerRef} className={`mermaid-renderer relative group ${className}`}>
         <div
           className="flex justify-center items-center overflow-x-auto [&_svg]:max-w-full [&_svg]:h-auto"
-          dangerouslySetInnerHTML={{ __html: renderedSvg }}
+ dangerouslySetInnerHTML={{ __html: renderedSvg }}
         />
         {showExpandButton && (
           <button
             onClick={() => setIsFullscreen(true)}
             className="absolute top-2 right-2 p-1.5 rounded bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-            title="Expand to fullscreen"
+ title="Expand to fullscreen"
           >
             <Maximize2 className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           </button>
@@ -222,19 +222,19 @@ export function MermaidRenderer({
       {isFullscreen && (
         <div
           className="fixed inset-0 z-[1000] bg-black/70 flex items-center justify-center p-4"
-          onClick={(e) => { if (e.target === e.currentTarget) setIsFullscreen(false); }}
+ onClick={(e) => { if (e.target === e.currentTarget) setIsFullscreen(false); }}
         >
           <div className="relative bg-white dark:bg-gray-900 rounded-lg w-[90vw] h-[90vh] overflow-hidden shadow-2xl flex flex-col">
             <button
               onClick={() => setIsFullscreen(false)}
               className="absolute top-3 right-3 z-10 p-1.5 rounded bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 cursor-pointer"
-              title="Close fullscreen"
+ title="Close fullscreen"
             >
               <X className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             </button>
             <div
               className="flex-1 flex items-center justify-center p-10 overflow-hidden [&_svg]:w-full [&_svg]:h-full"
-              dangerouslySetInnerHTML={{ __html: renderedSvg }}
+ dangerouslySetInnerHTML={{ __html: renderedSvg }}
             />
           </div>
         </div>

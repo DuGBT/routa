@@ -138,7 +138,7 @@ export function ModelsTab() {
           onClick={handleAddModel}
           disabled={!canAdd}
           className="w-full py-2 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1.5"
-        >
+ >
           <Plus className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           {t.models.addModel}
         </button>
@@ -155,7 +155,7 @@ export function ModelsTab() {
                   <button
                     onClick={() => setExpandedIdx(isOpen ? null : idx)}
                     className="flex-1 flex items-center gap-2 min-w-0 text-left"
-                  >
+ >
                     <ChevronRight className={`w-3 h-3 text-slate-400 shrink-0 transition-transform ${isOpen ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                     <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">{definition.alias}</span>
                     <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono truncate">→ {definition.modelName}</span>
@@ -168,7 +168,7 @@ export function ModelsTab() {
                   <button
                     onClick={() => handleDelete(idx)}
                     className="shrink-0 p-1 rounded text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                    title={t.common.delete}
+ title={t.common.delete}
                   >
                     <Trash2 className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
                   </button>

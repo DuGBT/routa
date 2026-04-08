@@ -217,7 +217,7 @@ export function TerminalBubble({
           type="button"
           onClick={() => setExpanded((e) => !e)}
           className="w-full px-3 py-1.5 bg-[#161b22] border-b border-slate-700 flex items-center gap-2 text-left"
-        >
+ >
           {/* Terminal icon */}
           <TerminalIcon1 className="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
           <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${statusColor}`} />
@@ -235,7 +235,7 @@ export function TerminalBubble({
           <div
             ref={containerRef}
             className="w-full bg-[#0d1117]"
-            style={{
+ style={{
               minHeight: "120px",
               maxHeight: "400px",
               overflow: "hidden",

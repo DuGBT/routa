@@ -118,7 +118,7 @@ export function TaskPanel({
               <button
                 onClick={onConfirmAll}
                 className="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-              >
+ >
                 {t.tasks.confirmAll}
               </button>
             )}
@@ -126,7 +126,7 @@ export function TaskPanel({
               <button
                 onClick={() => onExecuteAll(concurrency)}
                 className="text-xs font-medium px-2.5 py-1 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-              >
+ >
                 {t.tasks.executeAll}
               </button>
             )}
@@ -151,9 +151,9 @@ export function TaskPanel({
                   key={n}
                   onClick={() => onConcurrencyChange?.(n)}
                   className={`px-2 py-0.5 text-[11px] font-medium transition-colors ${concurrency === n
-                    ? "bg-blue-600 text-white"
-                    : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
-                    }`}
+ ? "bg-blue-600 text-white"
+ : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
+ }`}
                 >
                   {n}
                 </button>
@@ -167,18 +167,18 @@ export function TaskPanel({
               <button
                 onClick={() => setUserViewMode("tasks")}
                 className={`px-2 py-0.5 text-[10px] font-medium transition-colors ${viewMode === "tasks"
-                  ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900"
-                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
-                  }`}
+ ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900"
+ : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
+ }`}
               >
                 {t.tasks.viewTasks}
               </button>
               <button
                 onClick={() => setUserViewMode("crafters")}
                 className={`px-2 py-0.5 text-[10px] font-medium transition-colors ${viewMode === "crafters"
-                  ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900"
-                  : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
-                  }`}
+ ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900"
+ : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
+ }`}
               >
                 {t.tasks.viewCrafters} ({crafterAgents.length})
               </button>
@@ -379,9 +379,9 @@ export function CraftersView({
               key={agent.id}
               onClick={() => onSelectCrafter?.(agent.id)}
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-medium whitespace-nowrap transition-colors ${isActive
-                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
-                }`}
+ ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+ : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+ }`}
               title={agent.taskTitle}
             >
               <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${statusColor} ${agent.status === "running" ? "animate-pulse" : ""}`} />
@@ -398,8 +398,8 @@ export function CraftersView({
         <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-[#161922]">
           <div className="flex items-center gap-2">
             <span className={`w-2 h-2 rounded-full shrink-0 ${activeAgent.status === "running" ? "bg-amber-500 animate-pulse" :
-              activeAgent.status === "completed" ? "bg-emerald-500" : "bg-red-500"
-              }`} />
+ activeAgent.status === "completed" ? "bg-emerald-500" : "bg-red-500"
+ }`} />
             <span className="text-xs font-medium text-slate-900 dark:text-slate-100 truncate">
               {activeAgent.taskTitle}
             </span>
@@ -464,7 +464,7 @@ function CrafterMessageBubble({ message }: { message: CrafterMessage }) {
           type="button"
           onClick={() => setExpanded((e) => !e)}
           className="w-full text-left"
-        >
+ >
           <div className="flex items-center gap-1.5 mb-0.5">
             <ChevronRight className={`w-3 h-3 text-slate-400 transition-transform duration-150 ${expanded ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
             <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
@@ -473,7 +473,7 @@ function CrafterMessageBubble({ message }: { message: CrafterMessage }) {
           </div>
           <div
             className={`px-2 py-1.5 rounded-md bg-slate-50 dark:bg-slate-900/20 border border-slate-200 dark:border-slate-700/50 text-[11px] text-slate-700 dark:text-slate-300 whitespace-pre-wrap transition-all duration-150 ${expanded ? "max-h-40 overflow-y-auto" : "max-h-[2em] overflow-hidden"
-              }`}
+ }`}
           >
             {displayContent}
           </div>
@@ -494,7 +494,7 @@ function CrafterMessageBubble({ message }: { message: CrafterMessage }) {
           type="button"
           onClick={() => setExpanded((e) => !e)}
           className="w-full px-2.5 py-1 bg-slate-50 dark:bg-[#161922] border-b border-slate-100 dark:border-slate-800 flex items-center gap-2 text-left"
-        >
+ >
           <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${statusColor}`} />
           <span className="text-[11px] font-mono text-slate-600 dark:text-slate-300 truncate">
             {message.toolName ?? t.tasks.toolName}
@@ -517,9 +517,9 @@ function CrafterMessageBubble({ message }: { message: CrafterMessage }) {
     const isError = message.content.toLowerCase().startsWith("error") || message.content.toLowerCase().includes("failed");
     return (
       <div className={`px-2.5 py-2 rounded-md text-[11px] border ${isError
-        ? "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800/50 text-red-700 dark:text-red-300"
-        : "bg-blue-50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-300"
-        }`}>
+ ? "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800/50 text-red-700 dark:text-red-300"
+ : "bg-blue-50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-300"
+ }`}>
         <MarkdownViewer content={message.content} className="text-[11px]" />
       </div>
     );
@@ -535,7 +535,7 @@ function CrafterMessageBubble({ message }: { message: CrafterMessage }) {
             <MarkdownViewer
               content={message.content.split(/```mermaid\n[\s\S]*?```/)[0].trim()}
               className="text-xs"
-            />
+ />
           )}
           {/* Render mermaid diagram */}
           <MermaidRenderer code={mermaidMatch[1]} className="my-2" />
@@ -544,7 +544,7 @@ function CrafterMessageBubble({ message }: { message: CrafterMessage }) {
             <MarkdownViewer
               content={message.content.split(/```mermaid\n[\s\S]*?```/).slice(1).join("").trim()}
               className="text-xs"
-            />
+ />
           )}
         </div>
       ) : (
@@ -615,7 +615,7 @@ function TaskCard({
       {/* Header - always visible */}
       <div
         className="flex items-start gap-2.5 px-3 py-2.5 cursor-pointer hover:bg-black/2 dark:hover:bg-white/2 transition-colors"
-        onClick={onToggleExpand}
+ onClick={onToggleExpand}
       >
         {statusIcons[task.status]}
         <div className="flex-1 min-w-0">
@@ -655,13 +655,13 @@ function TaskCard({
                     <button
                       onClick={(e) => { e.stopPropagation(); onConfirm(); }}
                       className="rounded-md bg-blue-600 px-2.5 py-1 text-xs font-medium text-white transition-colors hover:bg-blue-700"
-                    >
+ >
                       {t.common.confirm}
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); onEdit(); }}
                       className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
-                    >
+ >
                       {t.common.edit}
                     </button>
                   </>
@@ -670,7 +670,7 @@ function TaskCard({
                   <button
                     onClick={(e) => { e.stopPropagation(); onExecute(); }}
                     className="rounded-md bg-blue-600 px-2.5 py-1 text-xs font-medium text-white transition-colors hover:bg-blue-700"
-                  >
+ >
                     {t.common.execute}
                   </button>
                 )}
@@ -761,7 +761,7 @@ function TaskEditor({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="mt-0.5 w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-blue-500 outline-none"
-        />
+ />
       </div>
       <div>
         <label className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase">{t.tasks.objective}</label>
@@ -770,7 +770,7 @@ function TaskEditor({
           onChange={(e) => setObjective(e.target.value)}
           rows={2}
           className="mt-0.5 w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-blue-500 outline-none resize-none"
-        />
+ />
       </div>
       <div>
         <label className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase">{t.tasks.scope}</label>
@@ -779,7 +779,7 @@ function TaskEditor({
           onChange={(e) => setScope(e.target.value)}
           rows={3}
           className="mt-0.5 w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-blue-500 outline-none resize-none"
-        />
+ />
       </div>
       <div>
         <label className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase">{t.tasks.definitionOfDone}</label>
@@ -788,19 +788,19 @@ function TaskEditor({
           onChange={(e) => setDod(e.target.value)}
           rows={3}
           className="mt-0.5 w-full text-xs px-2 py-1.5 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-blue-500 outline-none resize-none"
-        />
+ />
       </div>
       <div className="flex gap-2 pt-1">
         <button
           onClick={() => onSave({ title, objective, scope, definitionOfDone: dod })}
           className="text-xs font-medium px-2.5 py-1 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-        >
+ >
           {t.common.save}
         </button>
         <button
           onClick={onCancel}
           className="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-        >
+ >
           {t.common.cancel}
         </button>
       </div>

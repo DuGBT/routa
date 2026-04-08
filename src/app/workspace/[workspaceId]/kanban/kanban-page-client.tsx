@@ -462,7 +462,7 @@ export function KanbanPageClient() {
         />
       }
     >
-      <div className="flex h-full flex-col overflow-hidden bg-desktop-bg-primary" data-testid="kanban-page-shell">
+      <div className="flex h-full flex-col overflow-hidden bg-slate-50 dark:bg-slate-900" data-testid="kanban-page-shell">
         <div className="flex-1 min-h-0 overflow-hidden p-4">
           <KanbanTab
             workspaceId={workspaceId}

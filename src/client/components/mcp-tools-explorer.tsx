@@ -171,12 +171,12 @@ export function McpToolsExplorer() {
 
   return (
     <div className="grid items-start gap-4 md:grid-cols-[300px_minmax(0,1fr)]">
-      <aside className="rounded-2xl border border-desktop-border bg-desktop-bg-secondary/70 shadow-sm">
-        <div className="border-b border-desktop-border px-4 py-3">
+      <aside className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/70 shadow-sm">
+        <div className="border-b border-slate-300 dark:border-slate-700 px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-[13px] font-semibold text-desktop-text-primary">MCP Tools</h2>
-              <p className="mt-1 text-[11px] text-desktop-text-secondary">
+              <h2 className="text-[13px] font-semibold text-slate-900 dark:text-slate-200">MCP Tools</h2>
+              <p className="mt-1 text-[11px] text-slate-700 dark:text-slate-400">
                 Browse routa-coordination tools and run focused checks against the live MCP surface.
               </p>
             </div>
@@ -184,20 +184,20 @@ export function McpToolsExplorer() {
               type="button"
               onClick={() => void loadTools()}
               disabled={loading}
-              className="rounded-full border border-desktop-border bg-desktop-bg-primary px-3 py-1 text-[11px] font-medium text-desktop-text-secondary transition-colors hover:bg-desktop-bg-active disabled:cursor-not-allowed disabled:opacity-60"
-            >
+              className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1 text-[11px] font-medium text-slate-700 dark:text-slate-400 transition-colors hover:bg-blue-100 dark:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-60"
+ >
               {loading ? "Loading..." : "Refresh"}
             </button>
           </div>
 
-          <label className="mt-3 inline-flex items-center gap-2 rounded-full border border-desktop-border bg-desktop-bg-primary px-3 py-1 text-[11px] text-desktop-text-secondary">
+          <label className="mt-3 inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1 text-[11px] text-slate-700 dark:text-slate-400">
             <div className="relative">
               <input
                 type="checkbox"
                 checked={essentialMode}
                 onChange={(event) => void handleToggleMode(event.target.checked)}
                 className="peer sr-only"
-              />
+ />
               <div className="h-4 w-8 rounded-full bg-slate-300 transition-colors peer-checked:bg-sky-500 dark:bg-slate-700" />
               <div className="absolute left-0.5 top-0.5 h-3 w-3 rounded-full bg-white transition-transform peer-checked:translate-x-4" />
             </div>
@@ -246,10 +246,10 @@ export function McpToolsExplorer() {
                             type="button"
                             onClick={() => setSelectedToolName(tool.name)}
                             className={`w-full rounded-xl border px-3 py-2 text-left transition-colors ${
-                              active
-                                ? "border-sky-300 bg-sky-50 text-sky-800 dark:border-sky-900/50 dark:bg-sky-900/15 dark:text-sky-200"
-                                : "border-transparent bg-desktop-bg-primary text-desktop-text-secondary hover:border-desktop-border hover:bg-desktop-bg-active hover:text-desktop-text-primary"
-                            }`}
+ active
+ ? "border-sky-300 bg-sky-50 text-sky-800 dark:border-sky-900/50 dark:bg-sky-900/15 dark:text-sky-200"
+ : "border-transparent bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400 hover:border-slate-300 dark:border-slate-700 hover:bg-blue-100 dark:bg-blue-900 hover:text-slate-900 dark:text-slate-200"
+ }`}
                           >
                             <div className="truncate text-[12px] font-medium">{tool.name}</div>
                           </button>
@@ -266,57 +266,57 @@ export function McpToolsExplorer() {
 
       <section className="space-y-4">
         {!selectedTool ? (
-          <div className="rounded-2xl border border-desktop-border bg-desktop-bg-secondary/70 px-5 py-8 text-[12px] text-desktop-text-secondary shadow-sm">
+          <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/70 px-5 py-8 text-[12px] text-slate-700 dark:text-slate-400 shadow-sm">
             No MCP tool selected.
           </div>
         ) : (
           <>
-            <div className="rounded-2xl border border-desktop-border bg-desktop-bg-secondary/70 p-5 shadow-sm">
+            <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/70 p-5 shadow-sm">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <h3 className="text-[16px] font-semibold text-desktop-text-primary">{selectedTool.name}</h3>
-                  <p className="mt-1 max-w-3xl text-[12px] leading-6 text-desktop-text-secondary">
+                  <h3 className="text-[16px] font-semibold text-slate-900 dark:text-slate-200">{selectedTool.name}</h3>
+                  <p className="mt-1 max-w-3xl text-[12px] leading-6 text-slate-700 dark:text-slate-400">
                     {selectedTool.description}
                   </p>
                 </div>
-                <div className="rounded-full border border-desktop-border bg-desktop-bg-primary px-2.5 py-1 text-[10px] font-medium text-desktop-text-secondary">
+                <div className="rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2.5 py-1 text-[10px] font-medium text-slate-700 dark:text-slate-400">
                   {getToolCategory(selectedTool.name)}
                 </div>
               </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-              <div className="rounded-2xl border border-desktop-border bg-desktop-bg-secondary/70 p-5 shadow-sm">
+              <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/70 p-5 shadow-sm">
                 <div className="mb-3 flex items-center justify-between">
-                  <h4 className="text-[13px] font-semibold text-desktop-text-primary">Arguments</h4>
+                  <h4 className="text-[13px] font-semibold text-slate-900 dark:text-slate-200">Arguments</h4>
                   <button
                     type="button"
                     onClick={() => void handleExecuteTool()}
                     disabled={executing}
                     className="rounded-full border border-sky-300 bg-sky-50 px-3 py-1 text-[11px] font-medium text-sky-700 transition-colors hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-sky-900/50 dark:bg-sky-900/10 dark:text-sky-300 dark:hover:bg-sky-900/20"
-                  >
+ >
                     {executing ? "Running..." : "Run Tool"}
                   </button>
                 </div>
                 <textarea
                   value={argsJson}
                   onChange={(event) => setArgsJson(event.target.value)}
-                  className="h-[360px] w-full resize-y rounded-xl border border-desktop-border bg-desktop-bg-primary px-3 py-3 font-mono text-[12px] text-desktop-text-primary outline-none transition-colors focus:border-sky-400"
-                  spellCheck={false}
+                  className="h-[360px] w-full resize-y rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-3 font-mono text-[12px] text-slate-900 dark:text-slate-200 outline-none transition-colors focus:border-sky-400"
+ spellCheck={false}
                 />
               </div>
 
-              <div className="rounded-2xl border border-desktop-border bg-desktop-bg-secondary/70 p-5 shadow-sm">
-                <h4 className="mb-3 text-[13px] font-semibold text-desktop-text-primary">Result</h4>
-                <pre className="h-[360px] overflow-auto rounded-xl border border-desktop-border bg-desktop-bg-primary px-3 py-3 font-mono text-[12px] leading-5 text-desktop-text-secondary">
+              <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/70 p-5 shadow-sm">
+                <h4 className="mb-3 text-[13px] font-semibold text-slate-900 dark:text-slate-200">Result</h4>
+                <pre className="h-[360px] overflow-auto rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-3 font-mono text-[12px] leading-5 text-slate-700 dark:text-slate-400">
                   {result || "Run the selected tool to inspect its output."}
                 </pre>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-desktop-border bg-desktop-bg-secondary/70 p-5 shadow-sm">
-              <h4 className="mb-3 text-[13px] font-semibold text-desktop-text-primary">Input Schema</h4>
-              <pre className="overflow-auto rounded-xl border border-desktop-border bg-desktop-bg-primary px-3 py-3 font-mono text-[12px] leading-5 text-desktop-text-secondary">
+            <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/70 p-5 shadow-sm">
+              <h4 className="mb-3 text-[13px] font-semibold text-slate-900 dark:text-slate-200">Input Schema</h4>
+              <pre className="overflow-auto rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-3 font-mono text-[12px] leading-5 text-slate-700 dark:text-slate-400">
                 {JSON.stringify(selectedTool.inputSchema ?? {}, null, 2)}
               </pre>
             </div>

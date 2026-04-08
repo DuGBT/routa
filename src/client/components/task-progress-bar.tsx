@@ -88,7 +88,7 @@ export function TaskProgressBar({ tasks, fileChanges, className = "" }: TaskProg
           type="button"
           onClick={() => setExpanded((e) => !e)}
           className="w-full px-3 py-2 flex items-center gap-2 text-left hover:bg-slate-100 dark:hover:bg-[#1a1d2e] transition-colors"
-        >
+ >
           {/* Progress indicator with Todos label */}
           <div className="flex items-center gap-1.5 shrink-0">
             <span className={`w-2 h-2 rounded-full ${allCompleted ? "bg-emerald-500" : "bg-amber-500 animate-pulse"}`} />
@@ -122,7 +122,7 @@ export function TaskProgressBar({ tasks, fileChanges, className = "" }: TaskProg
           <div className="h-0.5 bg-slate-200 dark:bg-slate-700">
             <div
               className="h-full bg-emerald-500 transition-all duration-300"
-              style={{ width: `${progressPercent}%` }}
+ style={{ width: `${progressPercent}%` }}
             />
           </div>
         )}

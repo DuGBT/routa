@@ -39,8 +39,8 @@ export function DesktopLayout({
 }: DesktopLayoutProps) {
   return (
     <div
-      className="desktop-theme h-screen flex flex-col overflow-hidden bg-desktop-bg-primary"
-      data-testid="desktop-shell-root"
+      className=" h-screen flex flex-col overflow-hidden bg-slate-50 dark:bg-slate-900"
+ data-testid="desktop-shell-root"
     >
       <DesktopShellHeader
         workspaceId={workspaceId}
@@ -66,7 +66,7 @@ export function DesktopLayout({
         />
 
         {/* Content */}
-        <main className="flex-1 min-w-0 overflow-hidden bg-desktop-bg-primary" data-testid="desktop-shell-main">
+        <main className="flex-1 min-w-0 overflow-hidden bg-slate-50 dark:bg-slate-900" data-testid="desktop-shell-main">
           {children}
         </main>
       </div>

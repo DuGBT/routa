@@ -86,11 +86,11 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-[28px] border border-desktop-border bg-white/80 p-4 shadow-sm dark:bg-white/6">
+    <section className="rounded-[28px] border border-slate-300 dark:border-slate-700 bg-white/80 p-4 shadow-sm dark:bg-white/6">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-desktop-text-secondary">{title}</div>
-          <p className="mt-1 text-[12px] leading-5 text-desktop-text-secondary">{subtitle}</p>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-400">{title}</div>
+          <p className="mt-1 text-[12px] leading-5 text-slate-700 dark:text-slate-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-4">{children}</div>
@@ -111,7 +111,7 @@ function TargetRadar({
 }) {
   if (data.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-desktop-border px-4 py-8 text-sm text-desktop-text-secondary">
+      <div className="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 px-4 py-8 text-sm text-slate-700 dark:text-slate-400">
         {emptyText}
       </div>
     );
@@ -138,7 +138,7 @@ function TargetRadar({
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-3 text-[11px] text-desktop-text-secondary">
+      <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-700 dark:text-slate-400">
         <span className="inline-flex items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full bg-sky-500" />
           {currentLabel}
@@ -173,8 +173,8 @@ function TargetRadar({
                   x={labelPoint.x}
                   y={labelPoint.y}
                   textAnchor={labelPoint.x < center - 8 ? "end" : labelPoint.x > center + 8 ? "start" : "middle"}
-                  className="fill-current text-[11px] text-desktop-text-secondary"
-                >
+                  className="fill-current text-[11px] text-slate-700 dark:text-slate-400"
+ >
                   {label}
                 </text>
               </g>
@@ -230,12 +230,12 @@ function UnlockRunway({
       {rows.map((row) => (
         <div key={row.label} className="space-y-1.5">
           <div className="flex items-center justify-between gap-3 text-[11px]">
-            <span className="font-medium text-desktop-text-primary">{row.label}</span>
-            <span className="text-desktop-text-secondary">
+            <span className="font-medium text-slate-900 dark:text-slate-200">{row.label}</span>
+            <span className="text-slate-700 dark:text-slate-400">
               {row.value == null ? noNextLevel : `${row.value}%`}
             </span>
           </div>
-          <div className="h-2.5 overflow-hidden rounded-full bg-desktop-bg-primary">
+          <div className="h-2.5 overflow-hidden rounded-full bg-slate-50 dark:bg-slate-900">
             <div
               className={`h-full rounded-full ${row.accent}`}
               style={{ width: `${row.value ?? 0}%` }}
@@ -274,10 +274,10 @@ function GateSummaryBars({
       {items.map((item) => (
         <div key={item.label} className="space-y-1.5">
           <div className="flex items-center justify-between gap-3 text-[11px]">
-            <span className="font-medium text-desktop-text-primary">{item.label}</span>
-            <span className="text-desktop-text-secondary">{item.count}</span>
+            <span className="font-medium text-slate-900 dark:text-slate-200">{item.label}</span>
+            <span className="text-slate-700 dark:text-slate-400">{item.count}</span>
           </div>
-          <div className="h-2.5 overflow-hidden rounded-full bg-desktop-bg-primary">
+          <div className="h-2.5 overflow-hidden rounded-full bg-slate-50 dark:bg-slate-900">
             <div
               className={`h-full rounded-full ${item.accent}`}
               style={{ width: `${(item.count / max) * 100}%` }}
@@ -298,7 +298,7 @@ function BlockerHotspots({
 }) {
   if (items.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-desktop-border px-4 py-6 text-sm text-desktop-text-secondary">
+      <div className="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 px-4 py-6 text-sm text-slate-700 dark:text-slate-400">
         {emptyText}
       </div>
     );
@@ -309,17 +309,17 @@ function BlockerHotspots({
   return (
     <div className="space-y-3">
       {items.map((item) => (
-        <div key={item.dimension} className="rounded-2xl border border-desktop-border bg-desktop-bg-primary/70 px-3 py-3">
+        <div key={item.dimension} className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 px-3 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <div className="text-sm font-semibold text-desktop-text-primary">{item.label}</div>
-              <div className="text-[11px] text-desktop-text-secondary">{item.leadingCriterion}</div>
+              <div className="text-sm font-semibold text-slate-900 dark:text-slate-200">{item.label}</div>
+              <div className="text-[11px] text-slate-700 dark:text-slate-400">{item.leadingCriterion}</div>
             </div>
             <span className="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
               {item.count}
             </span>
           </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-desktop-bg-primary">
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-50 dark:bg-slate-900">
             <div className="h-full rounded-full bg-amber-400" style={{ width: `${(item.count / max) * 100}%` }} />
           </div>
         </div>
@@ -357,7 +357,7 @@ function Heatmap({
 
   if (orderedLevels.length === 0 || orderedDimensions.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-desktop-border px-4 py-8 text-sm text-desktop-text-secondary">
+      <div className="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 px-4 py-8 text-sm text-slate-700 dark:text-slate-400">
         {emptyText}
       </div>
     );
@@ -370,7 +370,7 @@ function Heatmap({
       <div className="min-w-[860px]">
         <div
           className="grid gap-2"
-          style={{ gridTemplateColumns: `minmax(180px, 1.2fr) repeat(${orderedDimensions.length}, minmax(120px, 1fr))` }}
+ style={{ gridTemplateColumns: `minmax(180px, 1.2fr) repeat(${orderedDimensions.length}, minmax(120px, 1fr))` }}
           role="table"
           aria-label="Fluency heatmap"
         >
@@ -378,15 +378,15 @@ function Heatmap({
           {orderedDimensions.map(({ key, translationKey }) => (
             <div
               key={key}
-              className="rounded-2xl border border-desktop-border bg-desktop-bg-primary/80 px-3 py-3 text-center"
-              role="columnheader"
+              className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 px-3 py-3 text-center"
+ role="columnheader"
             >
-              <div className="text-[11px] font-semibold leading-4 text-desktop-text-primary">
+              <div className="text-[11px] font-semibold leading-4 text-slate-900 dark:text-slate-200">
                 {matrix[translationKey].title.map((line) => (
                   <div key={`${key}-${line}`}>{line}</div>
                 ))}
               </div>
-              <div className="mt-1 text-[10px] leading-4 text-desktop-text-secondary">
+              <div className="mt-1 text-[10px] leading-4 text-slate-700 dark:text-slate-400">
                 {matrix[translationKey].subtitle}
               </div>
             </div>
@@ -395,15 +395,15 @@ function Heatmap({
           {orderedLevels.flatMap(({ key, translationKey }) => [
             <div
               key={`${key}-label`}
-              className="flex flex-col justify-center rounded-2xl border border-desktop-border bg-desktop-bg-primary/70 px-3 py-3"
-              role="rowheader"
+              className="flex flex-col justify-center rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 px-3 py-3"
+ role="rowheader"
             >
-              <div className="text-[11px] font-semibold leading-4 text-desktop-text-primary">
+              <div className="text-[11px] font-semibold leading-4 text-slate-900 dark:text-slate-200">
                 {matrix[translationKey].title.map((line) => (
                   <div key={`${key}-${line}`}>{line}</div>
                 ))}
               </div>
-              <div className="mt-1 text-[10px] leading-4 text-desktop-text-secondary">
+              <div className="mt-1 text-[10px] leading-4 text-slate-700 dark:text-slate-400">
                 {matrix[translationKey].subtitle}
               </div>
             </div>,
@@ -412,14 +412,14 @@ function Heatmap({
               return (
                 <div
                   key={`${dimensionKey}:${key}`}
-                  className={`rounded-2xl border px-3 py-3 text-center ${cell ? "border-desktop-border" : "border-dashed border-desktop-border/80"}`}
+                  className={`rounded-2xl border px-3 py-3 text-center ${cell ? "border-slate-300 dark:border-slate-700" : "border-dashed border-slate-300 dark:border-slate-700/80"}`}
                   style={{ backgroundColor: cell ? gridTone(cell.score) : "rgba(148, 163, 184, 0.08)" }}
                   role="cell"
                 >
-                  <div className={`text-lg font-semibold ${cell ? "text-desktop-text-primary" : "text-desktop-text-secondary"}`}>
+                  <div className={`text-lg font-semibold ${cell ? "text-slate-900 dark:text-slate-200" : "text-slate-700 dark:text-slate-400"}`}>
                     {cell ? `${cell.score}%` : missingText}
                   </div>
-                  <div className="mt-1 text-[11px] text-desktop-text-secondary">
+                  <div className="mt-1 text-[11px] text-slate-700 dark:text-slate-400">
                     {cell ? `${cell.passedWeight}/${cell.applicableWeight}` : "—"}
                   </div>
                 </div>
@@ -441,8 +441,8 @@ export function FitnessAnalysisDashboard({ report }: FitnessAnalysisDashboardPro
     return (
       <section
         data-testid="fitness-dashboard-empty"
-        className="rounded-[28px] border border-dashed border-desktop-border px-4 py-8 text-sm text-desktop-text-secondary"
-      >
+        className="rounded-[28px] border border-dashed border-slate-300 dark:border-slate-700 px-4 py-8 text-sm text-slate-700 dark:text-slate-400"
+ >
         {dashboard.noReport}
       </section>
     );
@@ -503,25 +503,25 @@ export function FitnessAnalysisDashboard({ report }: FitnessAnalysisDashboardPro
                 noNextLevel={dashboard.noNextLevel}
               />
               <div className="grid gap-3 sm:grid-cols-3">
-                <div className="rounded-2xl border border-desktop-border bg-desktop-bg-primary/70 px-3 py-3">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">
+                <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 px-3 py-3">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">
                     {dashboard.fromLastRun}
                   </div>
-                  <div className="mt-2 text-sm font-semibold text-desktop-text-primary">
+                  <div className="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-200">
                     {model.metrics.previousGeneratedAt ? formatTime(model.metrics.previousGeneratedAt) : dashboard.noHistory}
                   </div>
                 </div>
-                <div className="rounded-2xl border border-desktop-border bg-desktop-bg-primary/70 px-3 py-3">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">
+                <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 px-3 py-3">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">
                     {dashboard.changedDimensions}
                   </div>
-                  <div className="mt-2 text-2xl font-semibold text-desktop-text-primary">{model.metrics.changedDimensions}</div>
+                  <div className="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-200">{model.metrics.changedDimensions}</div>
                 </div>
-                <div className="rounded-2xl border border-desktop-border bg-desktop-bg-primary/70 px-3 py-3">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-desktop-text-secondary">
+                <div className="rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 px-3 py-3">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-400">
                     {dashboard.changedCriteria}
                   </div>
-                  <div className="mt-2 text-2xl font-semibold text-desktop-text-primary">{model.metrics.changedCriteria}</div>
+                  <div className="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-200">{model.metrics.changedCriteria}</div>
                 </div>
               </div>
             </div>
