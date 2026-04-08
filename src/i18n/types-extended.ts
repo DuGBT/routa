@@ -22,6 +22,11 @@ export interface ExtendedTranslationDictionarySections extends TailTranslationDi
       loadingHooks: string;
       noAgentHookData: string;
     };
+    dockerConfig: {
+      configurationRequired: string;
+      opencodeAuthJson: string;
+      opencodeAuthJsonHint: string;
+    };
     hookRuntime: {
       loadingHookRuntime: string;
       noHookRuntimeData: string;

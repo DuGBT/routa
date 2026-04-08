@@ -337,7 +337,7 @@ function TracePageContent() {
                     </p>
                   </div>
                 ) : (
-                  <div className="divide-y divide-desktop-border">
+                  <div className="divide-y divide-border">
                     {(() => {
                       // Separate top-level (parent) sessions from child sessions
                       const parentSessions = sessions.filter((s) => !s.parentSessionId);

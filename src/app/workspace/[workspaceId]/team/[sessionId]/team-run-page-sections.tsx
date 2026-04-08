@@ -70,7 +70,7 @@ export function ObjectiveSidebarSection({
             {deliverables.length === 0 ? (
               <EmptyPanel message={t.team.noNotesOrDeliverablesYet} />
             ) : (
-              <div className="divide-y divide-desktop-border rounded-[14px] border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+              <div className="divide-y divide-border rounded-[14px] border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
                 {deliverables.map((item) => (
                   <button
                     key={item.id}
@@ -193,7 +193,7 @@ export function TeamMembersSection({
 
       <div className="min-h-0 flex-1">
         <div className="min-h-0 flex-1 overflow-y-auto">
-          <div className="divide-y divide-desktop-border">
+          <div className="divide-y divide-border">
             {teamMembers.map((member) => {
               const isSelected = member.sessionId === selectedSessionId;
               return (

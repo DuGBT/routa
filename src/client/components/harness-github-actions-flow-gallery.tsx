@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { CodeViewer } from "@/client/components/codemirror/code-viewer";
 import type { GitHubActionsFlow, GitHubActionsJob } from "@/client/hooks/use-harness-settings-data";
+import { useTranslation } from "@/i18n";
 import {
   classifyGitHubWorkflowCategory,
   normalizeGitHubWorkflowEventTokens,
@@ -524,6 +525,7 @@ function WorkflowDetailDialog({
   onClose: () => void;
   onJobSelect: (jobId: string) => void;
 }) {
+  const { t } = useTranslation();
   useEffect(() => {
     if (!open) {
       return;
@@ -549,7 +551,7 @@ function WorkflowDetailDialog({
     <Modal open={!!open && !!flow} onClose={onClose} title={flow?.name ?? ""} className="max-w-[1360px] max-h-[88vh] overflow-hidden">
         <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
           <div className="min-w-0">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Pipeline detail</div>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t.harness.githubActions.pipelineDetail}</div>
             <div className="mt-1 flex flex-wrap gap-1.5">
               {flow && normalizeGitHubWorkflowEventTokens(flow.event).map((token) => (
                 <span key={`${flow.id}:dialog:${token}`} className="rounded-full border border-slate-200 bg-white/90 px-2.5 py-1 text-[10px] text-slate-600">

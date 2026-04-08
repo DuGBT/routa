@@ -332,7 +332,7 @@ export function WorkspacePageClient({
               Latest {recentSessions.length} of {sessions.length}
             </div>
           </div>
-          <div className="divide-y divide-desktop-border border-t border-slate-300 dark:border-slate-700">
+          <div className="divide-y divide-border border-t border-slate-300 dark:border-slate-700">
             {recentSessions.map((session) => (
               <button
                 key={session.sessionId}

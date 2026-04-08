@@ -23,6 +23,11 @@ export const zhExtended: ExtendedTranslationDictionarySections = {
       loadingHooks: "正在加载 Agent 钩子...",
       noAgentHookData: "未找到所选仓库的 Agent 钩子数据。",
     },
+    dockerConfig: {
+      configurationRequired: "需要配置",
+      opencodeAuthJson: "OpenCode auth.json",
+      opencodeAuthJsonHint: "在此粘贴本地的 ~/.local/share/opencode/auth.json 内容。",
+    },
     hookRuntime: {
       loadingHookRuntime: "正在加载钩子运行时...",
       noHookRuntimeData: "未找到所选仓库的钩子运行时数据。",

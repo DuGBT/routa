@@ -23,6 +23,11 @@ export const enExtended: ExtendedTranslationDictionarySections = {
       loadingHooks: "Loading agent hooks...",
       noAgentHookData: "No agent hook data found for the selected repository.",
     },
+    dockerConfig: {
+      configurationRequired: "Configuration Required",
+      opencodeAuthJson: "OpenCode auth.json",
+      opencodeAuthJsonHint: "Paste your local ~/.local/share/opencode/auth.json here.",
+    },
     hookRuntime: {
       loadingHookRuntime: "Loading hook runtime...",
       noHookRuntimeData: "No hook runtime data found for the selected repository.",

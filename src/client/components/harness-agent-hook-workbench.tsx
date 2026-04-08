@@ -411,7 +411,7 @@ function AgentHookInspector() {
                   {t.harness.agentHookWorkbench.noHooksConfigured}
                 </div>
               ) : (
-                <ul className="mt-2 divide-y divide-desktop-border rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80">
+                <ul className="mt-2 divide-y divide-border rounded-sm border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80">
                   {activeEntry.hooks.map((hook, index) => (
                     <li key={`${hook.event}:${index}`} className="px-3 py-2.5">
                       <div className="flex items-start justify-between gap-2">

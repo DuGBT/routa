@@ -726,6 +726,7 @@ export function DockerConfigModal(props: DockerConfigModalProps) {
 }
 
 function DockerConfigModalContent({ open, errorMessage, onClose, onSaved }: DockerConfigModalProps) {
+  const { t } = useTranslation();
   const [authJson, setAuthJson] = useState(() => loadDockerOpencodeAuthJson());
   const [error, setError] = useState<string | null>(null);
 
@@ -752,7 +753,7 @@ function DockerConfigModalContent({ open, errorMessage, onClose, onSaved }: Dock
     <Modal open={open} onClose={onClose} className="max-w-md">
       <div className="flex items-center gap-2 text-amber-500">
         <TriangleAlert className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}/>
-        <span className="text-xs font-medium">Configuration Required</span>
+        <span className="text-xs font-medium">{t.harness.dockerConfig.configurationRequired}</span>
       </div>
       {displayError && (
         <div className="p-2.5 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
@@ -760,9 +761,9 @@ function DockerConfigModalContent({ open, errorMessage, onClose, onSaved }: Dock
         </div>
       )}
       <div className="space-y-2">
-        <label className="text-xs font-medium text-muted-foreground">OpenCode auth.json</label>
+        <label className="text-xs font-medium text-muted-foreground">{t.harness.dockerConfig.opencodeAuthJson}</label>
         <p className="text-[10px] text-muted-foreground">
-          Paste your local <code className="bg-muted px-1 rounded">~/.local/share/opencode/auth.json</code> here.
+          {t.harness.dockerConfig.opencodeAuthJsonHint}
         </p>
         <textarea
           value={authJson}

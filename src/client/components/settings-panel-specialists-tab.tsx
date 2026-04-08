@@ -12,8 +12,7 @@ import {
   getSpecialistCategory,
   type SpecialistCategory,
 } from "../utils/specialist-categories";
-import type { AgentRole, SpecialistConfig } from "./specialist-manager";
-import type { ModelTier } from "./specialist-manager";
+import type { AgentRole, ModelTier, SpecialistConfig } from "../types/settings-types";
 import {
   EMPTY_SPECIALIST_FORM,
   ROLE_CHIP,
